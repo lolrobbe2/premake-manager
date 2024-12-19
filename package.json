@@ -17,7 +17,17 @@
         "command": "premake.action",
         "title": "run premake action"
       }
-    ]
+    ],
+    "configuration": {
+      "type": "object",
+      "properties": {
+        "premake.version": {
+          "type": "string",
+          "default": "latest",
+          "description": "Choose the version of Premake to use for this project."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
