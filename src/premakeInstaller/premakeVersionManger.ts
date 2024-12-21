@@ -10,7 +10,7 @@ export class PremakeVersionManager {
     }
 
     public static isVersionSet(): boolean {
-        return this.getVersion() === 'not set';
+        return this.getVersion() !== 'not set';
     }
     
     // Optionally, you can set the version through the API if needed
@@ -35,15 +35,17 @@ export class PremakeVersionManager {
             placeHolder: 'Select a Premake version',
             canPickMany: false // Allow only one version selection
         });
+
+        this.setVersion(selectedVersion!);
     }
     private static async getAvailableVersionNames() : Promise<string[]> {
-    try {
-        const releases = await GithubUtils.getReleases();
-       return releases.map((release: any) => release.name);
-        // You can now use availableVersions as needed
-    } catch (error) {
-        console.error('Error populating available versions:', error);
-        return [];
+        try {
+            const releases = await GithubUtils.getReleases();
+        return releases.map((release: any) => release.name);
+            // You can now use availableVersions as needed
+        } catch (error) {
+            console.error('Error populating available versions:', error);
+            return [];
+        }
     }
-}
 }

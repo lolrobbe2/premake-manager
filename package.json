@@ -17,8 +17,14 @@
   "contributes": {
     "commands": [
       {
+        "category": "Premake",
         "command": "premake.action",
         "title": "run premake action"
+      },
+      {
+        "category": "Premake",
+        "command": "premake.setversion",
+        "title": "set premake version"
       }
     ],
     "configuration": {

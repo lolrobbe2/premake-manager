@@ -2,13 +2,14 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { PremakeWatcher } from './premakeInstaller/premakeDetector.ts';
-
+import { PremakeVersionManager } from './premakeInstaller/premakeVersionManger.ts';
+import { commands } from './commands/register.ts';
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
+	
+	commands.registerCommand(context,"premake.setversion",async () => PremakeVersionManager.showVersionPicker());
 	console.log('Congratulations, your extension "premake-manager" is now active!');
 	PremakeWatcher.registerWatcher();
 }

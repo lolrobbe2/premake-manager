@@ -39,4 +39,15 @@ export class GithubUtils
             }));
         return releases;
     }
+
+    public static async getVersionRelease(version: string): Promise<object | undefined> {
+        const releases = await this.getReleases();
+        const release = releases.find((release: any) => release.name === version);
+        if (release) {
+            return release;
+        } else {
+            console.error(`Release with version ${version} not found.`);
+            return undefined;
+        }
+    }
 }
