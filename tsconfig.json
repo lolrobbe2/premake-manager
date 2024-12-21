@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
-	"moduleResolution": "node16",
-    "allowImportingTsExtensions":true,
-    "emitDeclarationOnly" : true,
-    "declaration": true,
-    "module": "Node16",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "composite": true,
     "target": "ES2022",
     "lib": ["ES2022"],
     "sourceMap": true,
     "rootDir": "src",
-    "strict": true
+    "strict": true,
+    "baseUrl": "./",
+    "allowImportingTsExtensions": true,
+    "noEmit": true
   }
 }

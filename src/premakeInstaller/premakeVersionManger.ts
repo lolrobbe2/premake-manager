@@ -30,16 +30,20 @@ export class PremakeVersionManager {
     }
 
     public static async showVersionPicker(): Promise<void> {
-        const availableVersions = [
-            'Premake 5.0',
-            'Premake 5.1',
-            'Premake 5.2',
-            'Premake 5.3'
-        ];
-        await GithubUtils.getReleases();
+        const availableVersions : string[] = await this.getAvailableVersionNames();
         const selectedVersion = await vscode.window.showQuickPick(availableVersions, {
             placeHolder: 'Select a Premake version',
             canPickMany: false // Allow only one version selection
         });
     }
+    private static async getAvailableVersionNames() : Promise<string[]> {
+    try {
+        const releases = await GithubUtils.getReleases();
+       return releases.map((release: any) => release.name);
+        // You can now use availableVersions as needed
+    } catch (error) {
+        console.error('Error populating available versions:', error);
+        return [];
+    }
+}
 }

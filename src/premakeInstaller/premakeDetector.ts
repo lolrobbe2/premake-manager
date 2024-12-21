@@ -1,11 +1,11 @@
 import * as vscode from 'vscode';
 
 import chokidar, { FSWatcher } from 'chokidar';
-import fs from 'fs';
+import * as fs from 'fs';
 import * as path from 'path';
 
-import * as utils from '../utils/utils';
-import { PremakeVersionManager } from './premakeVersionManger';
+import * as utils from '../utils/utils.ts';
+import { PremakeVersionManager } from './premakeVersionManger.ts';
 
 /**
  * @brief static class that watches for file changes and tries to find a premake5.lua file

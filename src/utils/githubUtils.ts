@@ -1,5 +1,6 @@
-import { Octokit } from "@octokit/core";
+import("@octokit/core");
 
+import { Octokit } from '@octokit/core';
 import * as vscode from 'vscode';
 
 
@@ -29,5 +30,13 @@ export class GithubUtils
                 'X-GitHub-Api-Version': '2022-11-28'
             }
         });
+        const releases = response.data.map((release: any) => ({
+                name: release.name,
+                assets: release.assets.map((asset: any) => ({
+                    name: asset.name,
+                    download_link: asset.browser_download_url,
+                })),
+            }));
+        return releases;
     }
 }

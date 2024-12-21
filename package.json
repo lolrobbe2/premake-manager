@@ -3,7 +3,7 @@
   "displayName": "premake manager",
   "description": "a extension to manage premake projects",
   "version": "0.0.1",
-  "type": "module",
+  "type": "commonjs",
   "engines": {
     "vscode": "^1.96.0"
   },
@@ -60,6 +60,7 @@
     "chokidar": "^4.0.3",
     "eslint": "^9.13.0",
     "ts-loader": "^9.5.1",
+    "tsconfig-paths-webpack-plugin": "^4.2.0",
     "typescript": "^5.6.3",
     "webpack": "^5.95.0",
     "webpack-cli": "^5.1.4"
