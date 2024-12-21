@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { GithubUtils } from '../utils/githubUtils.ts';
 
 export class PremakeVersionManager {
 
@@ -35,7 +36,7 @@ export class PremakeVersionManager {
             'Premake 5.2',
             'Premake 5.3'
         ];
-
+        await GithubUtils.getReleases();
         const selectedVersion = await vscode.window.showQuickPick(availableVersions, {
             placeHolder: 'Select a Premake version',
             canPickMany: false // Allow only one version selection

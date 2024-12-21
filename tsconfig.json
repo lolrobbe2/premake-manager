@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+	"moduleResolution": "node16",
+    "allowImportingTsExtensions":true,
+    "emitDeclarationOnly" : true,
+    "declaration": true,
     "module": "Node16",
     "target": "ES2022",
     "lib": ["ES2022"],
