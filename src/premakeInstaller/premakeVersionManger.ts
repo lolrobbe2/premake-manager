@@ -127,59 +127,9 @@ export class PremakeVersionManager {
 
         // Create a progress notification
         const progress = vscode.window.withProgress(
-            {
-                location: vscode.ProgressLocation.Notification,
-                title: `Downloading ${releaseName}...`,
-                cancellable: true
-            },
-            async (progress, token) => {
-                return new Promise<void>((resolve, reject) => {
-                    const request = (downloadUrl.startsWith('https') ? https : http).get(downloadUrl, (response) => {
-                        const totalLength = parseInt(response.headers['content-length'] || '0', 10);
-                        let downloadedLength = 0;
-
-                        const fileStream = fs.createWriteStream(destinationPath);
-                        response.pipe(fileStream);
-
-                        response.on('data', (chunk) => {
-                            downloadedLength += chunk.length;
-                            const percentage = Math.round((downloadedLength / totalLength) * 100);
-                            progress.report({ increment: percentage - (progress.value || 0) });
-                        });
-
-                        fileStream.on('finish', () => {
-                            fileStream.close();
-                            resolve();
-                        });
-
-                        fileStream.on('error', (err) => {
-                            fs.unlink(destinationPath, () => reject(err));
-                        });
-                    });
-
-                    request.on('error', (err) => {
-                        fs.unlink(destinationPath, () => reject(err));
-                    });
-
-                    if (token.isCancellationRequested) {
-                        request.abort();
-                        fs.unlink(destinationPath, () => reject(new Error('Download cancelled')));
-                    }
-                });
-            }
+   
         );
 
-        // Handle cancellation
-        progress.then(
-            () => {
-                // Extract the downloaded file
-                this.extractDownloadedFile(destinationPath, fileExtension, releaseName);
-            },
-            (error) => {
-                if (error instanceof Error) {
-                    vscode.window.showErrorMessage(`Installation failed: ${error.message}`);
-                }
-            }
-        );
+        
     }
 }
