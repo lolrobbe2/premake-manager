@@ -55,7 +55,4 @@ export class PremakeWatcher {
     }
 }
 
-// Example usage
 
-// Uncomment the following to unregister the watcher after some time (e.g., 10 seconds)
-// setTimeout(() => PremakeWatcher.unregisterWatcher(), 10000);

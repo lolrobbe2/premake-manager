@@ -10,6 +10,7 @@
     "strict": true,
     "baseUrl": "./",
     "allowImportingTsExtensions": true,
-    "noEmit": true
+    "emitDeclarationOnly": true,
+    "noEmit": false
   }
 }

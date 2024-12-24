@@ -3,7 +3,15 @@ import("@octokit/core");
 import { Octokit } from '@octokit/core';
 import * as vscode from 'vscode';
 
+export interface ReleaseAsset {
+    name: string;
+    download_link: string;
+}
 
+export interface Release {
+    name: string | null;
+    assets: ReleaseAsset[];
+}
 export class GithubUtils 
 {
   // Retrieve the repository URL from the VS Code configuration
@@ -20,7 +28,7 @@ export class GithubUtils
     }
     }
     // Fetch releases from the specified GitHub repository
-    public static async getReleases() {
+    public static async getReleases() : Promise<Release[]> {
         const octokit = new Octokit({
         });
         const response = await octokit.request('GET /repos/{owner}/{repo}/releases', {
@@ -30,7 +38,7 @@ export class GithubUtils
                 'X-GitHub-Api-Version': '2022-11-28'
             }
         });
-        const releases = response.data.map((release: any) => ({
+        const releases: Release[] = response.data.map((release: any) => ({
                 name: release.name,
                 assets: release.assets.map((asset: any) => ({
                     name: asset.name,

@@ -74,6 +74,8 @@
   "dependencies": {
     "@octokit/core": "^6.1.2",
     "@octokit/rest": "^21.0.2",
-    "@octokit/types": "^13.6.2"
+    "@octokit/types": "^13.6.2",
+    "extract-zip": "^2.0.1",
+    "tar": "^7.4.3"
   }
 }
