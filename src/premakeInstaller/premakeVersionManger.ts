@@ -16,18 +16,13 @@ export class PremakeVersionManager {
     }
 
     public static isVersionSet(): boolean {
-        return this.getVersion() !== 'not set';
+        return this.getVersion() !== '';
     }
     
     // Optionally, you can set the version through the API if needed
-    public static setVersion(version: string): void {
+    public static async setVersion(version: string): Promise<void> {
         const config = vscode.workspace.getConfiguration();
-        config.update('premake.version', version, vscode.ConfigurationTarget.Workspace)
-            .then(() => {
-                console.log(`Premake version set to: ${version}`);
-            }, (error) => {
-                console.error('Failed to update Premake version:', error);
-            });
+        await config.update('premake.version', version, vscode.ConfigurationTarget.Workspace);
     }
 
     // A method to handle logic based on the version
@@ -35,7 +30,7 @@ export class PremakeVersionManager {
         const version = PremakeVersionManager.getVersion();
     }
 
-    public static async showVersionPicker(): Promise<void> {
+    public static async showVersionPicker(): Promise<string | undefined> {
         const availableVersions : string[] = await this.getAvailableVersionNames();
         const selectedVersion = await vscode.window.showQuickPick(availableVersions, {
             placeHolder: 'Select a Premake version',
@@ -43,6 +38,7 @@ export class PremakeVersionManager {
         });
 
         this.setVersion(selectedVersion!);
+        return selectedVersion;
     }
     private static async getAvailableVersionNames() : Promise<string[]> {
         try {
@@ -205,5 +201,18 @@ export class PremakeVersionManager {
         const release = await this.getVersionRelease(releaseName);
         const releaseAsset: ReleaseAsset = await this.getCurrentAssetForPlatform(release)!;
         await this.installPremakeVersionPlatform(releaseName,releaseAsset);
+    }
+    public static async installPremakePicker() {
+        await this.showVersionPicker();
+        const version: string = PremakeVersionManager.getVersion();
+        if (!await this.isVersionReleaseInstalled(version)) {
+            const installResult = await vscode.window.showInformationMessage(
+                'Premake version is not installed for selected release. Do you want to install it?',
+                'Yes', 'No'
+            );
+            if (installResult === 'Yes') {
+                await this.installPremakeVersion(version);
+            }
+        }
     }
 }

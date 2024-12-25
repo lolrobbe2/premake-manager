@@ -32,7 +32,6 @@
       "properties": {
         "premake.version": {
           "type": "string",
-          "default": "latest",
           "description": "Choose the version of Premake to use for this project."
         },
         "premake.repository": {

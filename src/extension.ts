@@ -8,14 +8,15 @@ import { PremakeVersionManager } from './premakeInstaller/premakeVersionManger.j
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 	commands.registerCommand(context,"premake.setversion",async () =>{
-		await PremakeVersionManager.showVersionPicker();
-		const version: string = await PremakeVersionManager.getVersion();
-		const installed: boolean = await PremakeVersionManager.isVersionReleaseInstalled(version);
-		if(!installed){
-			const result: string | undefined = await vscode.window.showInformationMessage("premake is not installed for the selected version would you like to installe it?",'yes','no');
-			if(result === 'yes'){
-				//await vscode.window.showInformationMessage(`installing premake version: ${version}`);
-				await PremakeVersionManager.installPremakeVersion(version);
+		const version: string | undefined = await PremakeVersionManager.showVersionPicker();
+		if(version !== undefined) {
+			const installed: boolean = await PremakeVersionManager.isVersionReleaseInstalled(version);
+			if(!installed){
+				const result: string | undefined = await vscode.window.showInformationMessage("premake is not installed for the selected version would you like to installe it?",'yes','no');
+				if(result === 'yes'){
+					//await vscode.window.showInformationMessage(`installing premake version: ${version}`);
+					await PremakeVersionManager.installPremakeVersion(version);
+				}
 			}
 		}
 	});
