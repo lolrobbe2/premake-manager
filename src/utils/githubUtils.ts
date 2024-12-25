@@ -1,6 +1,5 @@
-import("@octokit/core");
+const Octokitimport = import("@octokit/core");
 
-import { Octokit } from '@octokit/core';
 import * as vscode from 'vscode';
 
 export interface ReleaseAsset {
@@ -29,7 +28,8 @@ export class GithubUtils
     }
     // Fetch releases from the specified GitHub repository
     public static async getReleases() : Promise<Release[]> {
-        const octokit = new Octokit({
+        const Octokit = await Octokitimport;
+        const octokit = new Octokit.Octokit({
         });
         const response = await octokit.request('GET /repos/{owner}/{repo}/releases', {
             owner: 'premake',

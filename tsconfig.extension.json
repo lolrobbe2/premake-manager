@@ -1,0 +1,26 @@
+
+  {
+    "compilerOptions": {
+      "module": "node16",
+      "moduleResolution": "node16",
+      "composite": true,
+      "target": "ES2022",
+      "lib": ["ES2022"],
+      "sourceMap": true,
+      "rootDir": "src",
+      "strict": true,
+      "baseUrl": "./",
+      "outDir": "out"
+    }
+  ,
+  "include": [
+    // Important: Specify which files to compile for the extension
+    "src/**/*.ts" // Or adjust to match your extension's source files
+  ],
+  "exclude": [
+    "node_modules",
+    ".vscode",
+    "out",
+    "src/**/*.test.ts" // Example: Exclude test files
+  ]
+}

@@ -1,11 +1,11 @@
+import  AdmZip  from 'adm-zip';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
+import * as tar from 'tar';
 import * as vscode from 'vscode';
-import * as https from 'https';
-import * as http from 'http';
-import { GithubUtils, Release, ReleaseAsset } from '../utils/githubUtils.ts';
-import { VSCodeUtils } from '../utils/utils.ts';
+import { GithubUtils, Release, ReleaseAsset } from '../utils/githubUtils.js';
+import { VSCodeUtils } from '../utils/utils.js';
 export class PremakeVersionManager {
 
     // Get the Premake version from the workspace settings
@@ -113,23 +113,91 @@ export class PremakeVersionManager {
         return fs.existsSync(destinationPath);
     }
 
-    public static async installPremakeVersion(releaseName:string, platformAsset:ReleaseAsset) : Promise<void>
-    {
+    public static async installPremakeVersion(releaseName: string, platformAsset: ReleaseAsset): Promise<void> {
+        /*
         const workspace: string = VSCodeUtils.getWorkspaceFolder();
         const destinationPath: string = path.join(workspace, '.premake', releaseName, this.getCurrentPlatform(), `premake5${this.getExecutableExtension()}`);
 
-        // Ensure the destination directory exists
         await fs.promises.mkdir(path.dirname(destinationPath), { recursive: true });
 
-        // Determine the appropriate download URL and file extension
         const downloadUrl = platformAsset.download_link;
-        const fileExtension = path.extname(downloadUrl).toLowerCase();
 
-        // Create a progress notification
-        const progress = vscode.window.withProgress(
-   
-        );
+        await vscode.window.withProgress({
+            location: vscode.ProgressLocation.Notification,
+            title: `Installing Premake ${releaseName}`,
+            cancellable: true,
+        }, async (progress, token) => {
+            try {
+                const response = await axios.get(downloadUrl, {
+                    responseType: 'stream',
+                    onDownloadProgress: (progressEvent) => {
+                        if (progressEvent.lengthComputable) {
+                            const percentage = (progressEvent.loaded / progressEvent!.total!) * 100;
+                            progress.report({ increment: 0, message: `Downloaded ${Math.round(percentage)}%` });
+                        }
+                    },
+                });
 
-        
+                if (response.status !== 200) {
+                    throw new Error(`Failed to download Premake: ${response.status} ${response.statusText}`);
+                }
+
+                const tmpDir = path.join(os.tmpdir(), 'premake-downloads');
+                await fs.promises.mkdir(tmpDir, { recursive: true });
+                const tmpFilePath = path.join(tmpDir, `premake-${Date.now()}${path.extname(downloadUrl)}`);
+                const dest = fs.createWriteStream(tmpFilePath);
+
+                token.onCancellationRequested(() => {
+                    dest.destroy();
+                    response.data.destroy(); // Important: Destroy the stream from axios
+                    fs.promises.unlink(tmpFilePath).catch(() => {});
+                    throw new Error('Installation cancelled.');
+                });
+
+                response.data.pipe(dest); // Use pipe for efficient streaming
+
+                await new Promise<void>((resolve, reject) => {
+                    dest.on('finish', resolve);
+                    dest.on('error', reject);
+                });
+
+                dest.close();
+
+                if (path.extname(downloadUrl).toLowerCase() === '.zip') {
+                    try {
+                        const zip = new AdmZip(tmpFilePath);
+                        zip.extractAllTo(path.dirname(destinationPath), true);
+                        console.log(`Extracted ${tmpFilePath} to ${path.dirname(destinationPath)}`);
+                    } catch (unzipError: any) {
+                        console.error("Error extracting zip:", unzipError);
+                        throw new Error(`Failed to extract Premake archive: ${unzipError.message}`);
+                    }
+                } else if (path.extname(downloadUrl).toLowerCase() === '.gz' || path.extname(downloadUrl).toLowerCase() === '.tgz') {
+                    try {
+                        await tar.x({
+                            file: tmpFilePath,
+                            cwd: path.dirname(destinationPath),
+                        });
+                    } catch (tarError: any) {
+                        console.error("Error extracting tar.gz:", tarError);
+                        throw new Error(`Failed to extract Premake archive: ${tarError.message}`);
+                    }
+                } else {
+                    await fs.promises.copyFile(tmpFilePath, destinationPath);
+                }
+
+                await fs.promises.unlink(tmpFilePath);
+
+                vscode.window.showInformationMessage(`Premake ${releaseName} installed successfully.`);
+
+            } catch (error: any) {
+                if (token.isCancellationRequested && error.message === 'Installation cancelled.') {
+                    vscode.window.showWarningMessage('Installation cancelled.');
+                } else {
+                    vscode.window.showErrorMessage(`Failed to install Premake: ${error.message}`);
+                }
+            }
+        });
+        */
     }
 }

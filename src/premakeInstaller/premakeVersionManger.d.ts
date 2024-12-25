@@ -1,4 +1,4 @@
-import { Release, ReleaseAsset } from '../utils/githubUtils.ts';
+import { Release, ReleaseAsset } from '../utils/githubUtils.js';
 export declare class PremakeVersionManager {
     static getVersion(): string;
     static isVersionSet(): boolean;
