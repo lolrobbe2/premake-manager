@@ -1,4 +1,5 @@
-import  AdmZip  from 'adm-zip';
+import AdmZip from 'adm-zip';
+import axios from 'axios';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
@@ -113,8 +114,8 @@ export class PremakeVersionManager {
         return fs.existsSync(destinationPath);
     }
 
-    public static async installPremakeVersion(releaseName: string, platformAsset: ReleaseAsset): Promise<void> {
-        /*
+    public static async installPremakeVersionPlatform(releaseName: string, platformAsset: ReleaseAsset): Promise<void> {
+        
         const workspace: string = VSCodeUtils.getWorkspaceFolder();
         const destinationPath: string = path.join(workspace, '.premake', releaseName, this.getCurrentPlatform(), `premake5${this.getExecutableExtension()}`);
 
@@ -198,6 +199,11 @@ export class PremakeVersionManager {
                 }
             }
         });
-        */
+        
+    }
+    public static async installPremakeVersion(releaseName: string): Promise<void> {
+        const release = await this.getVersionRelease(releaseName);
+        const releaseAsset: ReleaseAsset = await this.getCurrentAssetForPlatform(release)!;
+        await this.installPremakeVersionPlatform(releaseName,releaseAsset);
     }
 }

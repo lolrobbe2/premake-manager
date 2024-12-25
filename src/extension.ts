@@ -14,7 +14,8 @@ export function activate(context: vscode.ExtensionContext) {
 		if(!installed){
 			const result: string | undefined = await vscode.window.showInformationMessage("premake is not installed for the selected version would you like to installe it?",'yes','no');
 			if(result === 'yes'){
-				await vscode.window.showInformationMessage(`installing premake version: ${version}`);
+				//await vscode.window.showInformationMessage(`installing premake version: ${version}`);
+				await PremakeVersionManager.installPremakeVersion(version);
 			}
 		}
 	});
