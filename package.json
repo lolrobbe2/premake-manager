@@ -25,6 +25,11 @@
         "category": "Premake",
         "command": "premake.setversion",
         "title": "set premake version"
+      },
+      { 
+        "category": "Premake", 
+        "command": "premake.cleanup", 
+        "title": "cleanup the premake folder"
       }
     ],
     "configuration": {
@@ -39,6 +44,7 @@
           "default": "https://github.com/premake/premake-core",
           "description": "the url from wich to get the premake versions from."
         }
+      
       }
     }
   },

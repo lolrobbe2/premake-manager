@@ -20,8 +20,11 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 		}
 	});
-	console.log('Congratulations, your extension "premake-manager" is now active!');
+	commands.registerCommand(context,"premake.cleanup",async () =>{
+		PremakeVersionManager.cleanPremakeFolder();
+	});
 	PremakeWatcher.registerWatcher();
+
 }
 
 // This method is called when your extension is deactivated

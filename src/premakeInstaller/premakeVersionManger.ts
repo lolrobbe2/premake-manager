@@ -25,11 +25,6 @@ export class PremakeVersionManager {
         await config.update('premake.version', version, vscode.ConfigurationTarget.Workspace);
     }
 
-    // A method to handle logic based on the version
-    public static handleVersion(): void {
-        const version = PremakeVersionManager.getVersion();
-    }
-
     public static async showVersionPicker(): Promise<string | undefined> {
         const availableVersions : string[] = await this.getAvailableVersionNames();
         const selectedVersion = await vscode.window.showQuickPick(availableVersions, {
@@ -37,13 +32,15 @@ export class PremakeVersionManager {
             canPickMany: false // Allow only one version selection
         });
 
-        this.setVersion(selectedVersion!);
+        await this.setVersion(selectedVersion!);
         return selectedVersion;
     }
     private static async getAvailableVersionNames() : Promise<string[]> {
         try {
             const releases = await GithubUtils.getReleases();
-        return releases.map((release: any) => release.name);
+            const availableVersions = releases.map((release: any) => release.name);
+            availableVersions.unshift('latest');
+            return availableVersions;
             // You can now use availableVersions as needed
         } catch (error) {
             console.error('Error populating available versions:', error);
@@ -52,6 +49,11 @@ export class PremakeVersionManager {
     }
     public static async getVersionRelease(version: string): Promise<any | null> {
         const releases : Release[] =  await GithubUtils.getReleases();
+
+        if(version === 'latest'){
+            version = releases[0].name!;
+        }
+
         const release = releases.find((release: any) => release.name === version);
         if (release) {
             return release;
@@ -200,11 +202,11 @@ export class PremakeVersionManager {
     public static async installPremakeVersion(releaseName: string): Promise<void> {
         const release = await this.getVersionRelease(releaseName);
         const releaseAsset: ReleaseAsset = await this.getCurrentAssetForPlatform(release)!;
-        await this.installPremakeVersionPlatform(releaseName,releaseAsset);
+        await this.installPremakeVersionPlatform(release.name, releaseAsset);
     }
     public static async installPremakePicker() {
         await this.showVersionPicker();
-        const version: string = PremakeVersionManager.getVersion();
+        const version: string = await PremakeVersionManager.getVersion();
         if (!await this.isVersionReleaseInstalled(version)) {
             const installResult = await vscode.window.showInformationMessage(
                 'Premake version is not installed for selected release. Do you want to install it?',
@@ -214,5 +216,47 @@ export class PremakeVersionManager {
                 await this.installPremakeVersion(version);
             }
         }
+    }
+    public static async cleanPremakeFolder() :Promise<void> {
+        const workspaceFolder = VSCodeUtils.getWorkspaceFolder();
+        const premakeFolder = path.join(workspaceFolder, '.premake');
+
+        if (!fs.existsSync(premakeFolder)) {return;}
+
+        const folders = fs.readdirSync(premakeFolder).filter((file) =>
+            fs.statSync(path.join(premakeFolder, file)).isDirectory()
+        );
+
+        // Get the current version to compare
+        const currentVersion = this.getVersion();
+
+        await vscode.window.withProgress(
+            {
+                location: vscode.ProgressLocation.Notification, // Show progress in the notification area
+                title: "Cleaning .premake folder...",
+                cancellable: false
+            },
+            async (progress) => {
+                let folderCount = folders.length;
+                let currentIndex = 0;
+
+                // Iterate through each folder and clean up
+                for (const folder of folders) {
+                    const folderPath = path.join(premakeFolder, folder);
+
+                    // Update progress message and percentage
+                    currentIndex++;
+                    progress.report({
+                        increment: (currentIndex / folderCount) * 100, // Increment based on folder processing
+                        message: `Removing folder: ${folder}`
+                    });
+
+                    // If the folder does not match the version, remove it
+                    if (folder !== currentVersion) {
+                        fs.rmSync(folderPath, { recursive: true, force: true });
+                    }
+                }
+            }
+        );
     }
 }
