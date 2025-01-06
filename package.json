@@ -4,6 +4,7 @@
   "description": "a extension to manage premake projects",
   "version": "0.0.1",
   "type": "commonjs",
+  "publisher": "lolrobbe2",
   "engines": {
     "vscode": "^1.96.0"
   },
