@@ -1,14 +1,15 @@
-# premake-manager README
+# premake-manager
 this is an unofficial extension to manage premake projects
 ## Features
 
 1) install/manage multiple versions of premake at the same time.
 2) easaliy run premake actions
-
+3) auto detect premake5.lua
 ## Requirements
 
 If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
+## installing test version
+type >VSIX in the top bar and press enter and select the package.
 ## commands:
 
 1) premake.action.run

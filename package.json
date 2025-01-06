@@ -14,8 +14,14 @@
     "name": "robbe beernaert"
   },
   "license": "MIT",
-  "icon": "",
-  "repository": {},
+  "icon": "resources/media/premake-logo-128.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lolrobbe2/premake-manager.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lolrobbe2/premake-manager/issues"
+  },
   "activationEvents": [
     "onStartupFinished"
   ],
