@@ -4,6 +4,7 @@ import * as vscode from 'vscode';
 import { commands } from './commands/register.js';
 import { PremakeWatcher } from './premakeInstaller/premakeDetector.js';
 import { PremakeVersionManager } from './premakeInstaller/premakeVersionManger.js';
+import { PremakeRunner } from './utils/premakeRunner.js';
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -22,6 +23,13 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 	commands.registerCommand(context,"premake.cleanup",async () =>{
 		PremakeVersionManager.cleanPremakeFolder();
+	});
+	commands.registerCommand(context,"premake.action.run",async () => {
+		const action = await PremakeRunner.getActionPicker(context);
+		if(action !== undefined) {
+			const instance = await PremakeRunner.getPremakeInstance(action);
+			await instance.run();
+		} 
 	});
 	PremakeWatcher.registerWatcher();
 

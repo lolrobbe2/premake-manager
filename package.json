@@ -18,17 +18,27 @@
     "commands": [
       {
         "category": "Premake",
-        "command": "premake.action",
+        "command": "premake.action.run",
         "title": "run premake action"
+      },
+      {
+        "category": "Premake",
+        "command": "premake.action.default.set",
+        "title": "set default premake action"
+      },
+      {
+        "category": "Premake",
+        "command": "premake.action.default.set",
+        "title": "set default premake action"
       },
       {
         "category": "Premake",
         "command": "premake.setversion",
         "title": "set premake version"
       },
-      { 
-        "category": "Premake", 
-        "command": "premake.cleanup", 
+      {
+        "category": "Premake",
+        "command": "premake.cleanup",
         "title": "cleanup the premake folder"
       }
     ],
@@ -43,8 +53,11 @@
           "type": "string",
           "default": "https://github.com/premake/premake-core",
           "description": "the url from wich to get the premake versions from."
+        },
+        "premake.action": {
+          "type": "string",
+          "description": "the default action to run"
         }
-      
       }
     }
   },
@@ -56,13 +69,16 @@
     "lint": "eslint src",
     "test": "vscode-test",
     "tsc:w": "node --version",
-    "clean": "rimraf out"
+    "clean": "rimraf out",
+    "resources": "cp -rv ./src/resources/** ./out/resources",
+    "icons": "fantasticon ./src/resources/media/ -o ./src/resources/media/"
   },
   "dependencies": {
     "@octokit/rest": "^21.0.2",
     "adm-zip": "^0.5.16",
     "axios": "^1.7.9",
     "chokidar": "^4.0.3",
+    "cp": "^0.2.0",
     "tar": "^7.4.3"
   },
   "devDependencies": {

@@ -47,7 +47,7 @@ export class PremakeVersionManager {
             return [];
         }
     }
-    public static async getVersionRelease(version: string): Promise<any | null> {
+    public static async getVersionRelease(version: string): Promise<Release | undefined> {
         const releases : Release[] =  await GithubUtils.getReleases();
 
         if(version === 'latest'){
@@ -59,13 +59,13 @@ export class PremakeVersionManager {
             return release;
         } else {
             console.error(`Release with version ${version} not found.`);
-            return null;
+            return undefined;
         }
     }
 
     public static async isVersionReleaseInstalled(version: string): Promise<boolean> 
     {
-        const currentRelease: Release = await this.getVersionRelease(await this.getVersion());
+        const currentRelease: Release | undefined = await this.getVersionRelease(await this.getVersion());
         if(currentRelease === undefined) { return false; }
         const platformReleases = this.getCurrentAssetForPlatform(currentRelease);
         return this.premakeVersionExistsInDirectory(currentRelease.name!);
@@ -201,8 +201,10 @@ export class PremakeVersionManager {
     }
     public static async installPremakeVersion(releaseName: string): Promise<void> {
         const release = await this.getVersionRelease(releaseName);
-        const releaseAsset: ReleaseAsset = await this.getCurrentAssetForPlatform(release)!;
-        await this.installPremakeVersionPlatform(release.name, releaseAsset);
+        if(release !== undefined) {
+            const releaseAsset: ReleaseAsset= await this.getCurrentAssetForPlatform(release)!;
+            await this.installPremakeVersionPlatform(release.name ?? "latest", releaseAsset);
+        }
     }
     public static async installPremakePicker() {
         await this.showVersionPicker();
