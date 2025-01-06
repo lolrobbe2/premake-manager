@@ -52,7 +52,16 @@ export class PremakeWatcher {
             }
         
         } else {
-            await PremakeVersionManager.installPremakePicker();
+            const version: string = await PremakeVersionManager.getVersion();
+            if (!await PremakeVersionManager.isVersionReleaseInstalled(version)) {
+                const installResult = await vscode.window.showInformationMessage(
+                    'Premake version is not installed for selected release. Do you want to install it?',
+                    'Yes', 'No'
+                );
+                if (installResult === 'Yes') {
+                    await PremakeVersionManager.installPremakeVersion(version);
+                }
+            }
         }
     }
 

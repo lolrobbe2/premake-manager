@@ -28,8 +28,23 @@ export function activate(context: vscode.ExtensionContext) {
 		const action = await PremakeRunner.getActionPicker(context);
 		if(action !== undefined) {
 			const instance = await PremakeRunner.getPremakeInstance(action);
-			await instance.run();
+			await instance.run(context);
 		} 
+	});
+	commands.registerCommand(context,"premake.action.default.set",async () => {
+		const action = await PremakeRunner.getActionPicker(context);
+		if(action !== undefined) { await PremakeRunner.setDefaultAction(action); }
+	});
+	commands.registerCommand(context,"premake.action.default.run",async () => {
+		let action = await PremakeRunner.getCurrentAction();
+		if(action !== undefined && action !== '') {
+			const instance = await PremakeRunner.getPremakeInstance(action);
+			await instance.run(context);
+		} else {
+			await vscode.commands.executeCommand("premake.action.default.set");
+			await vscode.commands.executeCommand("premake.action.default.run");
+		}
+
 	});
 	PremakeWatcher.registerWatcher();
 

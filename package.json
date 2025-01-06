@@ -10,6 +10,12 @@
   "categories": [
     "Other"
   ],
+  "author": {
+    "name": "robbe beernaert"
+  },
+  "license": "MIT",
+  "icon": "",
+  "repository": {},
   "activationEvents": [
     "onStartupFinished"
   ],
@@ -28,8 +34,8 @@
       },
       {
         "category": "Premake",
-        "command": "premake.action.default.set",
-        "title": "set default premake action"
+        "command": "premake.action.default.run",
+        "title": "run default premake action"
       },
       {
         "category": "Premake",

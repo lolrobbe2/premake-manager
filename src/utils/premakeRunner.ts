@@ -14,7 +14,7 @@ export class PremakeInstance {
         this.outputChannel = vscode.window.createOutputChannel(channelName);
     }
 
-    async run(): Promise<void> {
+    async run(context: vscode.ExtensionContext): Promise<void> {
         const args = [this.action];
 
         await vscode.window.withProgress({
@@ -24,6 +24,7 @@ export class PremakeInstance {
             const terminal = vscode.window.createTerminal({
                 name: 'Premake Terminal',
                 cwd: VSCodeUtils.getWorkspaceFolder(),
+                iconPath: vscode.Uri.file(context.asAbsolutePath("resources/media/premake-logo.svg"))
             });
             terminal.sendText(`"${path.join(this.folder, 'premake5')}" ${args.join(' ')}`);
 

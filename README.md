@@ -1,71 +1,36 @@
 # premake-manager README
-
-This is the README for your extension "premake-manager". After writing up a brief description, we recommend including the following sections.
-
+this is an unofficial extension to manage premake projects
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+1) install/manage multiple versions of premake at the same time.
+2) easaliy run premake actions
 
 ## Requirements
 
 If you have any requirements or dependencies, add a section describing those and how to install and configure them.
 
+## commands:
+
+1) premake.action.run
+    run premake action
+2) premake.setversion
+    set the used premake version
+3) premake.action.default.set
+    set default premake action
+4) premake.action.default.run
+    run default premake action
+5) premake.cleanup
+    cleanup the .premake folder
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
 
-For example:
+### 0.0.1 - alpha
 
-This extension contributes the following settings:
+Initial release of premake manager
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+1) added ability to download premake versions
+2) added ability to run premake5 
+3) added abiltty to set default action
+4) added ability to run default action
 
 **Enjoy!**
