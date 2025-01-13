@@ -99,6 +99,7 @@
   "devDependencies": {
     "@octokit/types": "^13.6.2",
     "@types/adm-zip": "^0.5.7",
+    "@types/lua-json": "^1.0.3",
     "@types/mocha": "^10.0.9",
     "@types/node": "^20.9.0",
     "@types/vscode": "^1.92.1",
