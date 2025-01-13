@@ -28,6 +28,8 @@ type >VSIX in the top bar and press enter and select the package.
     cleanup the .premake folder
 ## Extension Settings
 
+## github access
+github is used to make it so you are not rate limited!
 
 ### 0.0.1 - alpha
 

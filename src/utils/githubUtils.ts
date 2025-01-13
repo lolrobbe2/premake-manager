@@ -28,9 +28,7 @@ export class GithubUtils
     }
     // Fetch releases from the specified GitHub repository
     public static async getReleases() : Promise<Release[]> {
-        const Octokit = await Octokitimport;
-        const octokit = new Octokit.Octokit({
-        });
+        const octokit = await this.authenticateVSCode();
         const response = await octokit.request('GET /repos/{owner}/{repo}/releases', {
             owner: 'premake',
             repo: 'premake-core',
@@ -56,6 +54,18 @@ export class GithubUtils
         } else {
             console.error(`Release with version ${version} not found.`);
             return undefined;
+        }
+    }
+    static async authenticateVSCode(){
+        const session = await vscode.authentication.getSession("github", ["repo", "user"], { createIfNone: true }); 
+        if (session) { 
+            const Octokit = await Octokitimport;
+            const octokit = new Octokit.Octokit({ auth: session.accessToken, });
+            return octokit; 
+        } 
+        else
+        {
+            throw new Error("Authentication session not available"); 
         }
     }
 }
