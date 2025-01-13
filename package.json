@@ -75,18 +75,20 @@
     }
   },
   "scripts": {
+    "clean": "rimraf out && rimraf tsconfig.extension.tsbuildinfo",
+    "compile": "npm run clean && node build.js",
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p tsconfig.extension.json",
     "watch": "npm run compile && tsc -watch -p tsconfig.extension.json",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src",
     "test": "vscode-test",
     "tsc:w": "node --version",
-    "clean": "rimraf out",
     "resources": "cp -rv ./src/resources/** ./out/resources",
     "icons": "fantasticon ./src/resources/media/ -o ./src/resources/media/"
   },
   "dependencies": {
+    "@types/vscode": "^1.96.0",
+
     "@octokit/rest": "^21.0.2",
     "adm-zip": "^0.5.16",
     "axios": "^1.7.9",
@@ -105,6 +107,7 @@
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
     "@vscode/vsce": "^3.2.1",
+    "esbuild": "^0.24.2",
     "eslint": "^9.13.0",
     "rimraf": "^5.0.5",
     "typescript": "^5.7.2"
