@@ -87,13 +87,13 @@
     "icons": "fantasticon ./src/resources/media/ -o ./src/resources/media/"
   },
   "dependencies": {
-    "@types/vscode": "^1.96.0",
-
     "@octokit/rest": "^21.0.2",
+    "@types/vscode": "^1.96.0",
     "adm-zip": "^0.5.16",
     "axios": "^1.7.9",
     "chokidar": "^4.0.3",
     "cp": "^0.2.0",
+    "lua-json": "^1.0.1",
     "tar": "^7.4.3"
   },
   "devDependencies": {
@@ -103,7 +103,7 @@
     "@types/node": "^20.9.0",
     "@types/vscode": "^1.92.1",
     "@typescript-eslint/eslint-plugin": "^8.10.0",
-    "@typescript-eslint/parser": "^8.7.0",  
+    "@typescript-eslint/parser": "^8.7.0",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
     "@vscode/vsce": "^3.2.1",
