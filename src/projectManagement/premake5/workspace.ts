@@ -1,6 +1,6 @@
 import { project } from "./project";
 
-export class workspace {
+export class premakeWorkspace {
     name: string; 
     projects: project[]; 
     constructor(name: string) {
