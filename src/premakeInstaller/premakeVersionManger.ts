@@ -186,7 +186,8 @@ export class PremakeVersionManager {
                 }
 
                 await fs.promises.unlink(tmpFilePath);
-
+                if (os.platform() !== 'win32') 
+                    { await fs.promises.chmod(destinationPath, '755'); }
                 vscode.window.showInformationMessage(`Premake ${releaseName} installed successfully.`);
 
             } catch (error: any) {
