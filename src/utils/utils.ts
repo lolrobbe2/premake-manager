@@ -13,5 +13,8 @@ export class VSCodeUtils {
 
         return workspaceFolder;
     }
-    
+    public static autoLoadWorkspaceEnabled(): boolean {
+        const autoLoad = vscode.workspace.getConfiguration('premake.workspace').get<boolean>('autoload', true); 
+        return autoLoad;
+    }
 }

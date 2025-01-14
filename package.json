@@ -70,6 +70,11 @@
         "premake.action": {
           "type": "string",
           "description": "the default action to run"
+        },
+        "premake.workspace.autoload": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically load the Premake workspace/ premake5.lua on startup."
         }
       }
     }
@@ -93,13 +98,14 @@
     "axios": "^1.7.9",
     "chokidar": "^4.0.3",
     "cp": "^0.2.0",
-    "lua-json": "^1.0.1",
+    "luaparse": "^0.3.1",
     "tar": "^7.4.3"
   },
   "devDependencies": {
     "@octokit/types": "^13.6.2",
     "@types/adm-zip": "^0.5.7",
     "@types/lua-json": "^1.0.3",
+    "@types/luaparse": "^0.2.12",
     "@types/mocha": "^10.0.9",
     "@types/node": "^20.9.0",
     "@types/vscode": "^1.92.1",
