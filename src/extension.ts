@@ -40,10 +40,12 @@ function registerCommands(context: vscode.ExtensionContext) {
 	commands.registerCommand(context, "premake.cleanup", async () => {
 		PremakeVersionManager.cleanPremakeFolder();
 	});
-	commands.registerCommand(context, "premake.action.run", async () => {
-		const action = await PremakeRunner.getActionPicker(context);
-		if (action !== undefined) {
-			const instance = await PremakeRunner.getPremakeInstance(action);
+	commands.registerCommand(context, "premake.action.run", async (action:string | undefined) => {
+		if (action === undefined) {
+			action = await PremakeRunner.getActionPicker(context);
+		}
+		if(action !== undefined) {
+			const instance = await PremakeRunner.getPremakeInstance(action!);
 			await instance.run(context);
 		}
 	});

@@ -5,5 +5,10 @@ export class ActionItem extends vscode.TreeItem {
         super(action.trigger, vscode.TreeItemCollapsibleState.None);
         this.tooltip = `Trigger: ${action.trigger}\r\n Description: ${action.description}`;
         this.description = action.description;
+        this.command = {
+            title: `run ${action.trigger} action`,
+            command: `premake.action.run`,
+            arguments: [action.trigger]
+        };
     }
 }

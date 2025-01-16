@@ -1,5 +1,5 @@
-import { option } from "../premake5/option";
 import * as vscode from 'vscode';
+import { option } from "../premake5/option";
 
 export class OptionItem extends vscode.TreeItem {
     constructor(public readonly option: option) {
