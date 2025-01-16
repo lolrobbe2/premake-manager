@@ -10,4 +10,8 @@ export class projectManager {
         this.premakeFile = ProjectParser.parsePremakeFile(workspace);
         this.workspaceProvider.setPremakeFile(this.premakeFile);
     }
+
+    static refresh(){
+        this.workspaceProvider.refresh();
+    }
 }
