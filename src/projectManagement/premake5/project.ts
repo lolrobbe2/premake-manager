@@ -35,4 +35,29 @@ export class project {
                 return vscode.Uri.file(VSCodeUtils.context!.asAbsolutePath(basePath + "c-sharp.svg"));
         }
     }
+    get kind(): string | undefined { 
+        const kindProperty = this.properties.find(prop => prop.key === 'kind');
+        return kindProperty ? kindProperty.value.replace(/"/g, '') : undefined; 
+    }
+    get location(): string | undefined {
+        const locationProperty = this.properties.find(prop => prop.key === 'location');
+        return locationProperty ? locationProperty.value.replace(/"/g, '') : undefined; 
+    }
+
+    get dialect(): string | undefined {
+        const language = this.language;
+        if (language === 'c') {
+            const dialectProperty = this.properties.find(prop => prop.key === 'cdialect');
+            return dialectProperty ? dialectProperty.value.replace(/"/g, '') : undefined;
+        }
+        else if (language === 'c++') {
+            const dialectProperty = this.properties.find(prop => prop.key === 'cppdialect');
+            return dialectProperty ? dialectProperty.value.replace(/"/g, '') : undefined;
+        }
+        else if (language === 'c#') {
+            const dialectProperty = this.properties.find(prop => prop.key === 'csversion');
+            return dialectProperty ? dialectProperty.value.replace(/"/g, '') : undefined;
+        }
+        return undefined;
+    }
 }

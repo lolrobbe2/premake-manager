@@ -1,6 +1,7 @@
 import { PremakeFile } from 'projectManagement/premake5/premakeFile'; // Adjust the import path as necessary
 import { premakeWorkspace } from 'projectManagement/premake5/workspace';
 import * as vscode from 'vscode';
+import { ProjectItem } from './projectItem'; // Adjust the import path as necessary
 import { WorkspaceItem } from './workspaceItem'; // Adjust the import path as necessary
 
 export class WorkspacesProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
@@ -27,6 +28,8 @@ export class WorkspacesProvider implements vscode.TreeDataProvider<vscode.TreeIt
     getChildren(element?: vscode.TreeItem): Thenable<vscode.TreeItem[]> {
         if (element instanceof WorkspaceItem) {
             return Promise.resolve((element as WorkspaceItem).getChildren());
+        } else if (element instanceof ProjectItem) {
+            return Promise.resolve((element as ProjectItem).getChildren());
         } else {
             return Promise.resolve(this.workspaces.map(workspace => new WorkspaceItem(workspace)));
         }
