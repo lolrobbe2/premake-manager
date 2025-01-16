@@ -17,8 +17,15 @@ interface ProjectNode {
 
 interface ParameterNode {
     type: string;
-    left: { type: string; name: string };
-    right: { type: string; value: any };
+    base: { type: string; name: string };
+    argument: { type: string; value: string | null; raw: string };
+}
+
+interface TableCallNode {
+    type: string;
+    key: { type: string; name: string };
+    base: { type: string; name: string };
+    arguments: any;
 }
 
 function isWorkspaceNode(node: any): node is WorkspaceNode {
@@ -30,10 +37,18 @@ function isProjectNode(node: any): node is ProjectNode {
 }
 
 function isParameterNode(node: any): node is ParameterNode {
-    return node.type === 'AssignmentStatement' && node.left && node.left.type === 'Identifier' && node.right;
+    return node.type === 'StringCallExpression' && node.base && node.base.type === 'Identifier' && node.base.name !== 'include';
 }
 
-function traverseAst(node: any, workspaces: premakeWorkspace[], currentWorkspace: { workspace: premakeWorkspace | null }, currentProject: { project: project | null }) {
+function isIncludeNode(node: any): node is ParameterNode {
+    return node.type === 'StringCallExpression' && node.base && node.base.type === 'Identifier' && node.base.name === 'include';
+}
+
+function isTableCallNode(node: any): node is TableCallNode {
+    return node.type === 'TableCallExpression' && node.key && node.key.type === 'Identifier';
+}
+
+function traverseAst(node: any, workspaces: premakeWorkspace[], currentWorkspace: { workspace: premakeWorkspace | null }, currentProject: { project: project | null }, dependencies: string[]) {
     if (isWorkspaceNode(node)) {
         // Add the previous workspace to the list if it exists
         if (currentWorkspace.workspace) {
@@ -43,39 +58,66 @@ function traverseAst(node: any, workspaces: premakeWorkspace[], currentWorkspace
         const workspaceName = node.argument.value || node.argument.raw;
         currentWorkspace.workspace = new premakeWorkspace(workspaceName);
         currentProject.project = null; // Reset the current project
-    }
-
-    if (isProjectNode(node)) {
+    } else if (isProjectNode(node)) {
         // Add the current project to the current workspace
         if (currentWorkspace.workspace && currentProject.project) {
             currentWorkspace.workspace.addProject(currentProject.project);
         }
         // Create a new project
         const projectName = node.argument.value || node.argument.raw;
-        currentProject.project = new project(projectName, {});
-    }
-
-    if (isParameterNode(node)) {
+        currentProject.project = new project(projectName, []);
+    } else if (isParameterNode(node)) {
         // Add the parameter to the current project or workspace
-        const parameterName = node.left.name;
-        const parameterValue = node.right.value;
+        const parameterName = node.base.name;
+        const parameterValue = node.argument.value || node.argument.raw;
 
         if (currentProject.project) {
-            (currentProject.project as any)[parameterName] = parameterValue;
+            currentProject.project.properties.push({ key: parameterName, value: parameterValue });
         } else if (currentWorkspace.workspace) {
-            (currentWorkspace.workspace as any)[parameterName] = parameterValue;
+            currentWorkspace.workspace.properties.push({ key: parameterName, value: parameterValue });
         }
-    }
+    } else if (isIncludeNode(node)) {
+        // Add the include statement to the dependencies array
+        const includePath = node.argument.value || node.argument.raw;
+        dependencies.push(includePath);
+    } else if (isTableCallNode(node)) {
+        // Handle TableCallExpression nodes
+        if (node.arguments.fields !== undefined) {
+            const tableFields = node.arguments.fields;
+            tableFields.forEach((field: any) => {
+                const parameterName = node.key.name;
+                const parameterValue = field.value.value || field.value.raw;
 
-    for (const key in node) {
-        if (node[key] && typeof node[key] === 'object') {
-            traverseAst(node[key], workspaces, currentWorkspace, currentProject);
+                if (currentProject.project) {
+                    currentProject.project.properties.push({ key: parameterName, value: parameterValue });
+                } else if (currentWorkspace.workspace) {
+                    currentWorkspace.workspace.properties.push({ key: parameterName, value: parameterValue });
+                }
+            });
+        } else {
+            const parameterName = node.base.name;
+            const parameterValue = node.arguments.value || node.arguments.raw;
+            if (currentProject.project) {
+                currentProject.project.properties.push({ key: parameterName, value: parameterValue });
+            } else if (currentWorkspace.workspace) {
+                currentWorkspace.workspace.properties.push({ key: parameterName, value: parameterValue });
+            }
+        }
+    } else {
+        for (const key in node) {
+            if (node[key] && typeof node[key] === 'object') {
+                try {
+                    traverseAst(node[key], workspaces, currentWorkspace, currentProject, dependencies);
+                } catch (error) {
+                    console.log(error);
+                }
+            }
         }
     }
 }
 
 export class ProjectParser {
-    static parsePremakeFile(filePath: string): premakeWorkspace[] {
+    static parsePremakeFile(filePath: string): { workspaces: premakeWorkspace[], dependencies: string[] } {
         const luaScript = fs.readFileSync(filePath, 'utf-8');
 
         let ast: any;
@@ -89,14 +131,15 @@ export class ProjectParser {
         const workspaces: premakeWorkspace[] = [];
         const currentWorkspace = { workspace: null as premakeWorkspace | null };
         const currentProject = { project: null as project | null };
+        const dependencies: string[] = [];
 
-        traverseAst(ast, workspaces, currentWorkspace, currentProject);
+        traverseAst(ast, workspaces, currentWorkspace, currentProject, dependencies);
 
         // Add the last workspace to the list if it exists
         if (currentWorkspace.workspace) {
             workspaces.push(currentWorkspace.workspace);
         }
 
-        return workspaces;
+        return { workspaces, dependencies };
     }
 }
