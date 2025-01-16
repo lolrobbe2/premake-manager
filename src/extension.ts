@@ -7,6 +7,8 @@ import { PremakeWatcher } from './premakeInstaller/premakeDetector.js';
 import { PremakeVersionManager } from './premakeInstaller/premakeVersionManger.js';
 import * as utils from './utils/mod.js';
 import { PremakeRunner } from './utils/premakeRunner.js';
+import { WorkspacesProvider } from 'projectManagement/views/workspacesProvider.js';
+import { projectManager } from 'projectManagement/projectManager.js';
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -15,6 +17,7 @@ export function activate(context: vscode.ExtensionContext) {
 			async event => { await handleWorkspaceFoldersChanged(event); }
 		)
 	);
+	vscode.window.registerTreeDataProvider('workspacesList', projectManager.workspaceProvider);
 	registerCommands(context);
 	PremakeWatcher.registerWatcher();
 

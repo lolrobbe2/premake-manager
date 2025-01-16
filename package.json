@@ -28,6 +28,23 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "workspaces", 
+          "title": "Workspaces", 
+          "icon": "resources/premake-sidebar-logo.svg" 
+        } 
+      ] 
+    }, 
+    "views": {
+      "workspaces": [
+        {
+          "id": "workspacesList",
+          "name": "Workspaces List" 
+        } 
+      ] 
+    },
     "commands": [
       {
         "category": "Premake",

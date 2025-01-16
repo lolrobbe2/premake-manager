@@ -14,4 +14,5 @@ export class premakeWorkspace {
     addProject(project: project) {
         this.projects.push(project);
     }
+    get trimmedName(): string { return this.name.replace(/"/g, ''); }
 }
