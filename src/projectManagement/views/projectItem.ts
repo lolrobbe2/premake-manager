@@ -3,7 +3,8 @@ import * as vscode from 'vscode';
 
 export class ProjectItem extends vscode.TreeItem {
     constructor(public readonly project: project) {
-        super(project.name, vscode.TreeItemCollapsibleState.None);
-        this.tooltip = `Project: ${project.name}`;
+        super(project.trimmedName, vscode.TreeItemCollapsibleState.None);
+        this.tooltip = `Project: ${project.trimmedName}`;
+        this.iconPath = project.iconPath;
     }
 }

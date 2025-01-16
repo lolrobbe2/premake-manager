@@ -1,17 +1,17 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as path from 'path';
+import { projectManager } from 'projectManagement/projectManager.js';
 import * as vscode from 'vscode';
 import { commands } from './commands/register.js';
 import { PremakeWatcher } from './premakeInstaller/premakeDetector.js';
 import { PremakeVersionManager } from './premakeInstaller/premakeVersionManger.js';
 import * as utils from './utils/mod.js';
 import { PremakeRunner } from './utils/premakeRunner.js';
-import { WorkspacesProvider } from 'projectManagement/views/workspacesProvider.js';
-import { projectManager } from 'projectManagement/projectManager.js';
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+	utils.VSCodeUtils.setExtensionContext(context);
 	context.subscriptions.push( 
 		vscode.workspace.onDidChangeWorkspaceFolders( 
 			async event => { await handleWorkspaceFoldersChanged(event); }

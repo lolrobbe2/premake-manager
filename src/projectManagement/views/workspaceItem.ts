@@ -6,6 +6,7 @@ export class WorkspaceItem extends vscode.TreeItem {
     constructor(public readonly workspace: premakeWorkspace) {
         super(workspace.trimmedName, vscode.TreeItemCollapsibleState.Collapsed);
         this.tooltip = `Workspace: ${workspace.trimmedName}`;
+        this.iconPath = new vscode.ThemeIcon("vscode");
     }
 
     getChildren(): vscode.TreeItem[] {
