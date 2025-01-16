@@ -45,75 +45,103 @@ function isIncludeNode(node: any): node is ParameterNode {
     return node.type === 'StringCallExpression' && node.base && node.base.type === 'Identifier' && node.base.name === 'include';
 }
 
-function isTableCallNode(node: any): node is TableCallNode {
+function isTableCallSingleNode(node: any): node is TableCallNode {
     return node.type === 'TableCallExpression' && node.key && node.key.type === 'Identifier';
 }
 
-function traverseAst(node: any, workspaces: premakeWorkspace[], currentWorkspace: { workspace: premakeWorkspace | null }, currentProject: { project: project | null }, dependencies: string[]) {
+function isTableCallMultiNode(node: any): node is TableCallNode {
+    return node.type === 'TableCallExpression' && node.base && node.base.type === 'Identifier';
+}
+
+type PropertyValue = string | { key: string, value: string }[] | string[];
+
+function handleWorkspaceNode(node: WorkspaceNode, workspaces: premakeWorkspace[], currentWorkspace: { workspace: premakeWorkspace | null }, currentProject: { project: project | null }) {
+    if (currentWorkspace.workspace) {
+        workspaces.push(currentWorkspace.workspace);
+    }
+    const workspaceName = (node.argument.value || node.argument.raw).replace(/"/g, '');
+    currentWorkspace.workspace = new premakeWorkspace(workspaceName);
+    currentProject.project = null;
+}
+
+function handleProjectNode(node: ProjectNode, currentWorkspace: { workspace: premakeWorkspace | null }, currentProject: { project: project | null }) {
+    if (currentWorkspace.workspace && currentProject.project) {
+        currentWorkspace.workspace.addProject(currentProject.project);
+    }
+    const projectName = (node.argument.value || node.argument.raw).replace(/"/g, '');
+    currentProject.project = new project(projectName, []);
+}
+
+function handleIncludeNode(node: ParameterNode, currentWorkspace: { workspace: premakeWorkspace | null }, dependencies: string[]) {
+    const includePath = (node.argument.value || node.argument.raw).replace(/"/g, '');
+
+    if (currentWorkspace.workspace) {
+        currentWorkspace.workspace.dependencies.push(includePath);
+    } else {
+        dependencies.push(includePath);
+    }
+}
+
+function handleTableCallMultiNode(node: TableCallNode, currentWorkspace: { workspace: premakeWorkspace | null }, currentProject: { project: project | null }, rootProperties: { key: string, value: PropertyValue }[]) {
+    const tableFields = node.arguments.fields;
+    const combinedFields: { key: string, value: string }[] = tableFields.map((field: any) => {
+        const parameterKey = (field.key.name || field.key.value).replace(/"/g, '');
+        const parameterValue = (field.value.value || field.value.raw).replace(/"/g, '');
+        return { key: parameterKey, value: parameterValue };
+    });
+
+    const parameterName = (node.base.name || node.key.name).replace(/"/g, '');
+    if (currentProject.project) {
+        currentProject.project.properties.push({ key: parameterName, value: combinedFields });
+    } else if (currentWorkspace.workspace) {
+        currentWorkspace.workspace.properties.push({ key: parameterName, value: combinedFields });
+    } else {
+        rootProperties.push({ key: parameterName, value: combinedFields });
+    }
+}
+
+function handleTableCallSingleNode(node: TableCallNode, currentWorkspace: { workspace: premakeWorkspace | null }, currentProject: { project: project | null }, rootProperties: { key: string, value: PropertyValue }[]) {
+    const parameterName = (node.base.name || node.key.name).replace(/"/g, '');
+    const parameterValue = (node.arguments.value || node.arguments.raw).replace(/"/g, '');
+    if (currentProject.project) {
+        currentProject.project.properties.push({ key: parameterName, value: parameterValue });
+    } else if (currentWorkspace.workspace) {
+        currentWorkspace.workspace.properties.push({ key: parameterName, value: parameterValue });
+    } else {
+        rootProperties.push({ key: parameterName, value: parameterValue });
+    }
+}
+
+function handleParameterNode(node: ParameterNode, currentWorkspace: { workspace: premakeWorkspace | null }, currentProject: { project: project | null }, rootProperties: { key: string, value: PropertyValue }[]) {
+    const parameterName = node.base.name.replace(/"/g, '');
+    const parameterValue = (node.argument.value || node.argument.raw).replace(/"/g, '');
+    if (currentProject.project) {
+        currentProject.project.properties.push({ key: parameterName, value: parameterValue });
+    } else if (currentWorkspace.workspace) {
+        currentWorkspace.workspace.properties.push({ key: parameterName, value: parameterValue });
+    } else {
+        rootProperties.push({ key: parameterName, value: parameterValue });
+    }
+}
+
+function traverseAst(node: any, workspaces: premakeWorkspace[], currentWorkspace: { workspace: premakeWorkspace | null }, currentProject: { project: project | null }, dependencies: string[], rootProperties: { key: string, value: PropertyValue }[]) {
     if (isWorkspaceNode(node)) {
-        // Add the previous workspace to the list if it exists
-        if (currentWorkspace.workspace) {
-            workspaces.push(currentWorkspace.workspace);
-        }
-        // Create a new workspace
-        const workspaceName = node.argument.value || node.argument.raw;
-        currentWorkspace.workspace = new premakeWorkspace(workspaceName);
-        currentProject.project = null; // Reset the current project
+        handleWorkspaceNode(node, workspaces, currentWorkspace, currentProject);
     } else if (isProjectNode(node)) {
-        // Add the current project to the current workspace
-        if (currentWorkspace.workspace && currentProject.project) {
-            currentWorkspace.workspace.addProject(currentProject.project);
-        }
-        // Create a new project
-        const projectName = node.argument.value || node.argument.raw;
-        currentProject.project = new project(projectName, []);
-    } else if (isParameterNode(node)) {
-        // Add the parameter to the current project or workspace
-        const parameterName = node.base.name;
-        const parameterValue = node.argument.value || node.argument.raw;
-
-        if (currentProject.project) {
-            currentProject.project.properties.push({ key: parameterName, value: parameterValue });
-        } else if (currentWorkspace.workspace) {
-            currentWorkspace.workspace.properties.push({ key: parameterName, value: parameterValue });
-        }
+        handleProjectNode(node, currentWorkspace, currentProject);
     } else if (isIncludeNode(node)) {
-        // Add the include statement to the dependencies array
-        const includePath = node.argument.value || node.argument.raw;
-
-        if(currentWorkspace.workspace)
-            {currentWorkspace.workspace!.dependencies.push(includePath);}
-        else
-            {dependencies.push(includePath);}
-
-    } else if (isTableCallNode(node)) {
-        // Handle TableCallExpression nodes
-        if (node.arguments.fields !== undefined) {
-            const tableFields = node.arguments.fields;
-            tableFields.forEach((field: any) => {
-                const parameterName = node.key.name;
-                const parameterValue = field.value.value || field.value.raw;
-
-                if (currentProject.project) {
-                    currentProject.project.properties.push({ key: parameterName, value: parameterValue });
-                } else if (currentWorkspace.workspace) {
-                    currentWorkspace.workspace.properties.push({ key: parameterName, value: parameterValue });
-                }
-            });
-        } else {
-            const parameterName = node.base.name;
-            const parameterValue = node.arguments.value || node.arguments.raw;
-            if (currentProject.project) {
-                currentProject.project.properties.push({ key: parameterName, value: parameterValue });
-            } else if (currentWorkspace.workspace) {
-                currentWorkspace.workspace.properties.push({ key: parameterName, value: parameterValue });
-            }
-        }
+        handleIncludeNode(node, currentWorkspace, dependencies);
+    } else if (isTableCallMultiNode(node)) {
+        handleTableCallMultiNode(node, currentWorkspace, currentProject, rootProperties);
+    } else if (isTableCallSingleNode(node)) {
+        handleTableCallSingleNode(node, currentWorkspace, currentProject, rootProperties);
+    } else if (isParameterNode(node)) {
+        handleParameterNode(node, currentWorkspace, currentProject, rootProperties);
     } else {
         for (const key in node) {
             if (node[key] && typeof node[key] === 'object') {
                 try {
-                    traverseAst(node[key], workspaces, currentWorkspace, currentProject, dependencies);
+                    traverseAst(node[key], workspaces, currentWorkspace, currentProject, dependencies, rootProperties);
                 } catch (error) {
                     console.log(error);
                 }
@@ -138,13 +166,14 @@ export class ProjectParser {
         const currentWorkspace = { workspace: null as premakeWorkspace | null };
         const currentProject = { project: null as project | null };
         const dependencies: string[] = [];
+        const rootProperties: { key: string, value: PropertyValue }[] = [];
 
-        traverseAst(ast, workspaces, currentWorkspace, currentProject, dependencies);
+        traverseAst(ast, workspaces, currentWorkspace, currentProject, dependencies, rootProperties);
 
-        // Add the last workspace to the list if it exists
         if (currentWorkspace.workspace) {
             workspaces.push(currentWorkspace.workspace);
         }
-        return new PremakeFile(filePath, workspaces, dependencies); // Return premakeFile object
+
+        return new PremakeFile(filePath, workspaces, dependencies, rootProperties);
     }
 }

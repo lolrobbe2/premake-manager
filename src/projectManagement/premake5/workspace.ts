@@ -3,7 +3,7 @@ import { project } from "./project";
 export class premakeWorkspace {
     name: string; 
     projects: project[];
-    properties: { key: string, value: string }[];
+    properties: { key: string, value: any }[];
     dependencies: string [];
     constructor(name: string,properties: { key: string, value: string }[] = []) {
         this.name = name; 

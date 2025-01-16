@@ -25,12 +25,13 @@ export class WorkspaceItem extends vscode.TreeItem {
 
         const propertyItems = this.workspace.properties.map(property => {
             if (WorkspaceItem.visibleProperties.includes(property.key)) {
-                const item = new vscode.TreeItem(`${property.key.replace(/"/g, '')}: ${property.value.replace(/"/g, '')}`, vscode.TreeItemCollapsibleState.None);
-                item.tooltip = `${property.key.replace(/"/g, '')}: ${property.value.replace(/"/g, '')}`;
+                const item = new vscode.TreeItem(`${property.key.replace(/"/g, '')}: ${(property.value as string).replace(/"/g, '')}`, vscode.TreeItemCollapsibleState.None);
+                item.tooltip = `${property.key.replace(/"/g, '')}: ${(property.value as string).replace(/"/g, '')}`;
                 return item;
             }
             return null;
         }).filter(item => item !== null) as vscode.TreeItem[];
+
 
         return [...projectItems, ...dependencyItems, ...propertyItems];
     }

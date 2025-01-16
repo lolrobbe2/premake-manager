@@ -1,10 +1,30 @@
 import { VSCodeUtils } from 'utils/utils';
 import * as vscode from 'vscode';
+
+// Define individual interfaces
+export interface SimpleProperty {
+    key: string;
+    value: string;
+}
+
+export interface ArrayProperty {
+    key: string;
+    value: SimpleProperty[];
+}
+
+export interface StringArrayProperty {
+    key: string;
+    value: string[];
+}
+// Use any type for PropertyValue
+export type PropertyValue = any;
+
+// Updated project class
 export class project {
     name: string; 
-    properties: { key: string, value: string }[];
+    properties: { key: string, value: PropertyValue }[];
 
-    constructor(name: string, properties: { key: string, value: string }[] = []){
+    constructor(name: string, properties: { key: string, value: PropertyValue }[] = []) {
         this.name = name; 
         this.properties = properties; 
     }
@@ -15,49 +35,45 @@ export class project {
 
     get language(): string {
         const languageProperty = this.properties.find(prop => prop.key === 'language');
-        return languageProperty ? languageProperty.value.replace(/"/g, '') : "unkown";
+        return typeof languageProperty?.value === 'string' ? languageProperty.value.replace(/"/g, '') : "unknown";
     }
 
-    get iconPath() : vscode.Uri |undefined {
+    get iconPath(): vscode.Uri | undefined {
         const basePath = "resources/media/language/";
-        switch (this.language) {
-            case "C":
-                return vscode.Uri.file(VSCodeUtils.context!.asAbsolutePath(basePath + "c.svg"));
-            case "C++":
-                return vscode.Uri.file(VSCodeUtils.context!.asAbsolutePath(basePath + "c-plus-plus.svg"));
-            case "C#":
-                return vscode.Uri.file(VSCodeUtils.context!.asAbsolutePath(basePath + "c-sharp.svg"));
+        switch (this.language.toLowerCase()) {
             case "c":
                 return vscode.Uri.file(VSCodeUtils.context!.asAbsolutePath(basePath + "c.svg"));
             case "c++":
                 return vscode.Uri.file(VSCodeUtils.context!.asAbsolutePath(basePath + "c-plus-plus.svg"));
             case "c#":
                 return vscode.Uri.file(VSCodeUtils.context!.asAbsolutePath(basePath + "c-sharp.svg"));
+            default:
+                return undefined;
         }
     }
-    get kind(): string | undefined { 
+
+    get kind(): string | undefined {
         const kindProperty = this.properties.find(prop => prop.key === 'kind');
-        return kindProperty ? kindProperty.value.replace(/"/g, '') : undefined; 
+        return typeof kindProperty?.value === 'string' ? kindProperty.value.replace(/"/g, '') : undefined;
     }
+
     get location(): string | undefined {
         const locationProperty = this.properties.find(prop => prop.key === 'location');
-        return locationProperty ? locationProperty.value.replace(/"/g, '') : undefined; 
+        return typeof locationProperty?.value === 'string' ? locationProperty.value.replace(/"/g, '') : undefined;
     }
 
     get dialect(): string | undefined {
-        const language = this.language;
+        const language = this.language.toLowerCase();
+        let dialectProperty;
+
         if (language === 'c') {
-            const dialectProperty = this.properties.find(prop => prop.key === 'cdialect');
-            return dialectProperty ? dialectProperty.value.replace(/"/g, '') : undefined;
+            dialectProperty = this.properties.find(prop => prop.key === 'cdialect');
+        } else if (language === 'c++') {
+            dialectProperty = this.properties.find(prop => prop.key === 'cppdialect');
+        } else if (language === 'c#') {
+            dialectProperty = this.properties.find(prop => prop.key === 'csversion');
         }
-        else if (language === 'c++') {
-            const dialectProperty = this.properties.find(prop => prop.key === 'cppdialect');
-            return dialectProperty ? dialectProperty.value.replace(/"/g, '') : undefined;
-        }
-        else if (language === 'c#') {
-            const dialectProperty = this.properties.find(prop => prop.key === 'csversion');
-            return dialectProperty ? dialectProperty.value.replace(/"/g, '') : undefined;
-        }
-        return undefined;
+
+        return typeof dialectProperty?.value === 'string' ? dialectProperty.value.replace(/"/g, '') : undefined;
     }
 }

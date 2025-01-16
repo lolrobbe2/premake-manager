@@ -1,11 +1,11 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as path from 'path';
-import { projectManager } from 'projectManagement/projectManager.js';
+import { projectManager } from 'projectManagement/projectManager';
 import * as vscode from 'vscode';
 import { commands } from './commands/register.js';
-import { PremakeWatcher } from './premakeInstaller/premakeDetector.js';
-import { PremakeVersionManager } from './premakeInstaller/premakeVersionManger.js';
+import { PremakeWatcher } from './premakeInstaller/premakeDetector';
+import { PremakeVersionManager } from './premakeInstaller/premakeVersionManger';
 import * as utils from './utils/mod.js';
 import { PremakeRunner } from './utils/premakeRunner.js';
 // This method is called when your extension is activated
