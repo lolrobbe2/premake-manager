@@ -84,11 +84,15 @@ function handleIncludeNode(node: ParameterNode, currentWorkspace: { workspace: p
 
 function handleTableCallMultiNode(node: TableCallNode, currentWorkspace: { workspace: premakeWorkspace | null }, currentProject: { project: project | null }, rootProperties: { key: string, value: PropertyValue }[]) {
     const tableFields = node.arguments.fields;
-    const combinedFields: { key: string, value: string }[] = tableFields.map((field: any) => {
-        const parameterKey = (field.key.name || field.key.value).replace(/"/g, '');
-        const parameterValue = (field.value.value || field.value.raw).replace(/"/g, '');
-        return { key: parameterKey, value: parameterValue };
-    });
+    const combinedFields: { key: string, value: string }[] = tableFields
+        .filter((field: any) => field.value.type === 'StringLiteral')
+        .map((field: any) => {
+            const parameterKey = (field.key.name || field.key.value).replace(/"/g, '');
+            const parameterValue = (field.value.value || field.value.raw).replace(/"/g, '');
+            return { key: parameterKey, value: parameterValue };
+        }
+    );
+
 
     const parameterName = (node.base.name || node.key.name).replace(/"/g, '');
     if (currentProject.project) {

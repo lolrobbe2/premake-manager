@@ -1,6 +1,6 @@
-import { option } from 'projectManagement/premake5/premakeFile'; // Adjust the import path as necessary
 import * as vscode from 'vscode';
 import { OptionItem } from './optionItem'; // Adjust the import path as necessary
+import { option } from 'projectManagement/premake5/option';
 
 export class OptionsItem extends vscode.TreeItem {
     constructor(public readonly options: option[]) {

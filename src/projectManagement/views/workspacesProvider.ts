@@ -1,6 +1,7 @@
 import { PremakeFile } from 'projectManagement/premake5/premakeFile'; // Adjust the import path as necessary
 import { premakeWorkspace } from 'projectManagement/premake5/workspace';
 import * as vscode from 'vscode';
+import { ActionsItem } from './actionsItem'; // Adjust the import path as necessary
 import { OptionsItem } from './optionsItem'; // Adjust the import path as necessary
 import { ProjectItem } from './projectItem'; // Adjust the import path as necessary
 import { WorkspaceItem } from './workspaceItem'; // Adjust the import path as necessary
@@ -35,10 +36,13 @@ export class WorkspacesProvider implements vscode.TreeDataProvider<vscode.TreeIt
             return Promise.resolve((element as ProjectItem).getChildren());
         } else if (element instanceof OptionsItem) {
             return Promise.resolve(element.getChildren());
+        } else if (element instanceof ActionsItem) {
+            return Promise.resolve(element.getChildren());
         } else if (!element) {
             const rootChildren = this.workspaces.map(workspace => new WorkspaceItem(workspace));
             const optionsItem = this.rootPremakeFile ? new OptionsItem(this.rootPremakeFile.options) : null;
-            return Promise.resolve(optionsItem ? [optionsItem, ...rootChildren] : rootChildren);
+            const actionsItem = this.rootPremakeFile ? new ActionsItem(this.rootPremakeFile.actions) : null;
+            return Promise.resolve([...(optionsItem ? [optionsItem] : []), ...(actionsItem ? [actionsItem] : []), ...rootChildren]);
         }
         return Promise.resolve([]);
     }
