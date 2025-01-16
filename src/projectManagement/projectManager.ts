@@ -1,11 +1,10 @@
-import { premakeWorkspace } from "./premake5/workspace";
+import { PremakeFile } from "./premake5/premakeFile";
 import { ProjectParser } from "./projectParser";
 
 export class projectManager {
-    static workspaces: premakeWorkspace[];
-
-    static get workspaceLoaded(): boolean {return this.workspaces.length > 0;}
+    static premakeFile: PremakeFile | undefined;
+    static get premakeFileLoaded(): boolean {return this.premakeFile !== undefined;}
     static loadWorkspace(workspace: string): void {
-        this.workspaces = ProjectParser.parsePremakeFile(workspace);
+        this.premakeFile = ProjectParser.parsePremakeFile(workspace);
     }
 }

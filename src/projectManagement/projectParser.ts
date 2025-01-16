@@ -1,5 +1,6 @@
 import fs from 'fs';
 import * as luaparse from 'luaparse';
+import { PremakeFile } from './premake5/premakeFile';
 import { project } from './premake5/project';
 import { premakeWorkspace } from './premake5/workspace';
 
@@ -79,7 +80,12 @@ function traverseAst(node: any, workspaces: premakeWorkspace[], currentWorkspace
     } else if (isIncludeNode(node)) {
         // Add the include statement to the dependencies array
         const includePath = node.argument.value || node.argument.raw;
-        dependencies.push(includePath);
+
+        if(currentWorkspace.workspace)
+            {currentWorkspace.workspace!.dependencies.push(includePath);}
+        else
+            {dependencies.push(includePath);}
+
     } else if (isTableCallNode(node)) {
         // Handle TableCallExpression nodes
         if (node.arguments.fields !== undefined) {
@@ -117,7 +123,7 @@ function traverseAst(node: any, workspaces: premakeWorkspace[], currentWorkspace
 }
 
 export class ProjectParser {
-    static parsePremakeFile(filePath: string): { workspaces: premakeWorkspace[], dependencies: string[] } {
+    static parsePremakeFile(filePath: string): PremakeFile {
         const luaScript = fs.readFileSync(filePath, 'utf-8');
 
         let ast: any;
@@ -139,7 +145,6 @@ export class ProjectParser {
         if (currentWorkspace.workspace) {
             workspaces.push(currentWorkspace.workspace);
         }
-
-        return { workspaces, dependencies };
+        return new PremakeFile(filePath, workspaces, dependencies); // Return premakeFile object
     }
 }
