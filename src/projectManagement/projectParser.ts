@@ -146,7 +146,7 @@ function handleGroupNode(node: GroupNode, currentWorkspace: { workspace: premake
     }
 }
 
-function traverseAst(node: any, workspaces: premakeWorkspace[], currentWorkspace: { workspace: premakeWorkspace | null }, currentProject: { project: project | null }, dependencies: string[], rootProperties: { key: string, value: PropertyValue }[]) {
+function traverseRootAst(node: any, workspaces: premakeWorkspace[], currentWorkspace: { workspace: premakeWorkspace | null }, currentProject: { project: project | null }, dependencies: string[], rootProperties: { key: string, value: PropertyValue }[]) {
     if (isWorkspaceNode(node)) {
         handleWorkspaceNode(node, workspaces, currentWorkspace, currentProject);
     } else if (isProjectNode(node)) {
@@ -165,7 +165,35 @@ function traverseAst(node: any, workspaces: premakeWorkspace[], currentWorkspace
         for (const key in node) {
             if (node[key] && typeof node[key] === 'object') {
                 try {
-                    traverseAst(node[key], workspaces, currentWorkspace, currentProject, dependencies, rootProperties);
+                    traverseRootAst(node[key], workspaces, currentWorkspace, currentProject, dependencies, rootProperties);
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+        }
+    }
+}
+
+function traverseProjectAst(node: any, currentWorkspace: { workspace: premakeWorkspace | null },currentProject: { project: project | null }){
+    if (isWorkspaceNode(node)) {
+        handleWorkspaceNode(node,[], currentWorkspace, currentProject);
+    } else if (isProjectNode(node)) {
+        handleProjectNode(node, currentWorkspace, currentProject);
+    } else if (isIncludeNode(node)) {
+        handleIncludeNode(node, currentWorkspace, []);
+    } else if (isTableCallMultiNode(node)) {
+        handleTableCallMultiNode(node, currentWorkspace, currentProject, []);
+    } else if (isTableCallSingleNode(node)) {
+        handleTableCallSingleNode(node, currentWorkspace, currentProject, []);
+    } else if(isGroupNode(node)) {
+        handleGroupNode(node, currentWorkspace,currentProject,[]);
+    } else if (isParameterNode(node)) {
+        handleParameterNode(node, currentWorkspace, currentProject, []);
+    } else {
+        for (const key in node) {
+            if (node[key] && typeof node[key] === 'object') {
+                try {
+                    traverseProjectAst(node[key], currentWorkspace, currentProject);
                 } catch (error) {
                     console.log(error);
                 }
@@ -176,32 +204,10 @@ function traverseAst(node: any, workspaces: premakeWorkspace[], currentWorkspace
 
 export class ProjectParser {
     static parsePremakeWorkspaceFile(filePath: string): PremakeFile {
-        const luaScript = fs.readFileSync(filePath, 'utf-8');
-
-        let ast: any;
-        try {
-            ast = luaparse.parse(luaScript);
-        } catch (error) {
-            console.error("Error parsing Lua script:", error);
-            throw new Error("Failed to parse Premake file. Ensure the script is valid Lua.");
-        }
-
-        const workspaces: premakeWorkspace[] = [];
-        const currentWorkspace = { workspace: null as premakeWorkspace | null };
-        const currentProject = { project: null as project | null };
-        const dependencies: string[] = [];
-        const rootProperties: { key: string, value: PropertyValue }[] = [];
-
-        traverseAst(ast, workspaces, currentWorkspace, currentProject, dependencies, rootProperties);
-
-        if (currentWorkspace.workspace) {
-            workspaces.push(currentWorkspace.workspace);
-        }
-
-        return new PremakeFile(filePath, workspaces, dependencies, rootProperties);
+        
     }
 
-    static resolveWorkspaceFile(filePath:string) 
+    static resolveWorkspaceFile(filePath:string)
     {
         const luaScript = fs.readFileSync(filePath, 'utf-8');
 
@@ -219,7 +225,7 @@ export class ProjectParser {
         const dependencies: string[] = [];
         const rootProperties: { key: string, value: PropertyValue }[] = [];
 
-        traverseAst(ast, workspaces, currentWorkspace, currentProject, dependencies, rootProperties);
+        traverseRootAst(ast, workspaces, currentWorkspace, currentProject, dependencies, rootProperties);
 
         if (currentWorkspace.workspace) {
             workspaces.push(currentWorkspace.workspace);
@@ -228,7 +234,23 @@ export class ProjectParser {
     /**
      * resolves external files this expects only projects to be found in that file
      */
-    static resolveProjectFile(currentWorkspace: premakeWorkspace){
+    static resolveProjectFile(currentWorkspace: premakeWorkspace, filePath: string){
+        const luaScript = fs.readFileSync(filePath, 'utf-8');
+
+        let ast: any;
+        try {
+            ast = luaparse.parse(luaScript);
+        } catch (error) {
+            console.error("Error parsing project Lua script:", error);
+            throw new Error("Failed to parse project premake file. Ensure the script is valid Lua.");
+        }
+        const _currentWorkspace = { workspace: currentWorkspace as premakeWorkspace | null };
+        const currentProject = { project: null as project | null };
+
+        traverseProjectAst(ast,_currentWorkspace,currentProject);
         
+        if (currentProject.project) {
+            _currentWorkspace.workspace?.addProject(currentProject.project);
+        }
     }
 }
