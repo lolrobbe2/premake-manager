@@ -21,7 +21,8 @@ export type PropertyValue = any;
 
 // Updated project class
 export class project {
-    name: string; 
+    name: string;
+    group: string = ""; //default group is "" / no group
     properties: { key: string, value: PropertyValue }[];
 
     constructor(name: string, properties: { key: string, value: PropertyValue }[] = []) {

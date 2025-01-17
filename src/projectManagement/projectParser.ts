@@ -22,6 +22,12 @@ interface ParameterNode {
     argument: { type: string; value: string | null; raw: string };
 }
 
+interface GroupNode {
+    type: string;
+    base: { type: string; name: string };
+    argument: { type: string; value: string | null; raw: string };
+}
+
 interface TableCallNode {
     type: string;
     key: { type: string; name: string };
@@ -43,6 +49,10 @@ function isParameterNode(node: any): node is ParameterNode {
 
 function isIncludeNode(node: any): node is ParameterNode {
     return node.type === 'StringCallExpression' && node.base && node.base.type === 'Identifier' && node.base.name === 'include';
+}
+
+function isGroupNode(node: any): node is GroupNode {
+    return node.type === 'StringCallExpression' && node.base && node.base.type === 'Identifier' && node.base.name === 'group';
 }
 
 function isTableCallSingleNode(node: any): node is TableCallNode {
@@ -128,6 +138,14 @@ function handleParameterNode(node: ParameterNode, currentWorkspace: { workspace:
     }
 }
 
+function handleGroupNode(node: GroupNode, currentWorkspace: { workspace: premakeWorkspace | null }, currentProject: { project: project | null }, rootProperties: { key: string, value: PropertyValue }[]) {
+    const parameterName = node.base.name.replace(/"/g, '');
+    const parameterValue = (node.argument.value || node.argument.raw).replace(/"/g, '');
+    if (currentProject.project) {
+        currentProject.project.group = parameterValue;
+    }
+}
+
 function traverseAst(node: any, workspaces: premakeWorkspace[], currentWorkspace: { workspace: premakeWorkspace | null }, currentProject: { project: project | null }, dependencies: string[], rootProperties: { key: string, value: PropertyValue }[]) {
     if (isWorkspaceNode(node)) {
         handleWorkspaceNode(node, workspaces, currentWorkspace, currentProject);
@@ -139,6 +157,8 @@ function traverseAst(node: any, workspaces: premakeWorkspace[], currentWorkspace
         handleTableCallMultiNode(node, currentWorkspace, currentProject, rootProperties);
     } else if (isTableCallSingleNode(node)) {
         handleTableCallSingleNode(node, currentWorkspace, currentProject, rootProperties);
+    } else if(isGroupNode(node)) {
+        handleGroupNode(node, currentWorkspace,currentProject,rootProperties);
     } else if (isParameterNode(node)) {
         handleParameterNode(node, currentWorkspace, currentProject, rootProperties);
     } else {
@@ -155,7 +175,7 @@ function traverseAst(node: any, workspaces: premakeWorkspace[], currentWorkspace
 }
 
 export class ProjectParser {
-    static parsePremakeFile(filePath: string): PremakeFile {
+    static parsePremakeWorkspaceFile(filePath: string): PremakeFile {
         const luaScript = fs.readFileSync(filePath, 'utf-8');
 
         let ast: any;
@@ -179,5 +199,36 @@ export class ProjectParser {
         }
 
         return new PremakeFile(filePath, workspaces, dependencies, rootProperties);
+    }
+
+    static resolveWorkspaceFile(filePath:string) 
+    {
+        const luaScript = fs.readFileSync(filePath, 'utf-8');
+
+        let ast: any;
+        try {
+            ast = luaparse.parse(luaScript);
+        } catch (error) {
+            console.error("Error parsing Lua script:", error);
+            throw new Error("Failed to parse Premake file. Ensure the script is valid Lua.");
+        }
+
+        const workspaces: premakeWorkspace[] = [];
+        const currentWorkspace = { workspace: null as premakeWorkspace | null };
+        const currentProject = { project: null as project | null };
+        const dependencies: string[] = [];
+        const rootProperties: { key: string, value: PropertyValue }[] = [];
+
+        traverseAst(ast, workspaces, currentWorkspace, currentProject, dependencies, rootProperties);
+
+        if (currentWorkspace.workspace) {
+            workspaces.push(currentWorkspace.workspace);
+        }
+    }
+    /**
+     * resolves external files this expects only projects to be found in that file
+     */
+    static resolveProjectFile(currentWorkspace: premakeWorkspace){
+        
     }
 }
