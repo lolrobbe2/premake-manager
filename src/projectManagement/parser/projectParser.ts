@@ -204,6 +204,7 @@ function traverseProjectAst(node: any, currentWorkspace: { workspace: premakeWor
 
 export class ProjectParser {
     static parsePremakeWorkspaceFile(filePath: string): workspaceFile {
+        const workspaceFile = ProjectParser.resolveWorkspaceFile(filePath);
         
     }
     /**
@@ -234,7 +235,9 @@ export class ProjectParser {
         workspaces.forEach(workspace => workspace);
         workspaces.forEach(workspace => this.resolveWorkspaceDependencies(workspace));
 
-        return new workspaceFile(workspaces, dependencies, rootProperties);
+        let resolvedRootWorkspaces: workspaceFile[] = workspaces.map(workspace =>  this.resolveRootDependencies(workspace)) ;
+        resolvedRootWorkspaces.push(new workspaceFile(workspaces, dependencies, rootProperties));
+        return resolvedRootWorkspaces.reduce((acc, curr) => acc.concatenate(curr));
     }
     /**
      * resolves external files this expects only projects to be found in that file
