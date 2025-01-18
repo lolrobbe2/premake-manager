@@ -1,8 +1,8 @@
 import fs from 'fs';
 import * as luaparse from 'luaparse';
-import { PremakeFile } from './premake5/premakeFile';
-import { project } from './premake5/project';
-import { premakeWorkspace } from './premake5/workspace';
+import { project } from '../premake5/project';
+import { premakeWorkspace } from '../premake5/workspace';
+import { workspaceFile } from './workspaceFile';
 
 interface WorkspaceNode {
     type: string;
@@ -203,11 +203,13 @@ function traverseProjectAst(node: any, currentWorkspace: { workspace: premakeWor
 }
 
 export class ProjectParser {
-    static parsePremakeWorkspaceFile(filePath: string): PremakeFile {
+    static parsePremakeWorkspaceFile(filePath: string): workspaceFile {
         
     }
-
-    static resolveWorkspaceFile(filePath:string)
+    /**
+     * reolve a premake.lua script wich should contain a workspace after all top level dependencies have been resolved
+     */
+    static resolveWorkspaceFile(filePath:string) : workspaceFile
     {
         const luaScript = fs.readFileSync(filePath, 'utf-8');
 
@@ -218,7 +220,6 @@ export class ProjectParser {
             console.error("Error parsing Lua script:", error);
             throw new Error("Failed to parse Premake file. Ensure the script is valid Lua.");
         }
-
         const workspaces: premakeWorkspace[] = [];
         const currentWorkspace = { workspace: null as premakeWorkspace | null };
         const currentProject = { project: null as project | null };
@@ -230,6 +231,10 @@ export class ProjectParser {
         if (currentWorkspace.workspace) {
             workspaces.push(currentWorkspace.workspace);
         }
+        workspaces.forEach(workspace => workspace);
+        workspaces.forEach(workspace => this.resolveWorkspaceDependencies(workspace));
+
+        return new workspaceFile(workspaces, dependencies, rootProperties);
     }
     /**
      * resolves external files this expects only projects to be found in that file
@@ -252,5 +257,16 @@ export class ProjectParser {
         if (currentProject.project) {
             _currentWorkspace.workspace?.addProject(currentProject.project);
         }
+    }
+
+    static resolveRootDependencies(currentWorkspace: premakeWorkspace): workspaceFile {
+        const workspaces: workspaceFile[] = currentWorkspace.dependencies.map(rootDependency => this.resolveWorkspaceFile(rootDependency));
+        return workspaces.reduce((acc, curr) => acc.concatenate(curr));
+    }
+
+    static resolveWorkspaceDependencies(currentWorkspace: premakeWorkspace){
+        currentWorkspace.dependencies.forEach(workspaceDependency => 
+            this.resolveProjectFile(currentWorkspace,workspaceDependency)
+        );
     }
 }

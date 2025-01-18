@@ -1,5 +1,5 @@
 import { PremakeFile } from "./premake5/premakeFile";
-import { ProjectParser } from "./projectParser";
+import { ProjectParser } from "./parser/projectParser";
 import { WorkspacesProvider } from "./views/workspacesProvider";
 
 export class projectManager {

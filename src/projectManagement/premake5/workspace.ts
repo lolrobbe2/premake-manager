@@ -1,18 +1,24 @@
 import { project } from "./project";
 
 export class premakeWorkspace {
-    name: string; 
+    name: string;
+    /**all the resolved workspace projects */
     projects: project[];
+    /** a list of workspace level properties*/
     properties: { key: string, value: any }[];
-    dependencies: string [];
+    /** a list of external project level dependencies*/
+    dependencies: string []; 
+    filePath: string = "";
     constructor(name: string,properties: { key: string, value: string }[] = []) {
         this.name = name; 
         this.projects = []; 
         this.properties = properties;
         this.dependencies = [];
-    } 
+    }
+    /**adds a project to the workspace */
     addProject(project: project) {
         this.projects.push(project);
     }
+    /**returns the worksapce name without \\" */
     get trimmedName(): string { return this.name.replace(/"/g, ''); }
 }
