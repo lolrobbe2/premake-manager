@@ -1,23 +1,24 @@
-import { PremakeFile } from 'projectManagement/premake5/premakeFile'; // Adjust the import path as necessary
+import { workspaceFile } from 'projectManagement/parser/workspaceFile';
 import { premakeWorkspace } from 'projectManagement/premake5/workspace';
 import * as vscode from 'vscode';
 import { ActionsItem } from './actionsItem'; // Adjust the import path as necessary
 import { OptionsItem } from './optionsItem'; // Adjust the import path as necessary
 import { ProjectItem } from './projectItem'; // Adjust the import path as necessary
 import { WorkspaceItem } from './workspaceItem'; // Adjust the import path as necessary
+import { GroupItem } from './groupItem';
 
 export class WorkspacesProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
     private _onDidChangeTreeData: vscode.EventEmitter<vscode.TreeItem | undefined | void> = new vscode.EventEmitter<vscode.TreeItem | undefined | void>();
     readonly onDidChangeTreeData: vscode.Event<vscode.TreeItem | undefined | void> = this._onDidChangeTreeData.event;
 
     private workspaces: premakeWorkspace[] = [];
-    private rootPremakeFile: PremakeFile | undefined;
+    private rootPremakeFile: workspaceFile | undefined;
 
     constructor() {}
 
-    setPremakeFile(premakeFile: PremakeFile): void {
-        this.rootPremakeFile = premakeFile;
-        this.workspaces = premakeFile.workspaces;
+    setWorkspaceFile(workspaceFile: workspaceFile): void {
+        this.rootPremakeFile = workspaceFile;
+        this.workspaces = workspaceFile.workspaces;
         this.refresh();
     }
 
@@ -38,6 +39,11 @@ export class WorkspacesProvider implements vscode.TreeDataProvider<vscode.TreeIt
             return Promise.resolve(element.getChildren());
         } else if (element instanceof ActionsItem) {
             return Promise.resolve(element.getChildren());
+        } else if(element instanceof GroupItem){
+            const groupItem = element as GroupItem;
+            groupItem.collapsibleState = vscode.TreeItemCollapsibleState.Expanded;
+            groupItem.updateIconPath();
+            return Promise.resolve(groupItem.getChildren());
         } else if (!element) {
             const rootChildren = this.workspaces.map(workspace => new WorkspaceItem(workspace));
             const optionsItem = this.rootPremakeFile ? new OptionsItem(this.rootPremakeFile.options) : null;

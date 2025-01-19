@@ -7,13 +7,15 @@ export class premakeWorkspace {
     /** a list of workspace level properties*/
     properties: { key: string, value: any }[];
     /** a list of external project level dependencies*/
-    dependencies: string []; 
+    dependencies: string [];
+    markedDependencies: string[];
     filePath: string = "";
     constructor(name: string,properties: { key: string, value: string }[] = []) {
         this.name = name; 
         this.projects = []; 
         this.properties = properties;
         this.dependencies = [];
+        this.markedDependencies = [];
     }
     /**adds a project to the workspace */
     addProject(project: project) {

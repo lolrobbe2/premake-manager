@@ -1,5 +1,7 @@
 import fs from 'fs';
 import * as luaparse from 'luaparse';
+import path from 'path';
+import { VSCodeUtils } from 'utils/utils';
 import { project } from '../premake5/project';
 import { premakeWorkspace } from '../premake5/workspace';
 import { workspaceFile } from './workspaceFile';
@@ -79,7 +81,7 @@ function handleProjectNode(node: ProjectNode, currentWorkspace: { workspace: pre
         currentWorkspace.workspace.addProject(currentProject.project);
     }
     const projectName = (node.argument.value || node.argument.raw).replace(/"/g, '');
-    currentProject.project = new project(projectName, []);
+    currentProject.project = new project(projectName, [],ProjectParser.currentGroup);
 }
 
 function handleIncludeNode(node: ParameterNode, currentWorkspace: { workspace: premakeWorkspace | null }, dependencies: string[]) {
@@ -95,7 +97,7 @@ function handleIncludeNode(node: ParameterNode, currentWorkspace: { workspace: p
 function handleTableCallMultiNode(node: TableCallNode, currentWorkspace: { workspace: premakeWorkspace | null }, currentProject: { project: project | null }, rootProperties: { key: string, value: PropertyValue }[]) {
     const tableFields = node.arguments.fields;
     const combinedFields: { key: string, value: string }[] = tableFields
-        .filter((field: any) => field.value.type === 'StringLiteral')
+        .filter((field: any) => field.value.type === 'StringLiteral' && field.type !== 'TableValue')
         .map((field: any) => {
             const parameterKey = (field.key.name || field.key.value).replace(/"/g, '');
             const parameterValue = (field.value.value || field.value.raw).replace(/"/g, '');
@@ -141,9 +143,7 @@ function handleParameterNode(node: ParameterNode, currentWorkspace: { workspace:
 function handleGroupNode(node: GroupNode, currentWorkspace: { workspace: premakeWorkspace | null }, currentProject: { project: project | null }, rootProperties: { key: string, value: PropertyValue }[]) {
     const parameterName = node.base.name.replace(/"/g, '');
     const parameterValue = (node.argument.value || node.argument.raw).replace(/"/g, '');
-    if (currentProject.project) {
-        currentProject.project.group = parameterValue;
-    }
+    ProjectParser.currentGroup = parameterValue;
 }
 
 function traverseRootAst(node: any, workspaces: premakeWorkspace[], currentWorkspace: { workspace: premakeWorkspace | null }, currentProject: { project: project | null }, dependencies: string[], rootProperties: { key: string, value: PropertyValue }[]) {
@@ -203,10 +203,7 @@ function traverseProjectAst(node: any, currentWorkspace: { workspace: premakeWor
 }
 
 export class ProjectParser {
-    static parsePremakeWorkspaceFile(filePath: string): workspaceFile {
-        const workspaceFile = ProjectParser.resolveWorkspaceFile(filePath);
-        
-    }
+    static currentGroup = "";
     /**
      * reolve a premake.lua script wich should contain a workspace after all top level dependencies have been resolved
      */
@@ -226,8 +223,12 @@ export class ProjectParser {
         const currentProject = { project: null as project | null };
         const dependencies: string[] = [];
         const rootProperties: { key: string, value: PropertyValue }[] = [];
+        try {
+            traverseRootAst(ast, workspaces, currentWorkspace, currentProject, dependencies, rootProperties);
 
-        traverseRootAst(ast, workspaces, currentWorkspace, currentProject, dependencies, rootProperties);
+        } catch (error) {
+            console.error(error);
+        }
 
         if (currentWorkspace.workspace) {
             workspaces.push(currentWorkspace.workspace);
@@ -239,11 +240,48 @@ export class ProjectParser {
         resolvedRootWorkspaces.push(new workspaceFile(workspaces, dependencies, rootProperties));
         return resolvedRootWorkspaces.reduce((acc, curr) => acc.concatenate(curr));
     }
+    static resolveFolder(workspace: premakeWorkspace, filePath: string){
+        if(workspace.markedDependencies.includes(filePath)){ return; }
+
+        const luaScript = fs.readFileSync(path.join(VSCodeUtils.getWorkspaceFolder(),filePath,'premake5.lua'), 'utf-8');
+
+        let ast: any;
+        try {
+            ast = luaparse.parse(luaScript);
+        } catch (error) {
+            console.error("Error parsing Lua script:", error);
+            throw new Error("Failed to parse Premake file. Ensure the script is valid Lua.");
+        }
+        const workspaces: premakeWorkspace[] = [];
+        const currentWorkspace = { workspace: null as premakeWorkspace | null };
+        currentWorkspace.workspace = workspace;
+        currentWorkspace.workspace.markedDependencies.push(filePath);
+        const currentProject = { project: null as project | null };
+        const dependencies: string[] = [];
+        const rootProperties: { key: string, value: PropertyValue }[] = [];
+        try {
+            traverseRootAst(ast, workspaces, currentWorkspace, currentProject, dependencies, rootProperties);
+
+        } catch (error) {
+            console.error(error);
+        }
+        
+        if (currentWorkspace.workspace) {
+            workspaces.push(currentWorkspace.workspace);
+        }
+        
+        workspaces.forEach(workspace => workspace);
+        workspaces.forEach(workspace => this.resolveWorkspaceDependencies(workspace));
+
+        let resolvedRootWorkspaces: workspaceFile[] = workspaces.map(workspace =>  this.resolveRootDependencies(workspace)) ;
+        resolvedRootWorkspaces.push(new workspaceFile(workspaces, dependencies, rootProperties));
+        return resolvedRootWorkspaces.reduce((acc, curr) => acc.concatenate(curr));
+    }
     /**
      * resolves external files this expects only projects to be found in that file
      */
     static resolveProjectFile(currentWorkspace: premakeWorkspace, filePath: string){
-        const luaScript = fs.readFileSync(filePath, 'utf-8');
+        const luaScript = fs.readFileSync(path.join(VSCodeUtils.getWorkspaceFolder(),filePath), 'utf-8');
 
         let ast: any;
         try {
@@ -264,12 +302,23 @@ export class ProjectParser {
 
     static resolveRootDependencies(currentWorkspace: premakeWorkspace): workspaceFile {
         const workspaces: workspaceFile[] = currentWorkspace.dependencies.map(rootDependency => this.resolveWorkspaceFile(rootDependency));
+        if (workspaces.length === 0) {
+            return new workspaceFile([], [], []);
+        }
         return workspaces.reduce((acc, curr) => acc.concatenate(curr));
     }
 
-    static resolveWorkspaceDependencies(currentWorkspace: premakeWorkspace){
-        currentWorkspace.dependencies.forEach(workspaceDependency => 
-            this.resolveProjectFile(currentWorkspace,workspaceDependency)
-        );
+
+
+    static resolveWorkspaceDependencies(currentWorkspace: premakeWorkspace) {
+        currentWorkspace.dependencies.forEach(workspaceDependency => {
+            const fullPath = path.resolve(path.join(VSCodeUtils.getWorkspaceFolder(),workspaceDependency));
+            if (fs.existsSync(fullPath) && fs.lstatSync(fullPath).isDirectory()) {
+                this.resolveFolder(currentWorkspace, workspaceDependency);
+            } else {
+                this.resolveProjectFile(currentWorkspace, workspaceDependency);
+            }
+        });
     }
+
 }

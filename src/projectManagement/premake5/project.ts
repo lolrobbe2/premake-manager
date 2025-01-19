@@ -25,9 +25,10 @@ export class project {
     group: string = ""; //default group is "" / no group
     properties: { key: string, value: PropertyValue }[];
 
-    constructor(name: string, properties: { key: string, value: PropertyValue }[] = []) {
+    constructor(name: string, properties: { key: string, value: PropertyValue }[] = [],group: string) {
         this.name = name; 
         this.properties = properties; 
+        this.group = group;
     }
 
     get trimmedName(): string { 
