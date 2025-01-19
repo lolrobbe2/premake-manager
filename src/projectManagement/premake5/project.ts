@@ -24,11 +24,12 @@ export class project {
     name: string;
     group: string = ""; //default group is "" / no group
     properties: { key: string, value: PropertyValue }[];
-
-    constructor(name: string, properties: { key: string, value: PropertyValue }[] = [],group: string) {
+    filePath:string;
+    constructor(name: string, properties: { key: string, value: PropertyValue }[] = [],group: string,filePath:string) {
         this.name = name; 
         this.properties = properties; 
         this.group = group;
+        this.filePath = filePath;
     }
 
     get trimmedName(): string { 

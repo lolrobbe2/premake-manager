@@ -1,6 +1,6 @@
 import fs from 'fs';
 import * as luaparse from 'luaparse';
-import path, { resolve } from 'path';
+import path from 'path';
 import { VSCodeUtils } from 'utils/utils';
 import { project } from '../premake5/project';
 import { premakeWorkspace } from '../premake5/workspace';
@@ -76,12 +76,12 @@ function handleWorkspaceNode(node: WorkspaceNode, workspaces: premakeWorkspace[]
     currentProject.project = null;
 }
 
-function handleProjectNode(node: ProjectNode, currentWorkspace: { workspace: premakeWorkspace | null }, currentProject: { project: project | null }) {
+function handleProjectNode(node: ProjectNode, currentWorkspace: { workspace: premakeWorkspace | null }, currentProject: { project: project | null },filePath:string) {
     if (currentWorkspace.workspace && currentProject.project) {
         currentWorkspace.workspace.addProject(currentProject.project);
     }
     const projectName = (node.argument.value || node.argument.raw).replace(/"/g, '');
-    currentProject.project = new project(projectName, [],ProjectParser.currentGroup);
+    currentProject.project = new project(projectName, [],ProjectParser.currentGroup,filePath);
 }
 
 function handleIncludeNode(node: ParameterNode, currentWorkspace: { workspace: premakeWorkspace | null }, dependencies: string[], filePath: string) {
@@ -159,7 +159,7 @@ function traverseRootAst(node: any, workspaces: premakeWorkspace[], currentWorks
     if (isWorkspaceNode(node)) {
         handleWorkspaceNode(node, workspaces, currentWorkspace, currentProject);
     } else if (isProjectNode(node)) {
-        handleProjectNode(node, currentWorkspace, currentProject);
+        handleProjectNode(node, currentWorkspace, currentProject,filePath);
     } else if (isIncludeNode(node)) {
         handleIncludeNode(node, currentWorkspace, dependencies,filePath);
     } else if (isTableCallMultiNode(node)) {
@@ -183,11 +183,11 @@ function traverseRootAst(node: any, workspaces: premakeWorkspace[], currentWorks
     }
 }
 
-function traverseProjectAst(node: any, currentWorkspace: { workspace: premakeWorkspace | null },currentProject: { project: project | null }){
+function traverseProjectAst(node: any, currentWorkspace: { workspace: premakeWorkspace | null },currentProject: { project: project | null },filePath:string){
     if (isWorkspaceNode(node)) {
         handleWorkspaceNode(node,[], currentWorkspace, currentProject);
     } else if (isProjectNode(node)) {
-        handleProjectNode(node, currentWorkspace, currentProject);
+        handleProjectNode(node, currentWorkspace, currentProject,filePath);
     } else if (isIncludeNode(node)) {
         handleIncludeNode(node, currentWorkspace, [],"");
     } else if (isTableCallMultiNode(node)) {
@@ -202,7 +202,7 @@ function traverseProjectAst(node: any, currentWorkspace: { workspace: premakeWor
         for (const key in node) {
             if (node[key] && typeof node[key] === 'object') {
                 try {
-                    traverseProjectAst(node[key], currentWorkspace, currentProject);
+                    traverseProjectAst(node[key], currentWorkspace, currentProject,filePath);
                 } catch (error) {
                     console.log(error);
                 }
@@ -233,7 +233,7 @@ export class ProjectParser {
         const dependencies: string[] = [];
         const rootProperties: { key: string, value: PropertyValue }[] = [];
         try {
-            traverseRootAst(ast, workspaces, currentWorkspace, currentProject, dependencies, rootProperties);
+            traverseRootAst(ast, workspaces, currentWorkspace, currentProject, dependencies, rootProperties, fs.lstatSync(filePath).isDirectory() ? filePath : path.relative(VSCodeUtils.getWorkspaceFolder(),path.dirname(filePath)));
 
         } catch (error) {
             console.error(error);
@@ -304,7 +304,7 @@ export class ProjectParser {
         const _currentWorkspace = { workspace: currentWorkspace as premakeWorkspace | null };
         const currentProject = { project: null as project | null };
 
-        traverseProjectAst(ast,_currentWorkspace,currentProject);
+        traverseProjectAst(ast,_currentWorkspace,currentProject,filePath);
         
         if (currentProject.project) {
             _currentWorkspace.workspace?.addProject(currentProject.project);

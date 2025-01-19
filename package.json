@@ -70,8 +70,22 @@
         "category": "Premake",
         "command": "premake.cleanup",
         "title": "cleanup the premake folder"
+      },
+      {
+        "command": "extension.editProjectItem", 
+        "title": "Edit Project Item", 
+        "category": "Project"
       }
     ],
+    "menus": { 
+      "view/item/context": [
+        {
+          "command": "extension.editProjectItem",
+          "when": "viewItem == projectItemView",
+          "group": "inline"
+        }
+      ]
+    },
     "configuration": {
       "type": "object",
       "properties": {

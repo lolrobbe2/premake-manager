@@ -2,6 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as path from 'path';
 import { projectManager } from 'projectManagement/projectManager';
+import { ProjectItem } from 'projectManagement/views/projectItem.js';
 import * as vscode from 'vscode';
 import { commands } from './commands/register.js';
 import { PremakeWatcher } from './premakeInstaller/premakeDetector';
@@ -65,6 +66,11 @@ function registerCommands(context: vscode.ExtensionContext) {
 
 	});
 	
+	commands.registerCommand(context,"extension.editProjectItem",(item: vscode.TreeItem) => {
+		if (item instanceof ProjectItem) {
+			item.edit();
+		}
+	});
 
 }
 

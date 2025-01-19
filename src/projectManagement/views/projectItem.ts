@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import { project } from 'projectManagement/premake5/project';
 import { VSCodeUtils } from 'utils/utils';
 import * as vscode from 'vscode';
@@ -14,6 +16,7 @@ export class ProjectItem extends vscode.TreeItem {
         super(project.trimmedName, vscode.TreeItemCollapsibleState.Collapsed);
         this.tooltip = `Project: ${project.name}`;
         this.iconPath = project.iconPath;
+        this.contextValue = 'projectItemView';
     }
 
 getChildren(): vscode.TreeItem[] {
@@ -76,5 +79,23 @@ getChildren(): vscode.TreeItem[] {
                 return new vscode.ThemeIcon('star');
         }
         return new vscode.ThemeIcon('star');
+    }
+    async edit() { 
+        const projectFilePath = path.isAbsolute(this.project.filePath) ? this.project.filePath : path.join(VSCodeUtils.getWorkspaceFolder(), this.project.filePath);
+        
+        const document = await vscode.workspace.openTextDocument(fs.lstatSync(projectFilePath).isDirectory() ? path.join(projectFilePath,"premake5.lua") :  projectFilePath);
+        // Adjust filePath as necessary 
+        const editor = await vscode.window.showTextDocument(document);
+
+        const text = document.getText(); const regex = new RegExp(`project\\s+"${this.project.name}"`, 'i');
+        const match = regex.exec(text);
+        let lineNumber = 0;
+        if (match) {
+            lineNumber = document.positionAt(match.index).line;
+        }
+        const position = new vscode.Position(lineNumber, 0); // Adjust the line number as necessary 
+        const range = new vscode.Range(position, position);
+        editor.revealRange(range, vscode.TextEditorRevealType.InCenter);
+        editor.selection = new vscode.Selection(position, position);
     }
 }
