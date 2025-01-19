@@ -1,4 +1,5 @@
 import * as path from 'path';
+import { projectManager } from 'projectManagement/projectManager';
 import * as vscode from 'vscode';
 import { PremakeVersionManager } from '../premakeInstaller/premakeVersionManger';
 import { VSCodeUtils } from "./utils";
@@ -100,5 +101,6 @@ export class PremakeRunner {
     {
         const config = vscode.workspace.getConfiguration();
         await config.update('premake.action', action, vscode.ConfigurationTarget.Workspace);
+        projectManager.refresh();
     }
 }

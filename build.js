@@ -5,9 +5,11 @@ const { dependencies } = require('./package.json');
 const external = ['vscode'];
 build({
     entryPoints: ['./src/extension.ts'],
+    sourcemap: true,
     bundle: true,
     platform: 'node',
     target: 'node20', // Set the target to Node.js 20
     external: external,
     outfile: './out/extension.js',
+    format: 'cjs'
 }).catch(() => process.exit(1));
