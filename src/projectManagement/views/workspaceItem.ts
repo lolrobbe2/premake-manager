@@ -21,19 +21,23 @@ export class WorkspaceItem extends vscode.TreeItem {
         const root = new GroupItem("root", vscode.TreeItemCollapsibleState.Expanded);
 
         projects.forEach(project => {
-            const groupPath = project.project.group.split('/');
-            let currentNode = root;
+            if (project.project.group === "") { // Add project directly to root if group is empty 
+                root.addChild(new ProjectItem(project.project)); 
+            } else {
+                const groupPath = project.project.group.split('/');
+                let currentNode = root;
 
-            groupPath.forEach(group => {
-                let groupItem = currentNode.children.find(item => item.label === group) as GroupItem;
-                if (!groupItem) {
-                    groupItem = new GroupItem(group, vscode.TreeItemCollapsibleState.Collapsed);
-                    currentNode.addChild(groupItem);
-                }
-                currentNode = groupItem;
-            });
+                groupPath.forEach(group => {
+                    let groupItem = currentNode.children.find(item => item.label === group) as GroupItem;
+                    if (!groupItem) {
+                        groupItem = new GroupItem(group, vscode.TreeItemCollapsibleState.Collapsed);
+                        currentNode.addChild(groupItem);
+                    }
+                    currentNode = groupItem;
+                });
 
-            currentNode.addChild(new ProjectItem(project.project));
+                currentNode.addChild(new ProjectItem(project.project));
+            }
         });
 
         return root;
@@ -66,6 +70,6 @@ export class WorkspaceItem extends vscode.TreeItem {
             return null;
         }).filter(item => item !== null) as vscode.TreeItem[];
 
-        return [...groupedProjectItems, ...dependencyItems, ...propertyItems];
+        return [...groupedProjectItems, ...propertyItems];
     }
 }

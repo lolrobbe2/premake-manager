@@ -1,6 +1,6 @@
 import fs from 'fs';
 import * as luaparse from 'luaparse';
-import path from 'path';
+import path, { resolve } from 'path';
 import { VSCodeUtils } from 'utils/utils';
 import { project } from '../premake5/project';
 import { premakeWorkspace } from '../premake5/workspace';
@@ -89,8 +89,17 @@ function handleIncludeNode(node: ParameterNode, currentWorkspace: { workspace: p
     const completePath = path.join(filePath, includePath);
     if (currentWorkspace.workspace) {
         currentWorkspace.workspace.dependencies.push(completePath);
+
+        const fullPath = path.resolve(path.join(VSCodeUtils.getWorkspaceFolder(),completePath));
+        if (fs.existsSync(fullPath) && fs.lstatSync(fullPath).isDirectory()) {
+            ProjectParser.resolveFolder(currentWorkspace.workspace, completePath);
+        } else {
+            ProjectParser.resolveProjectFile(currentWorkspace.workspace, completePath);
+        }
+        
     } else {
         dependencies.push(completePath);
+        ProjectParser.resolveWorkspaceFile(completePath);
     }
 }
 
