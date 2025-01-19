@@ -58,14 +58,15 @@ export class GithubUtils
     }
     static async authenticateVSCode(){
         const session = await vscode.authentication.getSession("github", ["repo", "user"], { createIfNone: true }); 
+        const Octokit = await Octokitimport;
         if (session) { 
-            const Octokit = await Octokitimport;
             const octokit = new Octokit.Octokit({ auth: session.accessToken, });
             return octokit; 
         } 
         else
         {
-            throw new Error("Authentication session not available"); 
+            vscode.window.showInformationMessage("without github login you can potentialy be rate limited!");
+            return new Octokit.Octokit({});
         }
     }
 }
