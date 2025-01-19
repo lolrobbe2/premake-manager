@@ -6,7 +6,7 @@
   "type": "commonjs",
   "publisher": "lolrobbe2",
   "engines": {
-    "vscode": "^1.96.0"
+    "vscode": "^1.92.1"
   },
   "categories": [
     "Other"
@@ -28,6 +28,23 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "workspaces", 
+          "title": "Workspaces", 
+          "icon": "resources/media/premake-logo-simple.png" 
+        } 
+      ] 
+    }, 
+    "views": {
+      "workspaces": [
+        {
+          "id": "workspacesList",
+          "name": "Workspaces List" 
+        } 
+      ] 
+    },
     "commands": [
       {
         "category": "Premake",
@@ -53,8 +70,22 @@
         "category": "Premake",
         "command": "premake.cleanup",
         "title": "cleanup the premake folder"
+      },
+      {
+        "command": "extension.editProjectItem", 
+        "title": "Edit Project Item", 
+        "category": "Project"
       }
     ],
+    "menus": { 
+      "view/item/context": [
+        {
+          "command": "extension.editProjectItem",
+          "when": "viewItem == projectItemView",
+          "group": "inline"
+        }
+      ]
+    },
     "configuration": {
       "type": "object",
       "properties": {
@@ -70,6 +101,11 @@
         "premake.action": {
           "type": "string",
           "description": "the default action to run"
+        },
+        "premake.workspace.autoload": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically load the Premake workspace/ premake5.lua on startup."
         }
       }
     }
@@ -87,20 +123,23 @@
     "icons": "fantasticon ./src/resources/media/ -o ./src/resources/media/"
   },
   "dependencies": {
-    "@types/vscode": "^1.96.0",
-
     "@octokit/rest": "^21.0.2",
+    "@types/vscode": "^1.96.0",
     "adm-zip": "^0.5.16",
     "axios": "^1.7.9",
     "chokidar": "^4.0.3",
     "cp": "^0.2.0",
+    "luaparse": "^0.3.1",
     "tar": "^7.4.3"
   },
   "devDependencies": {
     "@octokit/types": "^13.6.2",
     "@types/adm-zip": "^0.5.7",
+    "@types/lua-json": "^1.0.3",
+    "@types/luaparse": "^0.2.12",
     "@types/mocha": "^10.0.9",
     "@types/node": "^20.9.0",
+    "@types/vscode": "^1.92.1",
     "@typescript-eslint/eslint-plugin": "^8.10.0",
     "@typescript-eslint/parser": "^8.7.0",
     "@vscode/test-cli": "^0.0.10",
