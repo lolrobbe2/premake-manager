@@ -84,13 +84,13 @@ function handleProjectNode(node: ProjectNode, currentWorkspace: { workspace: pre
     currentProject.project = new project(projectName, [],ProjectParser.currentGroup);
 }
 
-function handleIncludeNode(node: ParameterNode, currentWorkspace: { workspace: premakeWorkspace | null }, dependencies: string[]) {
+function handleIncludeNode(node: ParameterNode, currentWorkspace: { workspace: premakeWorkspace | null }, dependencies: string[], filePath: string) {
     const includePath = (node.argument.value || node.argument.raw).replace(/"/g, '');
-
+    const completePath = path.join(filePath, includePath);
     if (currentWorkspace.workspace) {
-        currentWorkspace.workspace.dependencies.push(includePath);
+        currentWorkspace.workspace.dependencies.push(completePath);
     } else {
-        dependencies.push(includePath);
+        dependencies.push(completePath);
     }
 }
 
@@ -146,13 +146,13 @@ function handleGroupNode(node: GroupNode, currentWorkspace: { workspace: premake
     ProjectParser.currentGroup = parameterValue;
 }
 
-function traverseRootAst(node: any, workspaces: premakeWorkspace[], currentWorkspace: { workspace: premakeWorkspace | null }, currentProject: { project: project | null }, dependencies: string[], rootProperties: { key: string, value: PropertyValue }[]) {
+function traverseRootAst(node: any, workspaces: premakeWorkspace[], currentWorkspace: { workspace: premakeWorkspace | null }, currentProject: { project: project | null }, dependencies: string[], rootProperties: { key: string, value: PropertyValue }[],filePath:string = "") {
     if (isWorkspaceNode(node)) {
         handleWorkspaceNode(node, workspaces, currentWorkspace, currentProject);
     } else if (isProjectNode(node)) {
         handleProjectNode(node, currentWorkspace, currentProject);
     } else if (isIncludeNode(node)) {
-        handleIncludeNode(node, currentWorkspace, dependencies);
+        handleIncludeNode(node, currentWorkspace, dependencies,filePath);
     } else if (isTableCallMultiNode(node)) {
         handleTableCallMultiNode(node, currentWorkspace, currentProject, rootProperties);
     } else if (isTableCallSingleNode(node)) {
@@ -165,7 +165,7 @@ function traverseRootAst(node: any, workspaces: premakeWorkspace[], currentWorks
         for (const key in node) {
             if (node[key] && typeof node[key] === 'object') {
                 try {
-                    traverseRootAst(node[key], workspaces, currentWorkspace, currentProject, dependencies, rootProperties);
+                    traverseRootAst(node[key], workspaces, currentWorkspace, currentProject, dependencies, rootProperties,filePath);
                 } catch (error) {
                     console.log(error);
                 }
@@ -180,7 +180,7 @@ function traverseProjectAst(node: any, currentWorkspace: { workspace: premakeWor
     } else if (isProjectNode(node)) {
         handleProjectNode(node, currentWorkspace, currentProject);
     } else if (isIncludeNode(node)) {
-        handleIncludeNode(node, currentWorkspace, []);
+        handleIncludeNode(node, currentWorkspace, [],"");
     } else if (isTableCallMultiNode(node)) {
         handleTableCallMultiNode(node, currentWorkspace, currentProject, []);
     } else if (isTableCallSingleNode(node)) {
@@ -236,7 +236,7 @@ export class ProjectParser {
         workspaces.forEach(workspace => workspace);
         workspaces.forEach(workspace => this.resolveWorkspaceDependencies(workspace));
 
-        let resolvedRootWorkspaces: workspaceFile[] = workspaces.map(workspace =>  this.resolveRootDependencies(workspace)) ;
+        let resolvedRootWorkspaces: workspaceFile[] = workspaces.map(workspace =>  this.resolveRootDependencies(dependencies)) ;
         resolvedRootWorkspaces.push(new workspaceFile(workspaces, dependencies, rootProperties));
         return resolvedRootWorkspaces.reduce((acc, curr) => acc.concatenate(curr));
     }
@@ -260,7 +260,7 @@ export class ProjectParser {
         const dependencies: string[] = [];
         const rootProperties: { key: string, value: PropertyValue }[] = [];
         try {
-            traverseRootAst(ast, workspaces, currentWorkspace, currentProject, dependencies, rootProperties);
+            traverseRootAst(ast, workspaces, currentWorkspace, currentProject, dependencies, rootProperties,filePath);
 
         } catch (error) {
             console.error(error);
@@ -273,7 +273,7 @@ export class ProjectParser {
         workspaces.forEach(workspace => workspace);
         workspaces.forEach(workspace => this.resolveWorkspaceDependencies(workspace));
 
-        let resolvedRootWorkspaces: workspaceFile[] = workspaces.map(workspace =>  this.resolveRootDependencies(workspace)) ;
+        let resolvedRootWorkspaces: workspaceFile[] = workspaces.map(workspace =>  this.resolveRootDependencies(dependencies)) ;
         resolvedRootWorkspaces.push(new workspaceFile(workspaces, dependencies, rootProperties));
         return resolvedRootWorkspaces.reduce((acc, curr) => acc.concatenate(curr));
     }
@@ -281,6 +281,8 @@ export class ProjectParser {
      * resolves external files this expects only projects to be found in that file
      */
     static resolveProjectFile(currentWorkspace: premakeWorkspace, filePath: string){
+        if(currentWorkspace.markedDependencies.includes(filePath)){ return; }
+        currentWorkspace.markedDependencies.push(filePath);
         const luaScript = fs.readFileSync(path.join(VSCodeUtils.getWorkspaceFolder(),filePath), 'utf-8');
 
         let ast: any;
@@ -300,8 +302,8 @@ export class ProjectParser {
         }
     }
 
-    static resolveRootDependencies(currentWorkspace: premakeWorkspace): workspaceFile {
-        const workspaces: workspaceFile[] = currentWorkspace.dependencies.map(rootDependency => this.resolveWorkspaceFile(rootDependency));
+    static resolveRootDependencies(dependencies:string[]): workspaceFile {
+        const workspaces: workspaceFile[] = dependencies.map(rootDependency => this.resolveWorkspaceFile(rootDependency));
         if (workspaces.length === 0) {
             return new workspaceFile([], [], []);
         }
