@@ -7,7 +7,6 @@ export class VSCodeUtils {
         const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
 
         if (!workspaceFolder) {
-            vscode.window.showErrorMessage('No workspace folder is open!');
             return "";
         }
 
