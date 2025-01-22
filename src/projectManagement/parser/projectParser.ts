@@ -99,7 +99,8 @@ function handleIncludeNode(node: ParameterNode, currentWorkspace: { workspace: p
         
     } else {
         dependencies.push(completePath);
-        ProjectParser.resolveWorkspaceFile(completePath);
+        const fullPath = path.resolve(path.join(VSCodeUtils.getWorkspaceFolder(),completePath));
+        ProjectParser.resolveWorkspaceFile(fullPath);
     }
 }
 
