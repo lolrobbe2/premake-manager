@@ -78,6 +78,7 @@ export class PremakeWatcher {
         }
         catch (error: any) 
         {
+            console.log(error);
             console.log("no premake5.lua workspace found");
         }
     }

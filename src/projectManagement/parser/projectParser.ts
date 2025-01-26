@@ -214,13 +214,16 @@ function traverseProjectAst(node: any, currentWorkspace: { workspace: premakeWor
 
 export class ProjectParser {
     static currentGroup = "";
+    static markedDependencies:string[] = []
     /**
      * reolve a premake.lua script wich should contain a workspace after all top level dependencies have been resolved
      */
     static resolveWorkspaceFile(filePath:string) : workspaceFile
     {
-        const luaScript = fs.readFileSync(filePath, 'utf-8');
+        if(this.markedDependencies.includes(path.isAbsolute(filePath) ? filePath : path.join(VSCodeUtils.getWorkspaceFolder(),filePath))) { return new workspaceFile([],[],[]); }
+        const luaScript = fs.readFileSync(path.isAbsolute(filePath) ? filePath : path.join(VSCodeUtils.getWorkspaceFolder(),filePath), 'utf-8');
 
+        this.markedDependencies.push(path.isAbsolute(filePath) ? filePath : path.join(VSCodeUtils.getWorkspaceFolder(),filePath));
         let ast: any;
         try {
             ast = luaparse.parse(luaScript);
