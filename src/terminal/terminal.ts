@@ -4,6 +4,11 @@ import * as path from 'path';
 import { PremakeVersionManager } from 'premakeInstaller/premakeVersionManger';
 
 export class Terminal {
+    public static async init() {
+        const version:string = PremakeVersionManager.getVersion();
+        if(version != ""){ await this.setVersion(version); }
+    }
+
     public static async setVersion(version: string) {
         try {
             const workspaceFolders = vscode.workspace.workspaceFolders;
@@ -31,12 +36,25 @@ export class Terminal {
             );
 
             // Create the batch script content
-            const batchContent = `
+            const batchContent = Terminal.getWindowsShell(version, destinationPath);
+
+            // Write the batch script to the file
+            fs.writeFileSync(batchFilePath, batchContent);
+
+            this.setTerminalShell(batchFilePath);
+
+            vscode.window.showInformationMessage(`Batch script premake5.bat created in ${premakeFolderPath}`);
+        } catch (error) {
+            vscode.window.showErrorMessage(`Failed to create batch script: ${error}`);
+        }
+    }
+    private static getWindowsShell(version: string, destinationPath: string) {
+        return `
 @echo off
 setlocal
 
 :loop
-set /p input="Enter command (type 'exit' to quit): "
+set /p input="premake5 "
 
 if "%input%"=="exit" (
     echo Exiting...
@@ -51,9 +69,11 @@ if "%input%"=="update version" (
     echo Version updated.
     goto loop
 )
-
+if "%input%"=="version" (
+    echo ${version}
+    goto loop
+)
 REM Pipe other input to premake5
-echo Piping input to premake5...
 "${destinationPath}" %input%
 
 goto loop
@@ -62,17 +82,8 @@ goto loop
 endlocal
 pause
 `;
-
-            // Write the batch script to the file
-            fs.writeFileSync(batchFilePath, batchContent);
-
-            this.setTerminalShell(batchFilePath);
-
-            vscode.window.showInformationMessage(`Batch script premake5.bat created in ${premakeFolderPath}`);
-        } catch (error) {
-            vscode.window.showErrorMessage(`Failed to create batch script: ${error}`);
-        }
     }
+
     public static async setTerminalShell(shellPath: string) {
         try {
             const config = vscode.workspace.getConfiguration('terminal.integrated');
