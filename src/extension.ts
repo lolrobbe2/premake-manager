@@ -9,6 +9,7 @@ import { PremakeWatcher } from './premakeInstaller/premakeDetector';
 import { PremakeVersionManager } from './premakeInstaller/premakeVersionManger';
 import * as utils from './utils/mod.js';
 import { PremakeRunner } from './utils/premakeRunner.js';
+import { Terminal } from 'terminal/terminal.js';
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -21,7 +22,17 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.window.registerTreeDataProvider('workspacesList', projectManager.workspaceProvider);
 	registerCommands(context);
 	PremakeWatcher.registerWatcher();
+	Terminal.init();
 
+	const taskProvider = vscode.tasks.registerTaskProvider('premake5', {
+        provideTasks: () => {
+            return [];
+        },
+		resolveTask: async (task) => {
+            return await Terminal.runTask(task);
+        }
+    });
+	context.subscriptions.push(taskProvider);
 }
 
 function registerCommands(context: vscode.ExtensionContext) {
@@ -85,4 +96,19 @@ async function handleWorkspaceFoldersChanged(event: vscode.WorkspaceFoldersChang
 export function deactivate() 
 {
 	PremakeWatcher.unregisterWatcher();
+}
+function createPremake5Task(): vscode.Task {
+    const taskDefinition: vscode.TaskDefinition = {
+        type: 'premake5',
+		action: "action goes here"
+    };
+
+    const task = new vscode.Task(
+        taskDefinition,
+        vscode.TaskScope.Workspace,
+        'Run premake5',
+        'premake5',
+    );
+
+    return task;
 }

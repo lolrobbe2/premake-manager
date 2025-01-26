@@ -1,0 +1,23 @@
+{
+    "premake.task": {
+        "prefix": "premake5Task",
+        "body": [
+            "`{",
+            "    \"version\": \"2.0.0\",",
+            "    \"tasks\": [",
+            "        {",
+            "            \"label\": \"Run premake5\",",
+            "            \"type\": \"premake5\",",
+            "            \"args\": [\"${1:your-arguments-here}\"],",
+            "            \"group\": {",
+            "                \"kind\": \"build\",",
+            "                \"isDefault\": true",
+            "            },",
+            "            \"detail\": \"Custom task to run premake5\"",
+            "        }",
+            "    ]",
+            "}`"
+        ],
+        "description": "A task to run premake5 with custom arguments"
+    }
+}

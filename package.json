@@ -9,7 +9,7 @@
     "vscode": "^1.92.1"
   },
   "categories": [
-    "Other"
+    "Other","Snippets"
   ],
   "author": {
     "name": "robbe beernaert"
@@ -28,6 +28,26 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "snippets": [
+      {
+        "language": "jsonc",
+        "path": "./snippets/premake5.code-snippets"
+      }
+    ],
+    "taskDefinitions": [
+      {
+        "type": "premake5",
+        "required": [
+            "action"
+        ],
+        "properties": {
+          "action": {
+            "type": "string",
+            "description": "The action you would like premake5 to run."
+          }
+        }
+      }
+    ],
     "viewsContainers": {
       "activitybar": [
         {
