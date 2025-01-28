@@ -113,6 +113,11 @@
         "command": "premake.workspace.create",
         "title": "create a new workspace",
         "icon": "resources/media/premake-logo-128.png"
+      },
+      {
+        "category": "Premake",
+        "command": "premake.terminal.new",
+        "title": "launch a new premake5 terminal"
       }
     ],
     "menus": { 

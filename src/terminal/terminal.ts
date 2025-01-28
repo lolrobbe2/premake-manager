@@ -3,7 +3,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { PremakeVersionManager } from 'premakeInstaller/premakeVersionManger';
 import { VSCodeUtils } from 'utils/utils';
-import { PremakeRunner } from 'utils/premakeRunner';
+import { PremakeInstance, PremakeRunner } from 'utils/premakeRunner';
+import { spawn } from 'child_process';
 const defaultLine = "premake5 ";
 const keys = {
     enter: "\r",
@@ -13,13 +14,28 @@ const actions = {
     cursorBack: "\x1b[D",
     deleteChar: "\x1b[P",
     clear: "\x1b[2J\x1b[3J\x1b[;H",
+    cursorUp: "\x1b[A",
+    cursorDown: "\x1b[B",
+    cursorForward: "\x1b[C"
 };
 const formatText = (text: string) => `\r${text.split(/(\r?\n)/g).join("\r")}\r`;
 
 export class Terminal implements vscode.Pseudoterminal{
+
+    constructor(name:string = "premake5") {
+        const terminal =  vscode.window.createTerminal({
+            name:name,
+            pty:this
+        });
+        terminal.show();
+    }
+    
     content = defaultLine;
     writeEmitter = new vscode.EventEmitter<string>();
+    history: string[] = [];
     onDidWrite: vscode.Event<string> = this.writeEmitter.event;
+
+    private processing:boolean = false;
     open(initialDimensions: vscode.TerminalDimensions | undefined): void {
         this.writeEmitter.fire(this.content);
     }
@@ -29,6 +45,9 @@ export class Terminal implements vscode.Pseudoterminal{
     handleInput?(data: string): void {
         switch (data) {
             case keys.enter:
+                const command = this.getCommand();
+                this.handleCommand(command)
+                return;
             case keys.backspace:
                 if (this.content.length <= defaultLine.length) {
                     return;
@@ -40,14 +59,56 @@ export class Terminal implements vscode.Pseudoterminal{
                   return;
             default:
                 // typing a new character
+
                 this.content += data;
                 this.writeEmitter.fire(data);
+                
         }
     }
     setDimensions?(dimensions: vscode.TerminalDimensions): void {
     }
-    
+    getCommand() : string{
+        const lastIndex = this.content.lastIndexOf('\r\n');
+        const command = this.content.slice(lastIndex + defaultLine.length, this.content.length);
+        this.content = this.content.slice(0, lastIndex);
+        return command
+    }   
+    async handleCommand(command: string): Promise<void> {
+        this.handlePremakeCommand(command);
+    }
+    async handlePremakeCommand(command: string): Promise<void> {
+        const workspaceFolder = VSCodeUtils.getWorkspaceFolder();
+        const premakeFolder = path.join(workspaceFolder, '.premake');
+        let premakeVersion = PremakeVersionManager.getVersion();
+        if(premakeVersion === '')
+        {
+            vscode.window.showWarningMessage("premake version is not set, aborted launch!")    ;
+            return undefined;    
+        }
+        premakeVersion = PremakeVersionManager.getVersion();
+        const folder = path.join(premakeFolder,premakeVersion,PremakeVersionManager.getCurrentPlatform());
+        const process = spawn(path.join(folder, 'premake5'), [command],{cwd:VSCodeUtils.getWorkspaceFolder()});
+        this.processing = true;
+        this.content += formatText(`premake5 ${command}\r\n\r\n`);
+        this.writeEmitter.fire(formatText(`premake5 ${command}\r\n\r\n`));
+        process.stdout.on('data', (data: Buffer) => {
+            this.content += formatText(data.toString());
+            this.writeEmitter.fire(formatText(data.toString()));
+        });
 
+        process.stderr.on('data', (data: Buffer) => {
+            this.content += formatText(data.toString());
+            this.writeEmitter.fire(formatText(data.toString()));
+        });
+
+        process.on('close', (code) => {
+            this.content += formatText(`Process exited with code ${code}\r\n\r\n${defaultLine}`);
+            this.writeEmitter.fire(formatText(`Process exited with code ${code}\r\n\r\n${defaultLine} `));
+            this.processing = false;
+
+        });        
+
+    }
 }
 
 export class TaskHandler {

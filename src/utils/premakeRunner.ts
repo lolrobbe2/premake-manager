@@ -102,7 +102,6 @@ export class PremakeRunner {
     {
         const config = vscode.workspace.getConfiguration();
         await config.update('premake.action', action, vscode.ConfigurationTarget.Workspace);
-        Terminal.init();
         projectManager.refresh();
     }
 }

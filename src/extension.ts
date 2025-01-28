@@ -83,6 +83,7 @@ function registerCommands(context: vscode.ExtensionContext) {
 			item.edit();
 		}
 	});
+	commands.registerCommand(context, "premake.terminal.new", () => {new Terminal();});
 
 }
 
