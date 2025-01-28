@@ -23,7 +23,7 @@ export class PremakeVersionManager {
     // Optionally, you can set the version through the API if needed
     public static async setVersion(version: string): Promise<void> {
         const config = vscode.workspace.getConfiguration();
-        await Terminal.setVersion(version);
+        //await Terminal.setVersion(version);
         await config.update('premake.version', version, vscode.ConfigurationTarget.Workspace);
     }
 
