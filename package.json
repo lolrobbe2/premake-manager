@@ -75,32 +75,44 @@
       {
         "category": "Premake",
         "command": "premake.action.run",
-        "title": "run premake action"
+        "title": "run premake action",
+        "icon": "resources/media/premake-logo-128.png"
       },
       {
         "category": "Premake",
         "command": "premake.action.default.set",
-        "title": "set default premake action"
+        "title": "set default premake action",
+        "icon": "resources/media/premake-logo-128.png"
       },
       {
         "category": "Premake",
         "command": "premake.action.default.run",
-        "title": "run default premake action"
+        "title": "run default premake action",
+        "icon": "resources/media/premake-logo-128.png"
       },
       {
         "category": "Premake",
         "command": "premake.setversion",
-        "title": "set premake version"
+        "title": "set premake version",
+        "icon": "resources/media/premake-logo-128.png"
       },
       {
         "category": "Premake",
         "command": "premake.cleanup",
-        "title": "cleanup the premake folder"
+        "title": "cleanup the premake folder",
+        "icon": "resources/media/premake-logo-128.png"
       },
       {
         "command": "extension.editProjectItem", 
         "title": "Edit Project Item", 
-        "category": "Project"
+        "category": "Project",
+        "icon": "resources/media/premake-logo-128.png"
+      },
+      {
+        "category": "Premake",
+        "command": "premake.workspace.create",
+        "title": "create a new workspace",
+        "icon": "resources/media/premake-logo-128.png"
       }
     ],
     "menus": { 

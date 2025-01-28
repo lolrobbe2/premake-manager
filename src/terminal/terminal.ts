@@ -24,7 +24,7 @@ export class Terminal {
 
             const workspacePath = workspaceFolders[0].uri.fsPath;
             const premakeFolderPath = path.join(workspacePath, '.premake');
-            const batchFilePath = path.join(premakeFolderPath, 'premake5.bat');
+            const batchFilePath = path.join(premakeFolderPath, 'premake5.sh');
 
             // Ensure the .premake folder exists
             if (!fs.existsSync(premakeFolderPath)) {
@@ -41,8 +41,8 @@ export class Terminal {
             );
 
             // Create the batch script content
-            const batchContent = Terminal.getWindowsShell(version, destinationPath);
-
+            //const batchContent = Terminal.getWindowsShell(version, destinationPath);
+            const batchContent = Terminal.getUnixShell(version,destinationPath);
             // Write the batch script to the file
             fs.writeFileSync(batchFilePath, batchContent);
 
@@ -57,19 +57,11 @@ export class Terminal {
         return `
     @echo off
     setlocal
-    
-    REM Check if command-line arguments are provided
-    if "%~1"=="" goto interactive
-    
-    REM Process command-line arguments
-    set input=%*
-    goto process
-    
+     
     :interactive
     set /p input="premake5 "
     goto process
     
-    :process
     if "%input%"=="exit" (
         echo Exiting...
         goto end
@@ -88,12 +80,6 @@ export class Terminal {
         goto interactive
     )
     
-    if "%input%"=="version set" (
-        echo Running premake.setversion command...
-        code --reuse-window --command premake.setversion
-        goto interactive
-    )
-    
     if "%input%"=="action" (
         echo default action: ${PremakeRunner.getCurrentAction()}
         goto interactive
@@ -108,15 +94,43 @@ export class Terminal {
     `;
     }
 
+    private static getUnixShell(version: string, destinationPath: string):string {
+        return `
+interactive() {
+    while true; do
+        read -p "premake5 " input
+
+        if [ "$input" == "exit" ]; then
+            echo "Exiting..."
+            break
+        fi
+
+        case $input in
+            "version")
+                echo "${version}"
+                ;;
+            "action")
+                echo "default action: ${PremakeRunner.getCurrentAction()}"
+                ;;
+            *)
+                "${destinationPath.replaceAll("\\","/")}" $input
+                ;;
+        esac
+    done
+    }
+
+interactive
+        `;
+    }
     public static async setTerminalShell(shellPath: string) {
         try {
             const config = vscode.workspace.getConfiguration('terminal.integrated');
             const profiles = config.get<any>('profiles.windows') || {};
-    
+            vscode.TerminalProfile
             // Add or update the premake5 profile
             profiles['premake5'] = {
-                path: shellPath,
-                args: [],
+                command: "sh",
+                args: [shellPath],
                 icon: 'settings-gear', // Use the settings-gear icon
                 color: 'terminal.ansiGreen' // Set the color to terminal.ansiGreen
             };
