@@ -48,6 +48,12 @@
         }
       }
     ],
+    "viewsWelcome": [
+      {
+        "view": "workspacesList",
+        "contents": "no premake5 workspace was found, you can open a folder containing a premake5 workspace or create a new workspace.\n[Open Folder](command:vscode.openFolder)\n[Create Workspace](command:premake.workspace.create)\n To learn more about premake and how to use it [Read The Docs](https://premake.github.io/docs/)."
+      }
+    ],
     "viewsContainers": {
       "activitybar": [
         {
