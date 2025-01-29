@@ -74,7 +74,7 @@ export class Terminal implements vscode.Pseudoterminal{
     
     content = "";
     writeEmitter = new vscode.EventEmitter<string>();
-    history: string[] = [];
+    history: string[] = [""];
     historyIndex:number = 0;
     promptLenght:number = 0;
     cursorIndexPoition: number = 0;
@@ -95,16 +95,22 @@ export class Terminal implements vscode.Pseudoterminal{
             case keys.enter :
                 const input:string = this.getPrompt()!; //don't miss the !
                 this.writeEmitter.fire(data);
-                console.log(input);
+                this.history.push(input);
                 await this.handlePremakeCommand(input);
-                this.writeEmitter.fire(data);
+                this.writeEmitter.fire('\r\n');
                 this.prompt("premake5");
                 break;
             case keys.backspace:
                 this.removeText(1);
                 break;
             case actions.cursorUp:
+                this.removeText(this.promptLenght);
+                this.writeText(this.prevCommand());
+                break;
             case actions.cursorDown:
+                this.removeText(this.promptLenght);
+                this.writeText(this.nextCommand());
+                break;
             case actions.cursorBack:
                 this.moveCursorLeft();
                 break;
@@ -115,13 +121,14 @@ export class Terminal implements vscode.Pseudoterminal{
                 if(data.endsWith(keys.enter) || data.includes('\r'))
                 {
                     const commands:string[] = data.split('\r');
-                    console.log(commands);
+                    this.writeEmitter.fire('\r');
                     for(const command of commands){
                         if(command === '') continue;
-                        this.writeEmitter.fire('\r');
+                        this.writeEmitter.fire('\r\n');
+                        this.history.push(command);
                         await this.handlePremakeCommand(command);
                     }
-                    this.writeEmitter.fire('\r');
+                    this.writeEmitter.fire('\r\n');
                     this.prompt("premake5");
                 } else {
                     this.writeText(data);
@@ -159,7 +166,7 @@ export class Terminal implements vscode.Pseudoterminal{
         if((this.promptLenght - amount) < 0)
             amount = this.promptLenght
         if(amount > 0) {
-            this.content = this.content.slice(0,this.content.length - (amount + 1));
+            this.content = this.content.slice(0,this.content.length - (amount));
             this.writeEmitter.fire(`\x1b[${amount}D`);
             this.writeEmitter.fire(`\x1b[${amount}P`);
             this.promptLenght -= amount;
@@ -192,6 +199,7 @@ export class Terminal implements vscode.Pseudoterminal{
 
             process.on('close', (code) => {
                 this.processing = false;
+                this.writeText(this.colorText(`premake5 exited with code: ${code}`, code === 0 ? colors.GREEN : colors.RED));
                 resolve();
             });    
                 
@@ -265,6 +273,17 @@ export class Terminal implements vscode.Pseudoterminal{
     }
     colorText(text:string,color:string){
         return `\x1b[${color}m${text}\x1b[0m`;
+    }
+    nextCommand(): string {
+        this.promptLenght = 0;
+        this.historyIndex = (this.historyIndex + 1) % this.history.length;
+        return this.history[this.historyIndex];
+    }
+
+    prevCommand(): string {
+        this.promptLenght = 0;
+        this.historyIndex = (this.historyIndex - 1 + this.history.length) % this.history.length;
+        return this.history[this.historyIndex];
     }
 }
 
