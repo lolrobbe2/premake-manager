@@ -5,6 +5,7 @@ import { PremakeVersionManager } from 'premakeInstaller/premakeVersionManger';
 import { VSCodeUtils } from 'utils/utils';
 import { PremakeInstance, PremakeRunner } from 'utils/premakeRunner';
 import { spawn } from 'child_process';
+import { action } from 'projectManagement/premake5/action';
 const keys = {
     enter: "\r",
     backspace: "\x7f",
@@ -15,32 +16,54 @@ const actions = {
     clear: "\x1b[2J\x1b[3J\x1b[;H",
     cursorUp: "\x1b[A",
     cursorDown: "\x1b[B",
-    cursorForward: "\x1b[C"
+    cursorForward: "\x1b[C",
+    saveCursorPosition: "\x1b7",
+    restoreCursorPosition: "\x1b8"
 };
 
 const sequences = {
     PROMPT_START: "\x1b]133;A\x07",
     PROMPT_END: "\x1b]133;B\x07",
-    PRE_EXECUTION: "\x1b]133;C\x07"
+    PRE_EXECUTION: "\x1b]133;C\x07",
+}
+const cursorActions = {
+    BLINK_ENABLE: "\x1b5",
+    BLINK_DISABLE: "\x1b25",
+    HIDE: "\x1b[?25h",
+    SHOW: "\x1b[?25l"
+}
+const cursorShape = {
+    DEFAULT:"\x1b[0 q",
+    BLINKING_BLOCK:"\x1b[1 q",
+    STEADY_BLOCK: "\x1b[2 q",
+    BLINKING_UNDERLINE:"\x1b[3 q",
+    STEADY_UNDERLINE:"\x1b[4 q",
+    BLINKING_BAR:"\x1b[5 q",
+    STEADY_BAR: "\x1b[6 q"    
 }
 const promptText = "premake5 "
 const defaultLine = sequences.PROMPT_START + promptText + sequences.PROMPT_END;
-const formatText = (text: string) => `\r${text.split(/(\r?\n)/g).join("\r")}\r`;
 
 export class Terminal implements vscode.Pseudoterminal{
 
     constructor(name:string = "premake5") {
         const terminal =  vscode.window.createTerminal({
             name:name,
-            pty:this
+            pty:this,
+            
         });
         terminal.show();
+        this.prompt("premake5 ");
+        
     }
-    
-    content = defaultLine;
+    content = "";
     writeEmitter = new vscode.EventEmitter<string>();
     history: string[] = [];
-    commandlenght:number = 0;
+    historyIndex:number = 0;
+    promptLenght:number = 0;
+    cursorIndexPoition: number = 0;
+    firstInput:boolean = true;
+    promptEnabled: boolean = false;
     onDidWrite: vscode.Event<string> = this.writeEmitter.event;
 
     private processing:boolean = false;
@@ -51,43 +74,56 @@ export class Terminal implements vscode.Pseudoterminal{
         throw new Error('Method not implemented.');
     }
     handleInput?(data: string): void {
-        if (this.processing || (data === actions.cursorUp || data === actions.cursorDown)) {
-            return;
-        }
         switch (data) {
             case keys.enter:
-                const command = this.getCommand();
-                this.handleCommand(command)
-                return;
+                break;
             case keys.backspace:
-                if (this.content.length <= defaultLine.length) {
-                    return;
-                  }
-                  // remove last character
-                  this.content = this.content.substr(0, this.content.length - 1);
-                  this.writeEmitter.fire(actions.cursorBack);
-                  this.writeEmitter.fire(actions.deleteChar);
-                  this.commandlenght--;
-                  return;
+                this.removeText(1);
+                break;
+            case actions.cursorUp:
+            case actions.cursorDown:
+            case actions.cursorBack:
+            case actions.cursorForward:
+                break;
             default:
-                // typing a new character
-                this.commandlenght++;
-                this.content += data;
-                this.writeEmitter.fire(data);
-                
+                this.writeText(data);
+
         }
     }
     setDimensions?(dimensions: vscode.TerminalDimensions): void {
+
     }
-    getCommand() : string{
-        const lastIndex = this.content.lastIndexOf('\r\n');
-        const command = this.content.slice(this.content.length - this.commandlenght , this.content.length);
-        //this.content = this.content.slice(0, lastIndex);
-        this.commandlenght = 0;
-        return command
-    }   
-    async handleCommand(command: string): Promise<void> {
-        this.handlePremakeCommand(command);
+   
+    writeText(text: string) {
+        if(this.promptEnabled)
+            this.promptLenght += this.getTextUnescape(text).length;
+        this.content += this.getTextUnescape(text);
+        this.writeEmitter.fire(text);
+    }
+
+    prompt(prompt: string) {
+        this.writeText(sequences.PROMPT_START);
+        this.writeText(prompt);
+        this.writeText(sequences.PROMPT_END); 
+        this.promptEnabled = true;
+        this.saveCursorPosition();  
+        this.enableBlinking();     
+    }
+    saveCursorPosition():void {
+        this.writeEmitter.fire(actions.saveCursorPosition);
+    }
+    restoreCursorPosition():void {
+        this.writeEmitter.fire(actions.restoreCursorPosition);
+    }
+    removeText(amount:number):void {
+        if((this.promptLenght - amount) < 0)
+            amount = this.promptLenght
+        if(amount > 0) {
+            this.content = this.content.slice(0,this.content.length - (amount + 1));
+            this.writeEmitter.fire(`\x1b[${amount}D`);
+            this.writeEmitter.fire(`\x1b[${amount}P`);
+            this.promptLenght -= amount;
+        }
     }
     async handlePremakeCommand(command: string): Promise<void> {
         const workspaceFolder = VSCodeUtils.getWorkspaceFolder();
@@ -102,23 +138,16 @@ export class Terminal implements vscode.Pseudoterminal{
         const folder = path.join(premakeFolder,premakeVersion,PremakeVersionManager.getCurrentPlatform());
         const process = spawn(path.join(folder, 'premake5'), command.split(' '),{cwd:VSCodeUtils.getWorkspaceFolder()});
         this.processing = true;
-        this.content += formatText(`${sequences.PROMPT_START}premake5  ${command} ${sequences.PROMPT_END} \r\n\r\n ${sequences.PRE_EXECUTION}`);
-        this.writeEmitter.fire(formatText(`${sequences.PROMPT_START}premake5  ${command} ${sequences.PROMPT_END} \r\n\r\n ${sequences.PRE_EXECUTION}`));
-
+       
         process.stdout.on('data', (data: Buffer) => {
-            this.content += formatText(data.toString());
-            this.writeEmitter.fire(formatText(data.toString()));
+
         });
 
         process.stderr.on('data', (data: Buffer) => {
-            this.content += formatText(data.toString());
-            this.writeEmitter.fire(formatText(data.toString()));
+
         });
 
         process.on('close', (code) => {
-            this.content += formatText(`Process exited with code ${this.executionEnd(code ?? 0)}\r\n\r\n${defaultLine}`);
-            this.writeEmitter.fire(formatText(`Process exited with code ${this.executionEnd(code ?? 0)}\r\n\r\n${defaultLine}`));
-            this.moveCursorForward(promptText.length);
             this.processing = false;
 
         });        
@@ -132,6 +161,39 @@ export class Terminal implements vscode.Pseudoterminal{
             throw new Error("Amount must be a non-negative integer.");
         }
         this.writeEmitter.fire(`\x1b[${amount}C`);
+    }
+    enableBlinking(){
+        this.writeEmitter.fire(cursorActions.BLINK_ENABLE);
+    }
+    /**
+     * 
+     * @param blinking enable blinking
+     */
+    setBlockShape(blinking: boolean = true) {
+        if(blinking) 
+            this.writeEmitter.fire(cursorShape.BLINKING_BLOCK);
+        else 
+            this.writeEmitter.fire(cursorShape.STEADY_BLOCK);
+    }
+    setBarShape(blinking: boolean = true) {
+        if(blinking) 
+            this.writeEmitter.fire(cursorShape.BLINKING_BAR);
+        else 
+            this.writeEmitter.fire(cursorShape.STEADY_BAR);
+    }
+    setUnderlineShape(blinking: boolean = true) {
+        if(blinking)
+            this.writeEmitter.fire(cursorShape.BLINKING_UNDERLINE);
+        else 
+            this.writeEmitter.fire(cursorShape.STEADY_UNDERLINE);
+    }
+    getContentUnescape() {
+        const ansiEscapePattern = /\x1b\[([0-9;]*m|133;[A-C]\x07)/g;
+        return this.content.replace(ansiEscapePattern, '');
+    }
+    getTextUnescape(text: string) {
+        const ansiEscapePattern = /\x1b\[([0-9;]*m|133;[A-C]\x07)/g;
+        return text.replace(ansiEscapePattern, '');
     }
 }
 
