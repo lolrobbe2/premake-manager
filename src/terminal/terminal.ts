@@ -165,6 +165,12 @@ export class Terminal implements vscode.Pseudoterminal{
     enableBlinking(){
         this.writeEmitter.fire(cursorActions.BLINK_ENABLE);
     }
+    getPrompt() : string | undefined{
+        if(this.promptEnabled){
+            return this.content.slice(this.content.length - this.promptLenght, this.content.length);
+        }
+        return undefined;
+    }
     /**
      * 
      * @param blinking enable blinking
