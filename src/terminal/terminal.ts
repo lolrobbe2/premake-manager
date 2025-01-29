@@ -42,6 +42,17 @@ const cursorShape = {
     BLINKING_BAR:"\x1b[5 q",
     STEADY_BAR: "\x1b[6 q"    
 }
+
+const colors = {
+    BLACK:"30",
+    RED:"31",
+    GREEN:"32",
+    YELLOW:"33",
+    BLUE:"34",
+    MAGENTA:"35",
+    CYAN:"36",
+    WHITE:"37"
+}
 const promptText = "premake5 "
 const defaultLine = sequences.PROMPT_START + promptText + sequences.PROMPT_END;
 
@@ -52,6 +63,7 @@ export class Terminal implements vscode.Pseudoterminal{
             const terminal =  vscode.window.createTerminal({
                 name:name,
                 pty:this,
+                iconPath: vscode.Uri.file(VSCodeUtils.context!.asAbsolutePath("resources/media/premake-logo.png"))
             });
             terminal.show();
         }
@@ -169,7 +181,7 @@ export class Terminal implements vscode.Pseudoterminal{
             const process = spawn(path.join(folder, 'premake5'), command.split(' '),{cwd:VSCodeUtils.getWorkspaceFolder()});
             this.processing = true;
             this.setMark();
-            this.writeText(`running: premake5 ${command} \r\n`);
+            this.writeText(this.colorText(`running: premake5 ${command} \r\n`,colors.YELLOW));
             process.stdout.on('data', (data: Buffer) => {
                 this.writeText(data.toString());
             });
@@ -250,6 +262,9 @@ export class Terminal implements vscode.Pseudoterminal{
             this.writeText(actions.cursorForward);
             this.cursorIndexPoition--;
         }
+    }
+    colorText(text:string,color:string){
+        return `\x1b[${color}m${text}\x1b[0m`;
     }
 }
 

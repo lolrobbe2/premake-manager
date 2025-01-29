@@ -127,11 +127,22 @@
         "category": "Premake",
         "command": "premake.terminal.new",
         "title": "launch a new premake5 terminal"
+      },
+      {
+       
+        "category": "Premake",
+        "command": "premake.terminal.new",
+        "title": "get a new/existing premake5 terminalwhen possible"
       }
     ],
     "keybindings": [
       {
         "command": "premake.terminal.new",
+        "key": "ctrl+alt+m",
+        "mac":"cmd+alt+m"
+      },
+      {
+        "command": "premake.terminal.get",
         "key": "ctrl+alt+p",
         "mac":"cmd+alt+p"
       }
