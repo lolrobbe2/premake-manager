@@ -47,13 +47,15 @@ const defaultLine = sequences.PROMPT_START + promptText + sequences.PROMPT_END;
 
 export class Terminal implements vscode.Pseudoterminal{
 
-    constructor(name:string = "premake5") {
-        const terminal =  vscode.window.createTerminal({
-            name:name,
-            pty:this,
-            
-        });
-        terminal.show();
+    constructor(name:string = "premake5", addTerminal:boolean = true) {
+        if(addTerminal) {
+            const terminal =  vscode.window.createTerminal({
+                name:name,
+                pty:this,
+                
+            });
+            terminal.show();
+        }
         this.prompt("premake5");
         this.firstInput = false;
         
@@ -79,7 +81,7 @@ export class Terminal implements vscode.Pseudoterminal{
     }
     async handleInput?(data: string): Promise<void> {
         switch (data) {
-            case keys.enter:
+            case keys.enter :
                 const input:string = this.getPrompt()!; //don't miss the !
                 this.writeEmitter.fire(data);
                 console.log(input);
@@ -99,7 +101,20 @@ export class Terminal implements vscode.Pseudoterminal{
                 this.moveCursorRight();
                 break;
             default:
-                this.writeText(data);
+                if(data.endsWith(keys.enter) || data.includes('\r'))
+                {
+                    const commands:string[] = data.split('\r');
+                    console.log(commands);
+                    for(const command of commands){
+                        if(command === '') continue;
+                        this.writeEmitter.fire('\r');
+                        await this.handlePremakeCommand(command);
+                    }
+                    this.writeEmitter.fire('\r');
+                    this.prompt("premake5");
+                } else {
+                    this.writeText(data);
+                }
 
         }
     }

@@ -22,9 +22,19 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.window.registerTreeDataProvider('workspacesList', projectManager.workspaceProvider);
 	registerCommands(context);
 	PremakeWatcher.registerWatcher();
-	vscode.TerminalProfile
 	//Terminal.init();
-	vscode.window.createTerminal()
+	context.subscriptions.push(vscode.window.registerTerminalProfileProvider('premake5.terminal-profile', {
+		provideTerminalProfile: () => {
+			console.log('Terminal profile provider called');
+			return {
+				options: {
+					name: 'premake5',
+					pty: new Terminal("",false),
+					iconPath: vscode.Uri.file(context.asAbsolutePath("resources/media/premake-logo.png"))
+				}
+			};
+		}
+	}));
 	const taskProvider = vscode.tasks.registerTaskProvider('premake5', {
         provideTasks: () => {
             return [];
@@ -58,8 +68,11 @@ function registerCommands(context: vscode.ExtensionContext) {
 			action = await PremakeRunner.getActionPicker(context);
 		}
 		if(action !== undefined) {
+			utils.VSCodeUtils.getPremakeTerminal().sendText(action,true);
+			/*
 			const instance = await PremakeRunner.getPremakeInstance(action!);
 			await instance.run(context);
+			*/
 		}
 	});
 	commands.registerCommand(context, "premake.action.default.set", async () => {
@@ -98,19 +111,4 @@ async function handleWorkspaceFoldersChanged(event: vscode.WorkspaceFoldersChang
 export function deactivate() 
 {
 	PremakeWatcher.unregisterWatcher();
-}
-function createPremake5Task(): vscode.Task {
-    const taskDefinition: vscode.TaskDefinition = {
-        type: 'premake5',
-		action: "action goes here"
-    };
-
-    const task = new vscode.Task(
-        taskDefinition,
-        vscode.TaskScope.Workspace,
-        'Run premake5',
-        'premake5',
-    );
-
-    return task;
 }

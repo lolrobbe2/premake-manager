@@ -1,3 +1,4 @@
+import { Terminal } from 'terminal/terminal';
 import * as vscode from 'vscode';
 
 export class VSCodeUtils {
@@ -18,5 +19,16 @@ export class VSCodeUtils {
     }
     public static setExtensionContext(context:vscode.ExtensionContext) {
         this.context = context;
+    }
+    public static getPremakeTerminal(): vscode.Terminal{
+        const terminal: vscode.Terminal | undefined = vscode.window.terminals.find((terminal) => terminal.name === "premake5");
+        if(terminal !== undefined) {
+            return terminal;
+        }
+        return vscode.window.createTerminal({
+            name: 'premake5',
+            pty: new Terminal("",false),
+            iconPath: vscode.Uri.file(this.context!.asAbsolutePath("resources/media/premake-logo.png"))
+        });
     }
 }

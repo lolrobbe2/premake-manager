@@ -28,6 +28,14 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "terminal": {
+      "profiles": [
+        {
+          "id": "premake5.terminal-profile",
+          "title": "premake5"
+        }
+      ]
+    },
     "snippets": [
       {
         "language": "jsonc",
