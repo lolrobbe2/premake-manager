@@ -53,9 +53,12 @@ export class Terminal implements vscode.Pseudoterminal{
             
         });
         terminal.show();
-        this.prompt("premake5 ");
+        this.writeEmitter.fire("\x1b N");
+        this.prompt("premake5");
+        this.firstInput = false;
         
     }
+    
     content = "";
     writeEmitter = new vscode.EventEmitter<string>();
     history: string[] = [];
@@ -69,13 +72,20 @@ export class Terminal implements vscode.Pseudoterminal{
     private processing:boolean = false;
     open(initialDimensions: vscode.TerminalDimensions | undefined): void {
         this.writeEmitter.fire(this.content);
+        vscode.TerminalProfile
     }
     close(): void {
         throw new Error('Method not implemented.');
     }
-    handleInput?(data: string): void {
+    async handleInput?(data: string): Promise<void> {
         switch (data) {
             case keys.enter:
+                const input:string = this.getPrompt()!; //don't miss the !
+                this.writeEmitter.fire(data);
+                console.log(input);
+                await this.handlePremakeCommand(input);
+                this.prompt("premake5");
+                this.writeEmitter.fire(data);
                 break;
             case keys.backspace:
                 this.removeText(1);
@@ -84,7 +94,6 @@ export class Terminal implements vscode.Pseudoterminal{
             case actions.cursorDown:
             case actions.cursorBack:
             case actions.cursorForward:
-                break;
             default:
                 this.writeText(data);
 
@@ -103,11 +112,13 @@ export class Terminal implements vscode.Pseudoterminal{
 
     prompt(prompt: string) {
         this.writeText(sequences.PROMPT_START);
+        this.writeText("\r\n");
         this.writeText(prompt);
+        this.moveCursorForward(2);
+        this.writeText(' ');
         this.writeText(sequences.PROMPT_END); 
         this.promptEnabled = true;
-        this.saveCursorPosition();  
-        this.enableBlinking();     
+        this.promptLenght = 0; 
     }
     saveCursorPosition():void {
         this.writeEmitter.fire(actions.saveCursorPosition);
@@ -136,37 +147,43 @@ export class Terminal implements vscode.Pseudoterminal{
         }
         premakeVersion = PremakeVersionManager.getVersion();
         const folder = path.join(premakeFolder,premakeVersion,PremakeVersionManager.getCurrentPlatform());
-        const process = spawn(path.join(folder, 'premake5'), command.split(' '),{cwd:VSCodeUtils.getWorkspaceFolder()});
-        this.processing = true;
-       
-        process.stdout.on('data', (data: Buffer) => {
+        await new Promise<void>((resolve, reject) => {
+            const process = spawn(path.join(folder, 'premake5'), command.split(' '),{cwd:VSCodeUtils.getWorkspaceFolder()});
+            this.processing = true;
+        
+            process.stdout.on('data', (data: Buffer) => {
+                this.writeText(data.toString());
+            });
 
+            process.stderr.on('data', (data: Buffer) => {
+                this.writeText(data.toString());
+            });
+
+            process.on('close', (code) => {
+                this.processing = false;
+                resolve();
+            });    
+                
         });
-
-        process.stderr.on('data', (data: Buffer) => {
-
-        });
-
-        process.on('close', (code) => {
-            this.processing = false;
-
-        });        
-
     }
     executionEnd(code:number):string{
         return `\x1b]133;D[;${code}]\x07`;
     }
     moveCursorForward(amount: number):void {
+        if(this.firstInput) return;
         if (amount < 0) {
             throw new Error("Amount must be a non-negative integer.");
         }
-        this.writeEmitter.fire(`\x1b[${amount}C`);
+        for(let i = 0; i < amount;i++) {
+            this.writeEmitter.fire(`\x1b[C`);
+        }
     }
     enableBlinking(){
         this.writeEmitter.fire(cursorActions.BLINK_ENABLE);
     }
     getPrompt() : string | undefined{
         if(this.promptEnabled){
+            this.promptEnabled = false;
             return this.content.slice(this.content.length - this.promptLenght, this.content.length);
         }
         return undefined;
@@ -194,11 +211,11 @@ export class Terminal implements vscode.Pseudoterminal{
             this.writeEmitter.fire(cursorShape.STEADY_UNDERLINE);
     }
     getContentUnescape() {
-        const ansiEscapePattern = /\x1b\[([0-9;]*m|133;[A-C]\x07)/g;
+        const ansiEscapePattern = /\x1b\[[0-9;A-Za-z]*[A-Za-z]/g;
         return this.content.replace(ansiEscapePattern, '');
     }
     getTextUnescape(text: string) {
-        const ansiEscapePattern = /\x1b\[([0-9;]*m|133;[A-C]\x07)/g;
+        const ansiEscapePattern =/\x1b\[[0-9;A-Za-z]*[A-Za-z]/g;
         return text.replace(ansiEscapePattern, '');
     }
 }
