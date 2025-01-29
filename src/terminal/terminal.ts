@@ -52,7 +52,6 @@ export class Terminal implements vscode.Pseudoterminal{
             const terminal =  vscode.window.createTerminal({
                 name:name,
                 pty:this,
-                
             });
             terminal.show();
         }

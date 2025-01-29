@@ -123,9 +123,17 @@
         "icon": "resources/media/premake-logo-128.png"
       },
       {
+       
         "category": "Premake",
         "command": "premake.terminal.new",
         "title": "launch a new premake5 terminal"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "premake.terminal.new",
+        "key": "ctrl+alt+p",
+        "mac":"cmd+alt+p"
       }
     ],
     "menus": { 

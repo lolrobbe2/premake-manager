@@ -68,11 +68,10 @@ function registerCommands(context: vscode.ExtensionContext) {
 			action = await PremakeRunner.getActionPicker(context);
 		}
 		if(action !== undefined) {
-			utils.VSCodeUtils.getPremakeTerminal().sendText(action,true);
-			/*
-			const instance = await PremakeRunner.getPremakeInstance(action!);
-			await instance.run(context);
-			*/
+			const terminal:vscode.Terminal = utils.VSCodeUtils.getPremakeTerminal();
+			terminal.show();
+			terminal.sendText(action,true);
+
 		}
 	});
 	commands.registerCommand(context, "premake.action.default.set", async () => {
@@ -96,7 +95,7 @@ function registerCommands(context: vscode.ExtensionContext) {
 			item.edit();
 		}
 	});
-	commands.registerCommand(context, "premake.terminal.new", () => {new Terminal();});
+	commands.registerCommand(context, "premake.terminal.new", () => {const terminal:vscode.Terminal = utils.VSCodeUtils.getPremakeTerminal(); terminal.show()});
 
 }
 
