@@ -25,6 +25,7 @@ const sequences = {
     PROMPT_START: "\x1b]133;A\x07",
     PROMPT_END: "\x1b]133;B\x07",
     PRE_EXECUTION: "\x1b]133;C\x07",
+    MARK:"\x1b]1337;SetMark\x07"
 }
 const cursorActions = {
     BLINK_ENABLE: "\x1b5",
@@ -53,7 +54,6 @@ export class Terminal implements vscode.Pseudoterminal{
             
         });
         terminal.show();
-        this.writeEmitter.fire("\x1b N");
         this.prompt("premake5");
         this.firstInput = false;
         
@@ -84,8 +84,8 @@ export class Terminal implements vscode.Pseudoterminal{
                 this.writeEmitter.fire(data);
                 console.log(input);
                 await this.handlePremakeCommand(input);
-                this.prompt("premake5");
                 this.writeEmitter.fire(data);
+                this.prompt("premake5");
                 break;
             case keys.backspace:
                 this.removeText(1);
@@ -93,7 +93,11 @@ export class Terminal implements vscode.Pseudoterminal{
             case actions.cursorUp:
             case actions.cursorDown:
             case actions.cursorBack:
+                this.moveCursorLeft();
+                break;
             case actions.cursorForward:
+                this.moveCursorRight();
+                break;
             default:
                 this.writeText(data);
 
@@ -114,7 +118,6 @@ export class Terminal implements vscode.Pseudoterminal{
         this.writeText(sequences.PROMPT_START);
         this.writeText("\r\n");
         this.writeText(prompt);
-        this.moveCursorForward(2);
         this.writeText(' ');
         this.writeText(sequences.PROMPT_END); 
         this.promptEnabled = true;
@@ -137,6 +140,7 @@ export class Terminal implements vscode.Pseudoterminal{
         }
     }
     async handlePremakeCommand(command: string): Promise<void> {
+        
         const workspaceFolder = VSCodeUtils.getWorkspaceFolder();
         const premakeFolder = path.join(workspaceFolder, '.premake');
         let premakeVersion = PremakeVersionManager.getVersion();
@@ -150,7 +154,8 @@ export class Terminal implements vscode.Pseudoterminal{
         await new Promise<void>((resolve, reject) => {
             const process = spawn(path.join(folder, 'premake5'), command.split(' '),{cwd:VSCodeUtils.getWorkspaceFolder()});
             this.processing = true;
-        
+            this.setMark();
+            this.writeText(`running: premake5 ${command} \r\n`);
             process.stdout.on('data', (data: Buffer) => {
                 this.writeText(data.toString());
             });
@@ -166,6 +171,9 @@ export class Terminal implements vscode.Pseudoterminal{
                 
         });
     }
+    setMark(){
+        this.writeText(sequences.MARK);
+    }
     executionEnd(code:number):string{
         return `\x1b]133;D[;${code}]\x07`;
     }
@@ -174,9 +182,8 @@ export class Terminal implements vscode.Pseudoterminal{
         if (amount < 0) {
             throw new Error("Amount must be a non-negative integer.");
         }
-        for(let i = 0; i < amount;i++) {
-            this.writeEmitter.fire(`\x1b[C`);
-        }
+        this.writeText(`\x1b[${amount}C`);
+        
     }
     enableBlinking(){
         this.writeEmitter.fire(cursorActions.BLINK_ENABLE);
@@ -217,6 +224,18 @@ export class Terminal implements vscode.Pseudoterminal{
     getTextUnescape(text: string) {
         const ansiEscapePattern =/\x1b\[[0-9;A-Za-z]*[A-Za-z]/g;
         return text.replace(ansiEscapePattern, '');
+    }
+    moveCursorLeft(): void{
+        if(this.cursorIndexPoition < this.promptLenght) {
+            this.writeText(actions.cursorBack);
+            this.cursorIndexPoition++;
+        }
+    }
+    moveCursorRight(): void {
+        if(this.cursorIndexPoition > 0){
+            this.writeText(actions.cursorForward);
+            this.cursorIndexPoition--;
+        }
     }
 }
 
