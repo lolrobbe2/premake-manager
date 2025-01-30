@@ -40,6 +40,10 @@
       {
         "language": "jsonc",
         "path": "./snippets/premake5.code-snippets"
+      },
+      {
+        "language": "lua",
+        "path": "./snippets/premake5.workspace.code-snippets"
       }
     ],
     "taskDefinitions": [

@@ -1,0 +1,10 @@
+{
+    "premake5.workspace" : {
+        "prefix": "workspace",
+        "body": [
+            "workspace \" ${1:name}\"  ",
+            "   configurations { \"Debug\", \"Release\" }"
+        ],
+        "description": "generate a basic premake workspace"
+    }
+}
