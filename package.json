@@ -9,7 +9,7 @@
     "vscode": "^1.92.1"
   },
   "categories": [
-    "Other"
+    "Other","Snippets"
   ],
   "author": {
     "name": "robbe beernaert"
@@ -28,6 +28,44 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "terminal": {
+      "profiles": [
+        {
+          "id": "premake5.terminal-profile",
+          "title": "premake5"
+        }
+      ]
+    },
+    "snippets": [
+      {
+        "language": "jsonc",
+        "path": "./snippets/premake5.code-snippets"
+      },
+      {
+        "language": "lua",
+        "path": "./snippets/premake5.workspace.code-snippets"
+      }
+    ],
+    "taskDefinitions": [
+      {
+        "type": "premake5",
+        "required": [
+            "action"
+        ],
+        "properties": {
+          "action": {
+            "type": "string",
+            "description": "The action you would like premake5 to run."
+          }
+        }
+      }
+    ],
+    "viewsWelcome": [
+      {
+        "view": "workspacesList",
+        "contents": "no premake5 workspace was found, you can open a folder containing a premake5 workspace or create a new workspace.\n[Open Folder](command:vscode.openFolder)\n[Create Workspace](command:premake.workspace.create)\n To learn more about premake and how to use it [Read The Docs](https://premake.github.io/docs/)."
+      }
+    ],
     "viewsContainers": {
       "activitybar": [
         {
@@ -45,36 +83,83 @@
         } 
       ] 
     },
+    
     "commands": [
       {
         "category": "Premake",
         "command": "premake.action.run",
-        "title": "run premake action"
+        "title": "run premake action",
+        "icon": "resources/media/premake-logo-128.png"
       },
       {
         "category": "Premake",
         "command": "premake.action.default.set",
-        "title": "set default premake action"
+        "title": "set default premake action",
+        "icon": "resources/media/premake-logo-128.png"
       },
       {
         "category": "Premake",
         "command": "premake.action.default.run",
-        "title": "run default premake action"
+        "title": "run default premake action",
+        "icon": "resources/media/premake-logo-128.png"
       },
       {
         "category": "Premake",
         "command": "premake.setversion",
-        "title": "set premake version"
+        "title": "set premake version",
+        "icon": "resources/media/premake-logo-128.png"
       },
       {
         "category": "Premake",
         "command": "premake.cleanup",
-        "title": "cleanup the premake folder"
+        "title": "cleanup the premake folder",
+        "icon": "resources/media/premake-logo-128.png"
       },
       {
         "command": "extension.editProjectItem", 
         "title": "Edit Project Item", 
-        "category": "Project"
+        "category": "Project",
+        "icon": "resources/media/premake-logo-128.png"
+      },
+      {
+        "command": "premake.workspace.refresh",
+        "title": "refresh workspace viewer",
+        "icon": "resources/media/refresh.svg"
+        
+      },
+      {
+        "category": "Premake",
+        "command": "premake.workspace.create",
+        "title": "create a new workspace",
+        "icon": "resources/media/premake-logo-128.png"
+      },
+      {
+        "category": "Premake",
+        "command": "premake.project.create",
+        "title": "create a new project",
+        "icon": "resources/media/premake-logo-128.png"
+      },
+      {
+        "category": "Premake",
+        "command": "premake.terminal.new",
+        "title": "launch a new premake5 terminal"
+      },
+      {
+        "category": "Premake",
+        "command": "premake.terminal.new",
+        "title": "get a new/existing premake5 terminalwhen possible"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "premake.terminal.new",
+        "key": "ctrl+alt+m",
+        "mac":"cmd+alt+m"
+      },
+      {
+        "command": "premake.terminal.get",
+        "key": "ctrl+alt+p",
+        "mac":"cmd+alt+p"
       }
     ],
     "menus": { 
@@ -83,6 +168,13 @@
           "command": "extension.editProjectItem",
           "when": "viewItem == projectItemView",
           "group": "inline"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "premake.workspace.refresh",
+          "when": "view == workspacesList",
+          "group": "navigation"
         }
       ]
     },

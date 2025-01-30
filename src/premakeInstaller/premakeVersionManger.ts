@@ -7,6 +7,7 @@ import * as tar from 'tar';
 import * as vscode from 'vscode';
 import { GithubUtils, Release, ReleaseAsset } from '../utils/githubUtils.js';
 import { VSCodeUtils } from '../utils/utils.js';
+import { Terminal } from 'terminal/terminal.js';
 export class PremakeVersionManager {
 
     // Get the Premake version from the workspace settings
@@ -22,6 +23,7 @@ export class PremakeVersionManager {
     // Optionally, you can set the version through the API if needed
     public static async setVersion(version: string): Promise<void> {
         const config = vscode.workspace.getConfiguration();
+        //await Terminal.setVersion(version);
         await config.update('premake.version', version, vscode.ConfigurationTarget.Workspace);
     }
 
@@ -116,7 +118,6 @@ export class PremakeVersionManager {
         
         const workspace: string = VSCodeUtils.getWorkspaceFolder();
         const destinationPath: string = path.join(workspace, '.premake', releaseName, this.getCurrentPlatform(), `premake5${this.getExecutableExtension()}`);
-
         await fs.promises.mkdir(path.dirname(destinationPath), { recursive: true });
 
         const downloadUrl = platformAsset.download_link;

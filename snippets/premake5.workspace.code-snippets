@@ -1,0 +1,20 @@
+{
+    "premake5.workspace" : {
+        "prefix": "workspace",
+        "body": [
+            "workspace \"${1:name}\"  ",
+            "   configurations { \"Debug\", \"Release\" }"
+        ],
+        "description": "generate a basic premake workspace"
+    },
+    "premake5.include.project": {
+        "prefix": "include project",
+        "body": "   include \"projects/${1:project}\"",
+        "description": "add a default include for projects"
+    },
+    "premake5.include.directory": {
+        "prefix": "include directory",
+        "body": "   include \"${1:dir}\"",
+        "description": "add a default include for a directory"
+    }
+}

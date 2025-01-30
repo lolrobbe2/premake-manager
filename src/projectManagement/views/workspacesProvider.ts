@@ -2,10 +2,10 @@ import { workspaceFile } from 'projectManagement/parser/workspaceFile';
 import { premakeWorkspace } from 'projectManagement/premake5/workspace';
 import * as vscode from 'vscode';
 import { ActionsItem } from './actionsItem'; // Adjust the import path as necessary
+import { GroupItem } from './groupItem';
 import { OptionsItem } from './optionsItem'; // Adjust the import path as necessary
 import { ProjectItem } from './projectItem'; // Adjust the import path as necessary
 import { WorkspaceItem } from './workspaceItem'; // Adjust the import path as necessary
-import { GroupItem } from './groupItem';
 
 export class WorkspacesProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
     private _onDidChangeTreeData: vscode.EventEmitter<vscode.TreeItem | undefined | void> = new vscode.EventEmitter<vscode.TreeItem | undefined | void>();

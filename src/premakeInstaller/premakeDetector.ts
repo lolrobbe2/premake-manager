@@ -23,6 +23,7 @@ export class PremakeWatcher {
         const filePath = path.join(utils.VSCodeUtils.getWorkspaceFolder(), PremakeWatcher.targetFile);
         await PremakeWatcher.checkWorkspaceAvailable(filePath);
         PremakeWatcher.watcher.on('add', PremakeWatcher.onFileAdded);
+        this.watcher.on('change',() => projectManager.reload());
     }
 
     // Method to unregister the watcher
@@ -36,7 +37,9 @@ export class PremakeWatcher {
             PremakeWatcher.runScript();
         }
     }
-
+    public static addFileForWatching(filePath: string): void {
+        this.watcher.add(filePath);
+    }
     // Method to execute logic when the file is detected
     private static async runScript(): Promise<void> {
         const filePath = path.join(utils.VSCodeUtils.getWorkspaceFolder(), PremakeWatcher.targetFile);
@@ -78,6 +81,7 @@ export class PremakeWatcher {
         }
         catch (error: any) 
         {
+            console.log(error);
             console.log("no premake5.lua workspace found");
         }
     }

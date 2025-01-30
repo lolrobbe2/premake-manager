@@ -3,6 +3,7 @@ import { projectManager } from 'projectManagement/projectManager';
 import * as vscode from 'vscode';
 import { PremakeVersionManager } from '../premakeInstaller/premakeVersionManger';
 import { VSCodeUtils } from "./utils";
+import { Terminal } from 'terminal/terminal';
 
 export class PremakeInstance {
     private outputChannel: vscode.OutputChannel;

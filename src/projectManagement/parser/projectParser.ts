@@ -1,6 +1,7 @@
 import fs from 'fs';
 import * as luaparse from 'luaparse';
 import path from 'path';
+import { PremakeWatcher } from 'premakeInstaller/premakeDetector';
 import { VSCodeUtils } from 'utils/utils';
 import { project } from '../premake5/project';
 import { premakeWorkspace } from '../premake5/workspace';
@@ -46,11 +47,11 @@ function isProjectNode(node: any): node is ProjectNode {
 }
 
 function isParameterNode(node: any): node is ParameterNode {
-    return node.type === 'StringCallExpression' && node.base && node.base.type === 'Identifier' && node.base.name !== 'include';
+    return node.type === 'StringCallExpression' && node.base && node.base.type === 'Identifier' && node.base.name !== 'include' && node.base.name !== 'includeexternal';
 }
 
 function isIncludeNode(node: any): node is ParameterNode {
-    return node.type === 'StringCallExpression' && node.base && node.base.type === 'Identifier' && node.base.name === 'include';
+    return node.type === 'StringCallExpression' && node.base && node.base.type === 'Identifier' && (node.base.name === 'include' || node.base.name === 'includeexternal');
 }
 
 function isGroupNode(node: any): node is GroupNode {
@@ -91,6 +92,7 @@ function handleIncludeNode(node: ParameterNode, currentWorkspace: { workspace: p
         currentWorkspace.workspace.dependencies.push(completePath);
 
         const fullPath = path.resolve(path.join(VSCodeUtils.getWorkspaceFolder(),completePath));
+        PremakeWatcher.addFileForWatching(completePath);
         if (fs.existsSync(fullPath) && fs.lstatSync(fullPath).isDirectory()) {
             ProjectParser.resolveFolder(currentWorkspace.workspace, completePath);
         } else {
@@ -99,7 +101,8 @@ function handleIncludeNode(node: ParameterNode, currentWorkspace: { workspace: p
         
     } else {
         dependencies.push(completePath);
-        ProjectParser.resolveWorkspaceFile(completePath);
+        const fullPath = path.resolve(path.join(VSCodeUtils.getWorkspaceFolder(),completePath));
+        ProjectParser.resolveWorkspaceFile(fullPath);
     }
 }
 
@@ -213,12 +216,17 @@ function traverseProjectAst(node: any, currentWorkspace: { workspace: premakeWor
 
 export class ProjectParser {
     static currentGroup = "";
+    static markedDependencies:string[] = []
     /**
      * reolve a premake.lua script wich should contain a workspace after all top level dependencies have been resolved
      */
     static resolveWorkspaceFile(filePath:string) : workspaceFile
     {
-        const luaScript = fs.readFileSync(filePath, 'utf-8');
+        if(this.markedDependencies.includes(path.isAbsolute(filePath) ? filePath : path.join(VSCodeUtils.getWorkspaceFolder(),filePath))) { return new workspaceFile([],[],[]); }
+        const luaScript = fs.readFileSync(path.isAbsolute(filePath) ? filePath : path.join(VSCodeUtils.getWorkspaceFolder(),filePath), 'utf-8');
+
+        this.markedDependencies.push(path.isAbsolute(filePath) ? filePath : path.join(VSCodeUtils.getWorkspaceFolder(),filePath));
+        PremakeWatcher.addFileForWatching(path.isAbsolute(filePath) ? filePath : path.join(VSCodeUtils.getWorkspaceFolder(), filePath));
 
         let ast: any;
         try {
@@ -324,6 +332,7 @@ export class ProjectParser {
     static resolveWorkspaceDependencies(currentWorkspace: premakeWorkspace) {
         currentWorkspace.dependencies.forEach(workspaceDependency => {
             const fullPath = path.resolve(path.join(VSCodeUtils.getWorkspaceFolder(),workspaceDependency));
+            PremakeWatcher.addFileForWatching(fullPath);
             if (fs.existsSync(fullPath) && fs.lstatSync(fullPath).isDirectory()) {
                 this.resolveFolder(currentWorkspace, workspaceDependency);
             } else {
@@ -331,5 +340,8 @@ export class ProjectParser {
             }
         });
     }
-
+    static reset():void {
+        this.currentGroup = "",
+        this.markedDependencies = [];
+    }
 }
