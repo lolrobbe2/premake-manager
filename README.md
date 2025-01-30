@@ -26,18 +26,29 @@ type >VSIX in the top bar and press enter and select the package.
     run default premake action
 5) premake.cleanup
     cleanup the .premake folder
+6) premake.terminal.new
+    opens a new premake5 terminal
+7) premake.terminal.get
+    gets an existing premake5 terminal or opens a new one
 ## Extension Settings
 
 ## github access
 github is used to make it so you are not rate limited!
 
-### 0.0.1 - alpha
-
-Initial release of premake manager
-
-1) added ability to download premake versions
-2) added ability to run premake5 
-3) added abiltty to set default action
-4) added ability to run default action
+### 0.0.3 - alpha
+the end of exams update  (i passed all of them!)
+#### features/bugfixes
+1) added vscode task support
+2) added the premake workspace explorer/viewer
+3) added premake5 terminal
+    - get new or existing terminal: ctrl+alt+p/cmd+alt+p
+    - get new terminal: ctrl+alt+m/cmd+alt+m
+    - get help for the terminal => just type: help
+4) moved from PremakeRunner to the new terminal.
+5) fixed bug where premake could no be executed on unix systems
+6) added workspace generation command (experimental/ ran out of time)
+7) added snippet for tasks
+8) added snippet for workspace and include
+9) general bug fixes
 
 **Enjoy!**

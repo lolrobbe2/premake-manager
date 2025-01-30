@@ -2,7 +2,7 @@
   "name": "premake-manager",
   "displayName": "premake manager",
   "description": "a extension to manage premake projects",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "type": "commonjs",
   "publisher": "lolrobbe2",
   "engines": {
@@ -113,25 +113,29 @@
         "category": "Premake",
         "command": "premake.cleanup",
         "title": "cleanup the premake folder",
-        "icon": "resources/media/premake-logo-128.png"
+        "icon": "resources/media/premake-logo-128.png",
+        "shortTitle": "clean"
       },
       {
         "command": "extension.editProjectItem", 
         "title": "Edit Project Item", 
         "category": "Project",
-        "icon": "resources/media/premake-logo-128.png"
+        "icon": "resources/media/premake-logo-128.png",
+        "shortTitle": "edit project"
       },
       {
         "command": "premake.workspace.refresh",
         "title": "refresh workspace viewer",
-        "icon": "resources/media/refresh.svg"
+        "icon": "resources/media/refresh.svg",
+        "shortTitle": "refresh"
         
       },
       {
         "category": "Premake",
         "command": "premake.workspace.create",
         "title": "create a new workspace",
-        "icon": "resources/media/premake-logo-128.png"
+        "icon": "resources/media/premake-logo-128.png",
+        "shortTitle": "create workspace"
       },
       {
         "category": "Premake",
@@ -142,24 +146,40 @@
       {
         "category": "Premake",
         "command": "premake.terminal.new",
-        "title": "launch a new premake5 terminal"
+        "title": "launch a new premake5 terminal",
+        "shortTitle": "terminal new"
       },
       {
         "category": "Premake",
-        "command": "premake.terminal.new",
-        "title": "get a new/existing premake5 terminalwhen possible"
+        "command": "premake.terminal.get",
+        "title": "get a new/existing premake5 terminalwhen possible",
+        "shortTitle": "terminal get"
       }
     ],
     "keybindings": [
       {
+        "command": "premake.setversion",
+        "key": "ctrl+alt+v"
+      },
+      {
         "command": "premake.terminal.new",
-        "key": "ctrl+alt+m",
-        "mac":"cmd+alt+m"
+        "key": "ctrl+alt+m"
+      },
+      {
+        "command": "premake.action.default.set",
+        "key": "ctrl+alt+a"
+      },
+      {
+        "command": "premake.action.default.run",
+        "key": "ctrl+alt+b"
+      },
+      {
+        "command": "premake.cleanup",
+        "key": "ctrl+alt+c"
       },
       {
         "command": "premake.terminal.get",
-        "key": "ctrl+alt+p",
-        "mac":"cmd+alt+p"
+        "key": "ctrl+alt+p"
       }
     ],
     "menus": { 
