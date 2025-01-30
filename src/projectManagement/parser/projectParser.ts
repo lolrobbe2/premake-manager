@@ -1,6 +1,7 @@
 import fs from 'fs';
 import * as luaparse from 'luaparse';
 import path from 'path';
+import { PremakeWatcher } from 'premakeInstaller/premakeDetector';
 import { VSCodeUtils } from 'utils/utils';
 import { project } from '../premake5/project';
 import { premakeWorkspace } from '../premake5/workspace';
@@ -91,6 +92,7 @@ function handleIncludeNode(node: ParameterNode, currentWorkspace: { workspace: p
         currentWorkspace.workspace.dependencies.push(completePath);
 
         const fullPath = path.resolve(path.join(VSCodeUtils.getWorkspaceFolder(),completePath));
+        PremakeWatcher.addFileForWatching(completePath);
         if (fs.existsSync(fullPath) && fs.lstatSync(fullPath).isDirectory()) {
             ProjectParser.resolveFolder(currentWorkspace.workspace, completePath);
         } else {
@@ -224,6 +226,8 @@ export class ProjectParser {
         const luaScript = fs.readFileSync(path.isAbsolute(filePath) ? filePath : path.join(VSCodeUtils.getWorkspaceFolder(),filePath), 'utf-8');
 
         this.markedDependencies.push(path.isAbsolute(filePath) ? filePath : path.join(VSCodeUtils.getWorkspaceFolder(),filePath));
+        PremakeWatcher.addFileForWatching(path.isAbsolute(filePath) ? filePath : path.join(VSCodeUtils.getWorkspaceFolder(), filePath));
+
         let ast: any;
         try {
             ast = luaparse.parse(luaScript);
@@ -328,6 +332,7 @@ export class ProjectParser {
     static resolveWorkspaceDependencies(currentWorkspace: premakeWorkspace) {
         currentWorkspace.dependencies.forEach(workspaceDependency => {
             const fullPath = path.resolve(path.join(VSCodeUtils.getWorkspaceFolder(),workspaceDependency));
+            PremakeWatcher.addFileForWatching(fullPath);
             if (fs.existsSync(fullPath) && fs.lstatSync(fullPath).isDirectory()) {
                 this.resolveFolder(currentWorkspace, workspaceDependency);
             } else {
@@ -335,5 +340,8 @@ export class ProjectParser {
             }
         });
     }
-
+    static reset():void {
+        this.currentGroup = "",
+        this.markedDependencies = [];
+    }
 }

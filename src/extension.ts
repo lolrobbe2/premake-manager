@@ -10,6 +10,7 @@ import { PremakeVersionManager } from './premakeInstaller/premakeVersionManger';
 import * as utils from './utils/mod.js';
 import { PremakeRunner } from './utils/premakeRunner.js';
 import { TaskHandler, Terminal } from 'terminal/terminal.js';
+import { projectGenerator } from 'projectManagement/projectGenerator.js';
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -100,6 +101,8 @@ function registerCommands(context: vscode.ExtensionContext) {
 	});
 	commands.registerCommand(context, "premake.terminal.new", () => {new Terminal(undefined);});
 	commands.registerCommand(context, "premake.terminal.get", () => {const terminal:vscode.Terminal = utils.VSCodeUtils.getPremakeTerminal(); terminal.show()});
+	commands.registerCommand(context, "premake.workspace.create", () => projectGenerator.generateWorkspace());
+	commands.registerCommand(context, "premake.project.create",())
 }
 
 async function handleWorkspaceFoldersChanged(event: vscode.WorkspaceFoldersChangeEvent): Promise<void> { 
