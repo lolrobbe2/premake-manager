@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
 import { ProjectParser } from "./parser/projectParser";
 import { workspaceFile } from "./parser/workspaceFile";
-import { WorkspacesProvider } from "./views/workspacesProvider";
 import { premakeWorkspace } from './premake5/workspace';
+import { WorkspacesProvider } from "./views/workspacesProvider";
 export class projectManager {
     static workspaceProvider: WorkspacesProvider = new WorkspacesProvider(); 
     static premakeFile: workspaceFile | undefined;
@@ -18,11 +18,15 @@ export class projectManager {
         this.workspaceProvider.refresh();
     }
     static async reload(): Promise<void> {
-        if(this.currentWorkspace === undefined) return;
+        if (this.currentWorkspace === undefined) {
+            this.workspaceProvider.refresh();
+            return;
+        }
         const fileUri = vscode.Uri.file(this.currentWorkspace);
         const fileStat = await vscode.workspace.fs.stat(fileUri);
         if(fileStat === undefined) {
             this.currentWorkspace = undefined;
+            this.workspaceProvider.refresh()
             return;
         }
         ProjectParser.reset();
