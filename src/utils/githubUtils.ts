@@ -56,6 +56,11 @@ export class GithubUtils
             return undefined;
         }
     }
+    public static async isLatest(version: string): Promise<boolean>{
+        const releases = await this.getReleases();
+        const releaseindex = releases.findIndex((release: any) => release.name === version);
+        return releaseindex == 0 || version === 'latest';
+    }
     static async authenticateVSCode(){
         const session = await vscode.authentication.getSession("github", ["repo", "user"], { createIfNone: true }); 
         const Octokit = await Octokitimport;

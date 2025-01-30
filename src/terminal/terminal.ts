@@ -6,6 +6,7 @@ import { VSCodeUtils } from 'utils/utils';
 import { PremakeInstance, PremakeRunner } from 'utils/premakeRunner';
 import { spawn } from 'child_process';
 import { action } from 'projectManagement/premake5/action';
+import { GithubUtils } from 'utils/githubUtils';
 const keys = {
     enter: "\r",
     backspace: "\x7f",
@@ -71,7 +72,6 @@ export class Terminal implements vscode.Pseudoterminal{
         this.firstInput = false;
         
     }
-    
     content = "";
     writeEmitter = new vscode.EventEmitter<string>();
     history: string[] = [""];
@@ -96,7 +96,7 @@ export class Terminal implements vscode.Pseudoterminal{
                 const input:string = this.getPrompt()!; //don't miss the !
                 this.writeEmitter.fire(data);
                 this.history.push(input);
-                await this.handlePremakeCommand(input);
+                await this.handleCommand(input);
                 this.writeEmitter.fire('\r\n');
                 this.prompt("premake5");
                 break;
@@ -124,9 +124,7 @@ export class Terminal implements vscode.Pseudoterminal{
                     this.writeEmitter.fire('\r');
                     for(const command of commands){
                         if(command === '') continue;
-                        this.writeEmitter.fire('\r\n');
-                        this.history.push(command);
-                        await this.handlePremakeCommand(command);
+                        this.handleCommand(command);
                     }
                     this.writeEmitter.fire('\r\n');
                     this.prompt("premake5");
@@ -284,6 +282,92 @@ export class Terminal implements vscode.Pseudoterminal{
         this.promptLenght = 0;
         this.historyIndex = (this.historyIndex - 1 + this.history.length) % this.history.length;
         return this.history[this.historyIndex];
+    }
+    clear():void{
+        this.content = "";
+        this.history = [""];
+        this.cursorIndexPoition = 0;
+        this.writeEmitter.fire(actions.clear);
+    }
+    async handleCommand(command: string) {
+        switch (command) {
+            case "version":
+                const version = PremakeVersionManager.getVersion()
+                const isLatest = await GithubUtils.isLatest(version);
+                this.setMark();
+                this.writeText(`version: ${this.colorText(version,isLatest ? colors.GREEN : colors.YELLOW)}`);
+                if(!isLatest) this.writeText(this.colorText( " (outdated!)",colors.YELLOW));
+                break;
+            case "version set":
+                {
+                    const version:string |undefined = await vscode.commands.executeCommand("premake.setversion") as unknown as string | undefined;
+                    const isLatest = await GithubUtils.isLatest(version!);
+                    this.setMark();
+                    this.writeText(`version set to: ${this.colorText(version!,isLatest ? colors.GREEN : colors.YELLOW)}`);
+                    if(!isLatest) this.writeText(this.colorText( " (outdated!)",colors.YELLOW));
+                    }
+                break;
+            case "clear":
+                this.setMark();
+                this.clear();
+                break;
+            case "clean":
+                this.setMark();
+                this.writeText("cleaning .premake folder...");
+                await vscode.commands.executeCommand("premake.cleanup");
+                this.writeText(this.colorText("finished cleaning .premake folder",colors.GREEN));
+                break;
+            case "default":
+                {
+                    const action:string = PremakeRunner.getCurrentAction();
+                    this.setMark();
+                    if(action !== '')
+                        this.writeText(`default: ${this.colorText(action,colors.GREEN)}`);
+                    else
+                        this.writeText(`default: ${this.colorText('not set',colors.RED)}`);
+                }
+                break;
+            case "default run":
+                {
+                    const action = await PremakeRunner.getCurrentAction();
+                    this.writeEmitter.fire('\r');
+                    if(action !== '')
+                        await this.handlePremakeCommand(action);
+                    else {
+                        this.setMark();
+                        this.writeText(this.colorText('no default action has been set!', colors.RED));
+                    }
+                }
+                break;
+            case "default set":
+                {
+                    const action:string = await vscode.commands.executeCommand("premake.action.default.set") as unknown as string;
+                    this.setMark();
+                    if(action !== '')
+                        this.writeText(`default set to: ${this.colorText(action,colors.GREEN)}`);
+                    else
+                        this.writeText(`default: ${this.colorText('not set',colors.RED)}`);
+                }
+                break;
+            case "help":
+                this.setMark();
+                this.writeText("Available commands:\r\n");
+                this.writeText("  help             - Displays this help message.\r\n");
+                this.writeText("  version          - Shows the current version and checks if it's the latest.\r\n");
+                this.writeText("  version set      - Opens the vesion picker.\r\n");
+                this.writeText("  default          - returns the default action.\r\n");
+                this.writeText("  default run      - runs the default action.\r\n");
+                this.writeText("  default set      - opens the action picker.\r\n");
+                this.writeText("  clear            - clears all previous input.\r\n");
+                this.writeText("  clean            - clean the .premake folder.\r\n");
+                this.writeText("  other            - all other input will be piped to premake5\r\n")
+                break;
+            default:
+                this.writeEmitter.fire('\r');
+                this.history.push(command);
+                await this.handlePremakeCommand(command);
+            break;
+        }
     }
 }
 

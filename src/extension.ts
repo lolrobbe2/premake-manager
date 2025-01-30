@@ -59,6 +59,7 @@ function registerCommands(context: vscode.ExtensionContext) {
 				}
 			}
 		}
+		return version;
 	});
 	commands.registerCommand(context, "premake.cleanup", async () => {
 		PremakeVersionManager.cleanPremakeFolder();
@@ -77,12 +78,14 @@ function registerCommands(context: vscode.ExtensionContext) {
 	commands.registerCommand(context, "premake.action.default.set", async () => {
 		const action = await PremakeRunner.getActionPicker(context);
 		if (action !== undefined) { await PremakeRunner.setDefaultAction(action); }
+		return await PremakeRunner.getCurrentAction();
 	});
 	commands.registerCommand(context, "premake.action.default.run", async () => {
 		let action = await PremakeRunner.getCurrentAction();
 		if (action !== undefined && action !== '') {
-			const instance = await PremakeRunner.getPremakeInstance(action);
-			await instance.run(context);
+			const terminal:vscode.Terminal = utils.VSCodeUtils.getPremakeTerminal();
+			terminal.show();
+			terminal.sendText(action,true);
 		} else {
 			await vscode.commands.executeCommand("premake.action.default.set");
 			await vscode.commands.executeCommand("premake.action.default.run");
@@ -95,7 +98,7 @@ function registerCommands(context: vscode.ExtensionContext) {
 			item.edit();
 		}
 	});
-	commands.registerCommand(context, "premake.terminal.new", () => {new Terminal();});
+	commands.registerCommand(context, "premake.terminal.new", () => {new Terminal(undefined);});
 	commands.registerCommand(context, "premake.terminal.get", () => {const terminal:vscode.Terminal = utils.VSCodeUtils.getPremakeTerminal(); terminal.show()});
 }
 

@@ -29,6 +29,6 @@ export class VSCodeUtils {
             name: 'premake5',
             pty: new Terminal("",false),
             iconPath: vscode.Uri.file(this.context!.asAbsolutePath("resources/media/premake-logo.png"))
-        });
+        })
     }
 }
