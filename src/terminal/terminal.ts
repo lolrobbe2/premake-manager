@@ -1,12 +1,10 @@
-import * as vscode from 'vscode';
-import * as fs from 'fs';
+import { spawn } from 'child_process';
 import * as path from 'path';
 import { PremakeVersionManager } from 'premakeInstaller/premakeVersionManger';
-import { VSCodeUtils } from 'utils/utils';
-import { PremakeInstance, PremakeRunner } from 'utils/premakeRunner';
-import { spawn } from 'child_process';
-import { action } from 'projectManagement/premake5/action';
 import { GithubUtils } from 'utils/githubUtils';
+import { PremakeRunner } from 'utils/premakeRunner';
+import { VSCodeUtils } from 'utils/utils';
+import * as vscode from 'vscode';
 const keys = {
     enter: "\r",
     backspace: "\x7f",
@@ -349,6 +347,11 @@ export class Terminal implements vscode.Pseudoterminal{
                         this.writeText(`default: ${this.colorText('not set',colors.RED)}`);
                 }
                 break;
+            case "new": {
+                    await vscode.commands.executeCommand("premake.workspace.create");
+                    this.writeText("new workspace generated");
+                }
+                break;
             case "help":
                 this.setMark();
                 this.writeText("Available commands:\r\n");
@@ -358,6 +361,7 @@ export class Terminal implements vscode.Pseudoterminal{
                 this.writeText("  default          - returns the default action.\r\n");
                 this.writeText("  default run      - runs the default action.\r\n");
                 this.writeText("  default set      - opens the action picker.\r\n");
+                this.writeText("  new              - create a new workspace (experimental).\r\n");
                 this.writeText("  clear            - clears all previous input.\r\n");
                 this.writeText("  clean            - clean the .premake folder.\r\n");
                 this.writeText("  other            - all other input will be piped to premake5\r\n")

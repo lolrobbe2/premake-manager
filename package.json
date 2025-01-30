@@ -83,6 +83,7 @@
         } 
       ] 
     },
+    
     "commands": [
       {
         "category": "Premake",
@@ -119,6 +120,12 @@
         "title": "Edit Project Item", 
         "category": "Project",
         "icon": "resources/media/premake-logo-128.png"
+      },
+      {
+        "command": "premake.workspace.refresh",
+        "title": "refresh workspace viewer",
+        "icon": "resources/media/refresh.svg"
+        
       },
       {
         "category": "Premake",
@@ -161,6 +168,13 @@
           "command": "extension.editProjectItem",
           "when": "viewItem == projectItemView",
           "group": "inline"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "premake.workspace.refresh",
+          "when": "view == workspacesList",
+          "group": "navigation"
         }
       ]
     },

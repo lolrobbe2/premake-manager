@@ -102,7 +102,10 @@ function registerCommands(context: vscode.ExtensionContext) {
 	commands.registerCommand(context, "premake.terminal.new", () => {new Terminal(undefined);});
 	commands.registerCommand(context, "premake.terminal.get", () => {const terminal:vscode.Terminal = utils.VSCodeUtils.getPremakeTerminal(); terminal.show()});
 	commands.registerCommand(context, "premake.workspace.create", () => projectGenerator.generateWorkspace());
-	commands.registerCommand(context, "premake.project.create",() => projectGenerator.generateProject());
+	//commands.registerCommand(context, "premake.project.create",() => projectGenerator.generateProject());
+	commands.registerCommand(context, "premake.workspace.refresh", ()=>{
+		projectManager.reload();
+	});
 }
 
 async function handleWorkspaceFoldersChanged(event: vscode.WorkspaceFoldersChangeEvent): Promise<void> { 
