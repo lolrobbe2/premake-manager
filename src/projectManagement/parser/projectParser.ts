@@ -47,11 +47,11 @@ function isProjectNode(node: any): node is ProjectNode {
 }
 
 function isParameterNode(node: any): node is ParameterNode {
-    return node.type === 'StringCallExpression' && node.base && node.base.type === 'Identifier' && node.base.name !== 'include';
+    return node.type === 'StringCallExpression' && node.base && node.base.type === 'Identifier' && node.base.name !== 'include' && node.base.name !== 'includeexternal';
 }
 
 function isIncludeNode(node: any): node is ParameterNode {
-    return node.type === 'StringCallExpression' && node.base && node.base.type === 'Identifier' && node.base.name === 'include';
+    return node.type === 'StringCallExpression' && node.base && node.base.type === 'Identifier' && (node.base.name === 'include' || node.base.name === 'includeexternal');
 }
 
 function isGroupNode(node: any): node is GroupNode {

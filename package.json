@@ -127,13 +127,17 @@
         "icon": "resources/media/premake-logo-128.png"
       },
       {
-       
+        "category": "Premake",
+        "command": "premake.project.create",
+        "title": "create a new project",
+        "icon": "resources/media/premake-logo-128.png"
+      },
+      {
         "category": "Premake",
         "command": "premake.terminal.new",
         "title": "launch a new premake5 terminal"
       },
       {
-       
         "category": "Premake",
         "command": "premake.terminal.new",
         "title": "get a new/existing premake5 terminalwhen possible"

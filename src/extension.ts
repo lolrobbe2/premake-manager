@@ -1,16 +1,16 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as path from 'path';
+import { projectGenerator } from 'projectManagement/projectGenerator.js';
 import { projectManager } from 'projectManagement/projectManager';
 import { ProjectItem } from 'projectManagement/views/projectItem.js';
+import { TaskHandler, Terminal } from 'terminal/terminal.js';
 import * as vscode from 'vscode';
 import { commands } from './commands/register.js';
 import { PremakeWatcher } from './premakeInstaller/premakeDetector';
 import { PremakeVersionManager } from './premakeInstaller/premakeVersionManger';
 import * as utils from './utils/mod.js';
 import { PremakeRunner } from './utils/premakeRunner.js';
-import { TaskHandler, Terminal } from 'terminal/terminal.js';
-import { projectGenerator } from 'projectManagement/projectGenerator.js';
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -102,7 +102,7 @@ function registerCommands(context: vscode.ExtensionContext) {
 	commands.registerCommand(context, "premake.terminal.new", () => {new Terminal(undefined);});
 	commands.registerCommand(context, "premake.terminal.get", () => {const terminal:vscode.Terminal = utils.VSCodeUtils.getPremakeTerminal(); terminal.show()});
 	commands.registerCommand(context, "premake.workspace.create", () => projectGenerator.generateWorkspace());
-	commands.registerCommand(context, "premake.project.create",())
+	commands.registerCommand(context, "premake.project.create",() => projectGenerator.generateProject());
 }
 
 async function handleWorkspaceFoldersChanged(event: vscode.WorkspaceFoldersChangeEvent): Promise<void> { 
