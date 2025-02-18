@@ -221,7 +221,7 @@ export class Terminal implements vscode.Pseudoterminal{
     getPrompt() : string | undefined{
         if(this.promptEnabled){
             this.promptEnabled = false;
-            return this.content.slice(this.content.length - this.promptLenght, this.content.length);
+            return this.content.slice(this.content.length - this.promptLenght, this.content.length).trim();
         }
         return undefined;
     }
