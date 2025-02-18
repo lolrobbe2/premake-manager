@@ -368,7 +368,9 @@ export class Terminal implements vscode.Pseudoterminal{
                 break;
             default:
                 this.writeEmitter.fire('\r');
-                this.history.push(command);
+                if (this.history.length === 0 || this.history[this.history.length - 1] !== command) {
+                    this.history.push(command);
+                }
                 await this.handlePremakeCommand(command);
             break;
         }
