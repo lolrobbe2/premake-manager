@@ -7,7 +7,7 @@ this is an unofficial extension to manage [premake](https://premake.github.io) p
 ## Features
 
 1) install/manage multiple versions of premake at the same time.
-2) easaliy run premake actions
+2) easily run premake actions
 3) auto detect premake5.lua
 ## Requirements
 
