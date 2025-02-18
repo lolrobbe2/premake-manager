@@ -309,7 +309,7 @@ export class Terminal implements vscode.Pseudoterminal{
                 this.setMark();
                 this.clear();
                 break;
-            case "clean":
+            case "clean folder":
                 this.setMark();
                 this.writeText("cleaning .premake folder...");
                 await vscode.commands.executeCommand("premake.cleanup");
@@ -363,7 +363,7 @@ export class Terminal implements vscode.Pseudoterminal{
                 this.writeText("  default set      - opens the action picker.\r\n");
                 this.writeText("  new              - create a new workspace (experimental).\r\n");
                 this.writeText("  clear            - clears all previous input.\r\n");
-                this.writeText("  clean            - clean the .premake folder.\r\n");
+                this.writeText("  clean folder     - clean the .premake folder.\r\n");
                 this.writeText("  other            - all other input will be piped to premake5\r\n")
                 break;
             default:
