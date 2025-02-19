@@ -117,11 +117,18 @@
         "shortTitle": "clean"
       },
       {
-        "command": "extension.editProjectItem", 
+        "command": "premake.editProjectItem", 
         "title": "Edit Project Item", 
-        "category": "Project",
-        "icon": "resources/media/premake-logo-128.png",
+        "category": "Premake",
+        "icon": "resources/media/edit_icon.svg",
         "shortTitle": "edit project"
+      },
+      {
+        "command": "premake.editWorkspaceItem",
+        "title": "Edit Workspace Item",
+        "category": "Premake",
+        "icon": "resources/media/edit_icon.svg",
+        "shortTitle": "edit workspace"
       },
       {
         "command": "premake.workspace.refresh",
@@ -185,8 +192,13 @@
     "menus": { 
       "view/item/context": [
         {
-          "command": "extension.editProjectItem",
+          "command": "premake.editProjectItem",
           "when": "viewItem == projectItemView",
+          "group": "inline"
+        },
+        {
+          "command": "premake.editWorkspaceItem",
+          "when": "viewItem == workspaceItemView",
           "group": "inline"
         }
       ],

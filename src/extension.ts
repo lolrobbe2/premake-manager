@@ -4,6 +4,7 @@ import * as path from 'path';
 import { projectGenerator } from 'projectManagement/projectGenerator.js';
 import { projectManager } from 'projectManagement/projectManager';
 import { ProjectItem } from 'projectManagement/views/projectItem.js';
+import { WorkspaceItem } from 'projectManagement/views/workspaceItem.js';
 import { TaskHandler, Terminal } from 'terminal/terminal.js';
 import * as vscode from 'vscode';
 import { commands } from './commands/register.js';
@@ -94,8 +95,13 @@ function registerCommands(context: vscode.ExtensionContext) {
 
 	});
 	
-	commands.registerCommand(context,"extension.editProjectItem",(item: vscode.TreeItem) => {
+	commands.registerCommand(context,"premake.editProjectItem",(item: vscode.TreeItem) => {
 		if (item instanceof ProjectItem) {
+			item.edit();
+		}
+	});
+	commands.registerCommand(context, "premake.editWorkspaceItem", (item: vscode.TreeItem) => {
+		if (item instanceof WorkspaceItem) {
 			item.edit();
 		}
 	});
