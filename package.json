@@ -9,7 +9,8 @@
     "vscode": "^1.92.1"
   },
   "categories": [
-    "Other","Snippets"
+    "Other",
+    "Snippets"
   ],
   "author": {
     "name": "robbe beernaert"
@@ -50,7 +51,7 @@
       {
         "type": "premake5",
         "required": [
-            "action"
+          "action"
         ],
         "properties": {
           "action": {
@@ -69,21 +70,20 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "workspaces", 
-          "title": "Workspaces", 
-          "icon": "resources/media/premake-logo-simple.png" 
-        } 
-      ] 
-    }, 
+          "id": "workspaces",
+          "title": "Workspaces",
+          "icon": "resources/media/premake-logo-simple.png"
+        }
+      ]
+    },
     "views": {
       "workspaces": [
         {
           "id": "workspacesList",
-          "name": "Workspaces List" 
-        } 
-      ] 
+          "name": "Workspaces List"
+        }
+      ]
     },
-    
     "commands": [
       {
         "category": "Premake",
@@ -117,8 +117,8 @@
         "shortTitle": "clean"
       },
       {
-        "command": "extension.editProjectItem", 
-        "title": "Edit Project Item", 
+        "command": "extension.editProjectItem",
+        "title": "Edit Project Item",
         "category": "Project",
         "icon": "resources/media/premake-logo-128.png",
         "shortTitle": "edit project"
@@ -128,7 +128,6 @@
         "title": "refresh workspace viewer",
         "icon": "resources/media/refresh.svg",
         "shortTitle": "refresh"
-        
       },
       {
         "category": "Premake",
@@ -182,7 +181,7 @@
         "key": "ctrl+alt+p"
       }
     ],
-    "menus": { 
+    "menus": {
       "view/item/context": [
         {
           "command": "extension.editProjectItem",
@@ -242,7 +241,8 @@
     "chokidar": "^4.0.3",
     "cp": "^0.2.0",
     "luaparse": "^0.3.1",
-    "tar": "^7.4.3"
+    "tar": "^7.4.3",
+    "yaml": "^2.7.1"
   },
   "devDependencies": {
     "@octokit/types": "^13.6.2",
