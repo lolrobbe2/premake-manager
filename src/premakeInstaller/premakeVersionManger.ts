@@ -3,16 +3,21 @@ import axios from 'axios';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
+import Configuration from 'premakeConfig/configuration.js';
 import * as tar from 'tar';
 import * as vscode from 'vscode';
 import { GithubUtils, Release, ReleaseAsset } from '../utils/githubUtils.js';
 import { VSCodeUtils } from '../utils/utils.js';
-import { Terminal } from 'terminal/terminal.js';
 export class PremakeVersionManager {
 
     // Get the Premake version from the workspace settings
     public static getVersion(): string {
         const premakeVersion = vscode.workspace.getConfiguration().get<string>('premake.version', 'not set');
+        if (premakeVersion === '' && Configuration.getVersion() !== '') {
+            const config = vscode.workspace.getConfiguration();
+            config.update('premake.version', Configuration.getVersion(), vscode.ConfigurationTarget.Workspace);
+            return Configuration.getVersion();
+        }
         return premakeVersion;
     }
 
@@ -22,9 +27,10 @@ export class PremakeVersionManager {
     
     // Optionally, you can set the version through the API if needed
     public static async setVersion(version: string): Promise<void> {
+        Configuration.setVersion(version);
         const config = vscode.workspace.getConfiguration();
-        //await Terminal.setVersion(version);
         await config.update('premake.version', version, vscode.ConfigurationTarget.Workspace);
+        await Configuration.update();
     }
 
     public static async showVersionPicker(): Promise<string | undefined> {
@@ -204,7 +210,7 @@ export class PremakeVersionManager {
     public static async installPremakeVersion(releaseName: string): Promise<void> {
         const release = await this.getVersionRelease(releaseName);
         if(release !== undefined) {
-            const releaseAsset: ReleaseAsset= await this.getCurrentAssetForPlatform(release)!;
+            const releaseAsset: ReleaseAsset = await this.getCurrentAssetForPlatform(release)!;
             await this.installPremakeVersionPlatform(release.name ?? "latest", releaseAsset);
         }
     }

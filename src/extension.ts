@@ -112,7 +112,9 @@ async function handleWorkspaceFoldersChanged(event: vscode.WorkspaceFoldersChang
 	if (event.added.length > 0) {
 		if(utils.VSCodeUtils.getWorkspaceFolder() === '') { return; }
 		const filePath = path.join(utils.VSCodeUtils.getWorkspaceFolder(), PremakeWatcher.targetFile); 
-		await PremakeWatcher.checkWorkspaceAvailable(filePath); 
+		await PremakeWatcher.checkWorkspaceAvailable(filePath);
+		const configFilePath = path.join(utils.VSCodeUtils.getWorkspaceFolder(), PremakeWatcher.targetConfigFile); 
+		await PremakeWatcher.checkConfigAvailable(configFilePath);
 	}
 }
 // This method is called when your extension is deactivated

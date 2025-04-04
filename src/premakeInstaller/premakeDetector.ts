@@ -4,6 +4,7 @@ import chokidar, { FSWatcher } from 'chokidar';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 
+import Configuration from 'premakeConfig/configuration.js';
 import { projectManager } from 'projectManagement/projectManager.js';
 import * as utils from '../utils/utils.js';
 import { PremakeVersionManager } from './premakeVersionManger.js';
@@ -13,6 +14,7 @@ import { PremakeVersionManager } from './premakeVersionManger.js';
  */
 export class PremakeWatcher {
     static readonly targetFile: string = 'premake5.lua';
+    static readonly targetConfigFile: string = 'premakeConfig.yml';
     private static watcher: FSWatcher = chokidar.watch('.', {
         ignored: /(^|[\/\\])\../, // Ignore dotfiles
         persistent: true,
@@ -22,6 +24,10 @@ export class PremakeWatcher {
     public static async registerWatcher(): Promise<void> {
         const filePath = path.join(utils.VSCodeUtils.getWorkspaceFolder(), PremakeWatcher.targetFile);
         await PremakeWatcher.checkWorkspaceAvailable(filePath);
+
+        const configFilePath = path.join(utils.VSCodeUtils.getWorkspaceFolder(), PremakeWatcher.targetConfigFile);
+        await PremakeWatcher.checkConfigAvailable(filePath);
+
         PremakeWatcher.watcher.on('add', PremakeWatcher.onFileAdded);
         this.watcher.on('change',() => projectManager.reload());
     }
@@ -35,6 +41,8 @@ export class PremakeWatcher {
     private static onFileAdded(path: string): void {
         if (path.endsWith(PremakeWatcher.targetFile)) {
             PremakeWatcher.runScript();
+        } else if(path.endsWith(PremakeWatcher.targetConfigFile)){
+            Configuration.loadConfig()
         }
     }
     public static addFileForWatching(filePath: string): void {
@@ -83,6 +91,19 @@ export class PremakeWatcher {
         {
             console.log(error);
             console.log("no premake5.lua workspace found");
+        }
+    }
+
+    static async checkConfigAvailable(filePath: string)
+    {
+        console.log(filePath);
+        try {
+            await fs.access(filePath);
+            await Configuration.loadConfig(); // Trigger the action if the file is found
+        }
+        catch (error: any) {
+            console.log(error);
+            console.log("no premakeConfig.yml found");
         }
     }
 }
