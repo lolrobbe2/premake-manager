@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { VSCodeUtils } from 'utils/utils';
+import { Prompt, VSCodeUtils } from 'utils/utils';
 import * as vscode from 'vscode';
 import { projectManager } from './projectManager';
 
@@ -20,7 +20,7 @@ export class projectGenerator {
         projectManager.loadWorkspace(workspaceFile.fsPath);
     }
     public static async generateProject() {
-        const selection: vscode.QuickPickItem | undefined = await vscode.window.showQuickPick(this.getWorkspaceOptions());
+        const selection: vscode.QuickPickItem | undefined = await Prompt.Select(this.getWorkspaceOptions());
     }
     private static getWorkspaceOptions(): vscode.QuickPickItem[]{
         return projectManager.workspaces.map(workspace =>  {return {label:workspace, iconPath: vscode.Uri.file(VSCodeUtils.context!.asAbsolutePath("resources/media/premake-logo.svg"))} as vscode.QuickPickItem})

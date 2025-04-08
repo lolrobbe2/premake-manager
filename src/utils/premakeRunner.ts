@@ -2,7 +2,7 @@ import * as path from 'path';
 import { projectManager } from 'projectManagement/projectManager';
 import * as vscode from 'vscode';
 import { PremakeVersionManager } from '../premakeInstaller/premakeVersionManger';
-import { VSCodeUtils } from "./utils";
+import { Prompt, VSCodeUtils } from "./utils";
 import { Terminal } from 'terminal/terminal';
 
 export class PremakeInstance {
@@ -87,7 +87,7 @@ export class PremakeRunner {
     }
 
     public static async getActionPicker(context: vscode.ExtensionContext) {
-        const action = await vscode.window.showQuickPick(this.getActions(context), { placeHolder: 'Select an action' });
+        const action = await Prompt.Select(this.getActions(context), 'Select an action');
         if (action?.label === "custom") {
             const customAction: string | undefined = await vscode.window.showInputBox({ title: "enter custom action" });
             if (customAction !== undefined) {

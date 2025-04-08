@@ -70,4 +70,31 @@ export class Prompt {
         console.error(error);
         vscode.window.showErrorMessage(error);
     }
+
+    /**
+     * Shows a quikPicker to the user where a Single option can be selected
+     * @param options to selct from see vscode.QuickPickItem for more info
+     * @param placeHolder for the quickPicker
+     * @returns vscode.QuickPickItem that was selected
+     */
+    static async Select(options:vscode.QuickPickItem[], placeHolder: string | undefined = undefined) : Promise<vscode.QuickPickItem | undefined>{
+        return vscode.window.showQuickPick(options, { placeHolder: placeHolder, canPickMany: false});
+    }
+
+    /**
+     * Shows a quikPicker to the user where Multiple options can be selected.
+     * @param options to selct from see vscode.QuickPickItem for more info
+     * @param placeHolder for the quickPicker
+     * @returns vscode.QuickPickItem that was selected
+     */
+    static async SelectMany(options:vscode.QuickPickItem[], placeHolder: string | undefined = undefined) : Promise<vscode.QuickPickItem[] | undefined>{
+        return vscode.window.showQuickPick(options, { placeHolder: placeHolder, canPickMany: true});
+    }
+
+    static async Text(prompt:string, placeHolder: string = "Enter your text here...") : Promise<String | undefined>{
+        return await vscode.window.showInputBox({
+            prompt:prompt,
+            placeHolder:placeHolder,
+        });
+    }
 }

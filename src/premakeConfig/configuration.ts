@@ -7,12 +7,17 @@ import { Document, parseDocument, ToStringOptions, YAMLMap } from 'yaml';
 import * as utils from '../utils/utils.js';
 import { ModuleConfig } from 'modules/moduleUtils.js';
 
-
+/**
+ * @brief This the interface/ representation of the premakeConfig.yml file.
+ */
 export interface PremakeConfig {
     version: string;
     modules: YAMLMap<string, ModuleConfig>;
 }
 
+/**
+ * @brief This is the class to interract with the premakeConfig.yml
+ */
 class Configuration {
     public static config: PremakeConfig;
 
@@ -37,21 +42,41 @@ class Configuration {
         };
     }
 
+    /**
+     * 
+     * @returns the PremakeConfig
+     */
     public static getConfig(): PremakeConfig {
         return Configuration.config;
     }
 
+    /**
+     * 
+     * @returns current premake5 version in use
+     */
     public static getVersion(): string {
         return Configuration.config.version ??  '';
     }
 
+    /**
+     * Sets the current version in the premakeConfig.yml
+     * @param version of premake currently using
+     */
     public static setVersion(version: string): void {
         Configuration.config.version = version;
     }
+
+    /**
+     * This returns all the module configs in the premakeConfig.yml
+     * @returns YAMLMap<string, ModuleConfig> containing all ModuleConfigs
+     */
     public static getModules(): YAMLMap<string, ModuleConfig> {
         return Configuration.config.modules;
     }
 
+    /**
+     * Updates the premakeConfig.yml file for the current workspace.
+     */
     public static async update(): Promise<void> {
         const doc = new Document();
 
