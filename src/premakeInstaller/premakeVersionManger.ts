@@ -7,7 +7,7 @@ import Configuration from 'premakeConfig/configuration.js';
 import * as tar from 'tar';
 import * as vscode from 'vscode';
 import { GithubUtils, Release, ReleaseAsset } from '../utils/githubUtils.js';
-import { VSCodeUtils } from '../utils/utils.js';
+import { Prompt, VSCodeUtils } from '../utils/utils.js';
 export class PremakeVersionManager {
 
     // Get the Premake version from the workspace settings
@@ -51,7 +51,7 @@ export class PremakeVersionManager {
             return availableVersions;
             // You can now use availableVersions as needed
         } catch (error) {
-            console.error('Error populating available versions:', error);
+            Prompt.Error(`Error populating available versions: ${error}`);
             return [];
         }
     }
@@ -66,7 +66,7 @@ export class PremakeVersionManager {
         if (release) {
             return release;
         } else {
-            console.error(`Release with version ${version} not found.`);
+           Prompt.Error(`Release with version ${version} not found.`);
             return undefined;
         }
     }
@@ -195,13 +195,13 @@ export class PremakeVersionManager {
                 await fs.promises.unlink(tmpFilePath);
                 if (os.platform() !== 'win32') 
                     { await fs.promises.chmod(destinationPath, '755'); }
-                vscode.window.showInformationMessage(`Premake ${releaseName} installed successfully.`);
+                Prompt.Info(`Premake ${releaseName} installed successfully.`);
 
             } catch (error: any) {
                 if (token.isCancellationRequested && error.message === 'Installation cancelled.') {
-                    vscode.window.showWarningMessage('Installation cancelled.');
+                    Prompt.Warning('Installation cancelled.');
                 } else {
-                    vscode.window.showErrorMessage(`Failed to install Premake: ${error.message}`);
+                    Prompt.Error(`Failed to install Premake: ${error.message}`);
                 }
             }
         });
@@ -217,14 +217,8 @@ export class PremakeVersionManager {
     public static async installPremakePicker() {
         await this.showVersionPicker();
         const version: string = await PremakeVersionManager.getVersion();
-        if (!await this.isVersionReleaseInstalled(version)) {
-            const installResult = await vscode.window.showInformationMessage(
-                'Premake version is not installed for selected release. Do you want to install it?',
-                'Yes', 'No'
-            );
-            if (installResult === 'Yes') {
-                await this.installPremakeVersion(version);
-            }
+        if (!await this.isVersionReleaseInstalled(version) && await Prompt.Pass('Premake version is not installed for selected release. Do you want to install it?')) {
+            await this.installPremakeVersion(version);
         }
     }
     public static async cleanPremakeFolder() :Promise<void> {

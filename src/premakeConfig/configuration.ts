@@ -5,14 +5,10 @@ import { PremakeVersionManager } from 'premakeInstaller/premakeVersionManger';
 import * as vscode from 'vscode';
 import { Document, parseDocument, ToStringOptions, YAMLMap } from 'yaml';
 import * as utils from '../utils/utils.js';
+import { ModuleConfig } from 'modules/moduleUtils.js';
 
-interface ModuleConfig {
-    git?: string;
-    version?: string;
-    branch?: string;
-}
 
-interface PremakeConfig {
+export interface PremakeConfig {
     version: string;
     modules: YAMLMap<string, ModuleConfig>;
 }
@@ -23,16 +19,12 @@ class Configuration {
     public static async loadConfig(): Promise<void>{
         const configFilePath = path.join(utils.VSCodeUtils.getWorkspaceFolder(), PremakeWatcher.targetConfigFile);
         
-        if (!existsSync(configFilePath)) {
-            const result = await vscode.window.showInformationMessage('premakeConfig.yml does not exist, do you want to create it?', 'Yes', 'No');
-            if(result === 'Yes')
-            {
-                const yamlContent: string = PremakeVersionManager.isVersionSet() ? `version: ${PremakeVersionManager.getVersion()}` : '';
-                writeFileSync(configFilePath, yamlContent, 'utf8');
-                vscode.window.showInformationMessage(`Created ${configFilePath} with version.`);
-            } else {
-                return;
-            }
+        if (!existsSync(configFilePath) && await utils.Prompt.Pass('premakeConfig.yml does not exist, do you want to create it?')) {
+            const yamlContent: string = PremakeVersionManager.isVersionSet() ? `version: ${PremakeVersionManager.getVersion()}` : '';
+            writeFileSync(configFilePath, yamlContent, 'utf8');
+            utils.Prompt.Info(`Created ${configFilePath} with version.`);
+        } else {
+            return;
         }
         console.log("loaded config");
         const fileContents: string = readFileSync(configFilePath, 'utf8');

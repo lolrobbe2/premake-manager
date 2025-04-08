@@ -20,7 +20,9 @@ export class PremakeWatcher {
         persistent: true,
     });
 
-    // Method to register the watcher
+    /**
+     * Registers the filewatcher to check if a premake5.lua / premakeConfig.yml has been created
+     */
     public static async registerWatcher(): Promise<void> {
         const filePath = path.join(utils.VSCodeUtils.getWorkspaceFolder(), PremakeWatcher.targetFile);
         await PremakeWatcher.checkWorkspaceAvailable(filePath);
@@ -56,31 +58,31 @@ export class PremakeWatcher {
     }
 
    
-
+    /**
+     * Checks if the premake version is installed, if not prompt to install.
+     * If the version is set but not installed it prompts for installation.
+     */
     private static async versionCheck() {
         if (!PremakeVersionManager.isVersionSet()) {
-            const result = await vscode.window.showInformationMessage(
-                'Premake version is not set. Do you want to set Premake version?',
-                'Yes', 'No'
-            );
-
-            if (result === 'Yes') {
+            if (await utils.Prompt.Pass('Premake version is not set. Do you want to set Premake version?')) {
                 await PremakeVersionManager.installPremakePicker();
             }
 
         } else {
             const version: string = await PremakeVersionManager.getVersion();
-            if (!await PremakeVersionManager.isVersionReleaseInstalled(version)) {
-                const installResult = await vscode.window.showInformationMessage(
-                    'Premake version is not installed for selected release. Do you want to install it?',
-                    'Yes', 'No'
-                );
-                if (installResult === 'Yes') {
-                    await PremakeVersionManager.installPremakeVersion(version);
-                }
+            if (
+                !await PremakeVersionManager.isVersionReleaseInstalled(version) &&
+                await utils.Prompt.Pass('Premake version is not installed for selected release. Do you want to install it?')
+            ) {
+                await PremakeVersionManager.installPremakeVersion(version);
             }
         }
     }
+
+    /**
+     * checks if the current workspace contains a premake5.lua file.
+     * @param filePath to check in.
+     */
     static async checkWorkspaceAvailable(filePath: string) {
         console.log(filePath);
         try {

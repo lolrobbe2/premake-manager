@@ -1,6 +1,7 @@
 const Octokitimport = import("@octokit/core");
 
 import * as vscode from 'vscode';
+import { Prompt } from './utils';
 
 export interface ReleaseAsset {
     name: string;
@@ -18,14 +19,11 @@ export class GithubUtils
         return vscode.workspace.getConfiguration().get<string>('premake.repository', 'https://github.com/premake/premake')!;
     }
     public static extractRepoInfo(url: string): { owner: string; repo: string } | null {
-    const regex = /https:\/\/github\.com\/([^\/]+)\/([^\/]+)/;
-    const match = url.match(regex);
-    if (match) {
-        return { owner: match[1], repo: match[2] };
-    } else {
-        return null;
+        const regex = /https:\/\/github\.com\/([^\/]+)\/([^\/]+)/;
+        const match = url.match(regex);
+        return match ? { owner: match[1], repo: match[2] } : null;
     }
-    }
+    
     // Fetch releases from the specified GitHub repository
     public static async getReleases() : Promise<Release[]> {
         const octokit = await this.authenticateVSCode();
@@ -51,10 +49,10 @@ export class GithubUtils
         const release = releases.find((release: any) => release.name === version);
         if (release) {
             return release;
-        } else {
-            console.error(`Release with version ${version} not found.`);
-            return undefined;
-        }
+        } 
+        Prompt.Error(`Release with version ${version} not found.`);
+        return undefined;
+        
     }
     public static async isLatest(version: string): Promise<boolean>{
         const releases = await this.getReleases();
@@ -70,7 +68,7 @@ export class GithubUtils
         } 
         else
         {
-            vscode.window.showInformationMessage("without github login you can potentialy be rate limited!");
+            Prompt.Warning("without github login you can potentialy be rate limited!");
             return new Octokit.Octokit({});
         }
     }

@@ -32,3 +32,42 @@ export class VSCodeUtils {
         })
     }
 }
+
+export class Prompt {
+    /**
+     * Prompt the user with a Yes or No prompt
+     * @param prompt to show the user
+     * @return boolean
+     * - True on success
+     * - False when declined
+     * - False on timeout
+     */
+    static async Pass(prompt : string) : Promise<boolean> {
+        return await vscode.window.showInformationMessage(prompt,'Yes', 'No') == 'Yes';
+    }
+
+    /**
+     * Shows an information message to the user.
+     * @param message to show the user
+     */
+    static async Info(message :string) {
+        vscode.window.showInformationMessage(message);
+    }
+    
+    /**
+     * Shows a warning message to the user.
+     * @param warning to show the user
+     */
+    static async Warning(warning : string) {
+        vscode.window.showWarningMessage(warning);
+    }
+
+    /**
+     * Shows a error to the user.
+     * @param error to show the user
+     */
+    static async Error(error : string) {
+        console.error(error);
+        vscode.window.showErrorMessage(error);
+    }
+}
