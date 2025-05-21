@@ -47,178 +47,23 @@
       }
     ],
     "taskDefinitions": [
-      {
-        "type": "premake5",
-        "required": [
-            "action"
-        ],
-        "properties": {
-          "action": {
-            "type": "string",
-            "description": "The action you would like premake5 to run."
-          }
-        }
-      }
     ],
-    "viewsWelcome": [
-      {
-        "view": "workspacesList",
-        "contents": "no premake5 workspace was found, you can open a folder containing a premake5 workspace or create a new workspace.\n[Open Folder](command:vscode.openFolder)\n[Create Workspace](command:premake.workspace.create)\n To learn more about premake and how to use it [Read The Docs](https://premake.github.io/docs/)."
-      }
-    ],
-    "viewsContainers": {
-      "activitybar": [
-        {
-          "id": "workspaces", 
-          "title": "Workspaces", 
-          "icon": "resources/media/premake-logo-simple.png" 
-        } 
-      ] 
-    }, 
-    "views": {
-      "workspaces": [
-        {
-          "id": "workspacesList",
-          "name": "Workspaces List" 
-        } 
-      ] 
-    },
+    
+    
     
     "commands": [
-      {
-        "category": "Premake",
-        "command": "premake.action.run",
-        "title": "run premake action",
-        "icon": "resources/media/premake-logo-128.png"
-      },
-      {
-        "category": "Premake",
-        "command": "premake.action.default.set",
-        "title": "set default premake action",
-        "icon": "resources/media/premake-logo-128.png"
-      },
-      {
-        "category": "Premake",
-        "command": "premake.action.default.run",
-        "title": "run default premake action",
-        "icon": "resources/media/premake-logo-128.png"
-      },
-      {
-        "category": "Premake",
-        "command": "premake.setversion",
-        "title": "set premake version",
-        "icon": "resources/media/premake-logo-128.png"
-      },
-      {
-        "category": "Premake",
-        "command": "premake.cleanup",
-        "title": "cleanup the premake folder",
-        "icon": "resources/media/premake-logo-128.png",
-        "shortTitle": "clean"
-      },
-      {
-        "command": "extension.editProjectItem", 
-        "title": "Edit Project Item", 
-        "category": "Project",
-        "icon": "resources/media/premake-logo-128.png",
-        "shortTitle": "edit project"
-      },
-      {
-        "command": "premake.workspace.refresh",
-        "title": "refresh workspace viewer",
-        "icon": "resources/media/refresh.svg",
-        "shortTitle": "refresh"
-        
-      },
-      {
-        "category": "Premake",
-        "command": "premake.workspace.create",
-        "title": "create a new workspace",
-        "icon": "resources/media/premake-logo-128.png",
-        "shortTitle": "create workspace"
-      },
-      {
-        "category": "Premake",
-        "command": "premake.project.create",
-        "title": "create a new project",
-        "icon": "resources/media/premake-logo-128.png"
-      },
-      {
-        "category": "Premake",
-        "command": "premake.terminal.new",
-        "title": "launch a new premake5 terminal",
-        "shortTitle": "terminal new"
-      },
-      {
-        "category": "Premake",
-        "command": "premake.terminal.get",
-        "title": "get a new/existing premake5 terminalwhen possible",
-        "shortTitle": "terminal get"
-      }
+      
     ],
     "keybindings": [
-      {
-        "command": "premake.setversion",
-        "key": "ctrl+alt+v"
-      },
-      {
-        "command": "premake.terminal.new",
-        "key": "ctrl+alt+m"
-      },
-      {
-        "command": "premake.action.default.set",
-        "key": "ctrl+alt+a"
-      },
-      {
-        "command": "premake.action.default.run",
-        "key": "ctrl+alt+b"
-      },
-      {
-        "command": "premake.cleanup",
-        "key": "ctrl+alt+c"
-      },
-      {
-        "command": "premake.terminal.get",
-        "key": "ctrl+alt+p"
-      }
+      
     ],
     "menus": { 
-      "view/item/context": [
-        {
-          "command": "extension.editProjectItem",
-          "when": "viewItem == projectItemView",
-          "group": "inline"
-        }
-      ],
-      "view/title": [
-        {
-          "command": "premake.workspace.refresh",
-          "when": "view == workspacesList",
-          "group": "navigation"
-        }
-      ]
+     
     },
     "configuration": {
       "type": "object",
       "properties": {
-        "premake.version": {
-          "type": "string",
-          "description": "Choose the version of Premake to use for this project."
-        },
-        "premake.repository": {
-          "type": "string",
-          "default": "https://github.com/premake/premake-core",
-          "description": "the url from wich to get the premake versions from."
-        },
-        "premake.action": {
-          "type": "string",
-          "description": "the default action to run"
-        },
-        "premake.workspace.autoload": {
-          "type": "boolean",
-          "default": true,
-          "description": "Automatically load the Premake workspace/ premake5.lua on startup."
-        }
+        
       }
     }
   },
@@ -235,7 +80,6 @@
     "icons": "fantasticon ./src/resources/media/ -o ./src/resources/media/"
   },
   "dependencies": {
-    "@octokit/rest": "^21.0.2",
     "@types/vscode": "^1.96.0",
     "adm-zip": "^0.5.16",
     "axios": "^1.7.9",
@@ -247,8 +91,6 @@
   "devDependencies": {
     "@octokit/types": "^13.6.2",
     "@types/adm-zip": "^0.5.7",
-    "@types/lua-json": "^1.0.3",
-    "@types/luaparse": "^0.2.12",
     "@types/mocha": "^10.0.9",
     "@types/node": "^20.9.0",
     "@types/vscode": "^1.92.1",
