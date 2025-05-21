@@ -32,7 +32,7 @@
       "profiles": [
         {
           "id": "premake5.terminal-profile",
-          "title": "premake5"
+          "title": "Premake5"
         }
       ]
     },
@@ -52,10 +52,23 @@
     
     
     "commands": [
-      
+      {
+        "category": "Premake5",
+        "command": "premake5.manager-cli",
+        "title": "Open Premake5 Manager CLI Terminal"
+      },
+      {
+        "category": "Premake5",
+        "command": "premake5.version-set",
+        "title": "Set the active premake5 version "
+      }
     ],
     "keybindings": [
-      
+      {
+        "command": "premake5.manager-cli",
+        "key": "ctrl+alt+p",
+        "when": "terminalFocus == false"
+      }
     ],
     "menus": { 
      
