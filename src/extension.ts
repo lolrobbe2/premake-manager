@@ -2,6 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import { PremakeCliTerminal } from 'cli/terminal';
 import { TerminalInterface } from 'cli/terminalInterface';
+import { TerminalHandler } from 'commands/terminal-command';
 import * as vscode from 'vscode';
 import * as commands from './commands/mod';
 
@@ -25,6 +26,14 @@ export function activate(context: vscode.ExtensionContext) {
 			};
 		}
 	}));
+
+	vscode.window.onDidOpenTerminal((terminal) => {
+		TerminalHandler.updateEnvironment(terminal);
+	});
+
+	vscode.window.onDidCloseTerminal((terminal) => {
+		TerminalHandler.cleanupTerminal(terminal);
+	})
 }
 
 

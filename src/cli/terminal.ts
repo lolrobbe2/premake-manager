@@ -47,7 +47,9 @@ export class PremakeCliTerminal {
 
         vscode.window.onDidCloseTerminal(closedTerminal => {
             if (closedTerminal === this.terminal) {
+                this.terminal.dispose();
                 this.terminal = undefined;
+                
             }
         });
     }

@@ -33,6 +33,10 @@
         {
           "id": "premake5.terminal-profile",
           "title": "Premake5"
+        },
+        {
+          "id": "premake5.environment-profile",
+          "title": "CMD"
         }
       ]
     },
@@ -61,6 +65,11 @@
         "category": "Premake5",
         "command": "premake5.version-set",
         "title": "Set the active premake5 version "
+      },
+      {
+        "category": "Premake5",
+        "command": "premake5.environment-cli",
+        "title": "Open an environment aware terminal"
       }
     ],
     "keybindings": [
