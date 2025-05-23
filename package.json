@@ -68,8 +68,18 @@
       },
       {
         "category": "Premake5",
-        "command": "premake5.environment-cli",
-        "title": "Open an environment aware terminal"
+        "command": "premake5.version-list-installed",
+        "title": "List all the installed premake version"
+      },
+      {
+        "category": "Premake5",
+        "command": "premake5.version-list-releases",
+        "title": "List alle the available releases"
+      },
+      {
+        "category": "Premake5",
+        "command": "premake5.module-info",
+        "title": "return the info from a premake module"
       }
     ],
     "keybindings": [

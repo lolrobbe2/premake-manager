@@ -1,8 +1,8 @@
 import { PremakeCliTerminal } from 'cli/terminal';
+import * as os from "os";
 import { EnvironmentRefresher } from 'utils/vscode-utils';
 import * as vscode from 'vscode';
 import { CommandRegistrar } from "./command-registrar";
-
 export class TerminalCommand extends CommandRegistrar {
     protected execute(...args: any[]): void {
         const terminal: PremakeCliTerminal = new PremakeCliTerminal(this.context);
@@ -39,19 +39,15 @@ export class TerminalHandler {
     public static async updateEnvironment(terminal : vscode.Terminal | undefined)
     {
         
-        if(terminal === undefined)
+        if (terminal === undefined || this.seenTerminals.has(terminal))
             return;
 
-        if (this.seenTerminals.has(terminal)) {
-            return; // Already handled
-        }
+        terminal.hide();
 
         const name: string = terminal.name;
         let options: vscode.TerminalOptions = terminal.creationOptions;
         if (options.shellArgs !== undefined  && options.shellArgs?.length !== 0)
             return;
-
-        await EnvironmentRefresher.refreshWindowsPath();
 
         const newOptions: vscode.TerminalOptions = {
             name: options.name ?? terminal.name,
@@ -65,15 +61,35 @@ export class TerminalHandler {
             location: options.location
         };
         
-        console.log(process.env.PATH);
         let updatedTerminal : vscode.Terminal =  vscode.window.createTerminal(newOptions);
         updatedTerminal.show(false);
 
         this.seenTerminals.add(updatedTerminal);
+        // Wait a tiny bit to let the new terminal start (optional but helps)
+        await new Promise((resolve) => setTimeout(resolve, 100));
+
         terminal.dispose();
     }
 
     public static cleanupTerminal(terminal: vscode.Terminal): void {
         this.seenTerminals.delete(terminal);
+    }
+
+
+
+    public static async getBuiltInTerminalProfiles(): Promise<Record<string, vscode.TerminalProfile> | undefined> {
+        const platform = os.platform();
+        let configKey = "";
+
+        if (platform === "win32") {
+            configKey = "terminal.integrated.profiles.windows";
+        } else if (platform === "darwin") {
+            configKey = "terminal.integrated.profiles.osx";
+        } else {
+            configKey = "terminal.integrated.profiles.linux";
+        }
+
+        const profiles = vscode.workspace.getConfiguration().get<Record<string, vscode.TerminalProfile>>(configKey);
+        return profiles;
     }
 }

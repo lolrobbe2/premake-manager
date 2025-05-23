@@ -8,7 +8,7 @@ import * as commands from './commands/mod';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+export function activate(context: vscode.ExtensionContext) : TerminalInterface {
 	
 	commands.register(context);
 	TerminalInterface.initialize(context);
@@ -27,13 +27,16 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	}));
 
-	vscode.window.onDidOpenTerminal((terminal) => {
+	vscode.window.onDidOpenTerminal(async (terminal) => {
+		//console.log(await TerminalHandler.getBuiltInTerminalProfiles());
 		TerminalHandler.updateEnvironment(terminal);
 	});
 
-	vscode.window.onDidCloseTerminal((terminal) => {
+	vscode.window.onDidCloseTerminal(async (terminal) => {
 		TerminalHandler.cleanupTerminal(terminal);
+		//await EnvironmentRefresher.refreshWindowsPath();
 	})
+	return TerminalInterface;
 }
 
 

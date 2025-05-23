@@ -47,6 +47,7 @@ export class TerminalInterface {
 //#endregion
 
 //#region interface
+//#region VERSION
     public static setVersion(tag: String | undefined)
     {
         if(tag !== undefined && tag !== ''){
@@ -55,5 +56,27 @@ export class TerminalInterface {
             this.sendCommand("version set");
         }
     }
+
+    public static listReleases(){
+        this.sendCommand(`version list --releases`);
+    }
+
+    public static listInstalled() {
+        this.sendCommand(`version list --installed`);
+    }
+//#endregion
+//#region MODULES
+    public static moduleInfo(githubLink: String | undefined) {
+        this.sendCommand(`module info ${githubLink}`);
+    }
+
+    public static moduleAdd(githubLink: String  | undefined) {
+        this.sendCommand(`module add ${githubLink}`);
+    }
+    
+    public static moduleInstall(githubLink: string | undefined) {
+        this.sendCommand(`module install ${githubLink}`);
+    }
+//#endregion
 //#endregion
 }
