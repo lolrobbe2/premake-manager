@@ -1,4 +1,4 @@
-import { TerminalInterface } from "cli/terminalInterface";
+import { TerminalInterface } from "cli/manager/terminalInterface";
 import { CommandRegistrar } from "commands/command-registrar";
 import * as vscode from 'vscode';
 export class versionListReleasesCommand extends CommandRegistrar {

@@ -1,4 +1,4 @@
-import { TerminalInterface } from "cli/terminalInterface";
+import { TerminalInterface } from "cli/manager/terminalInterface";
 import { CommandRegistrar } from "commands/command-registrar";
 import { Prompt } from "utils/prompt-utils";
 import * as vscode from 'vscode';

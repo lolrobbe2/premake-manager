@@ -10,5 +10,6 @@ export function register(context: vscode.ExtensionContext): void {
     new versionListInstalledCommand(context);
     new versionListReleasesCommand(context);
     new moduleInfoCommand(context);
+    
 }
 

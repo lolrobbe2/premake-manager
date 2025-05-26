@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import { PremakeCliTerminal } from 'cli/terminal';
-import { TerminalInterface } from 'cli/terminalInterface';
+import { PremakeCliTerminal } from 'cli/manager/terminal';
+import { TerminalInterface } from 'cli/manager/terminalInterface';
 import { TerminalHandler } from 'commands/terminal-command';
 import * as vscode from 'vscode';
 import * as commands from './commands/mod';

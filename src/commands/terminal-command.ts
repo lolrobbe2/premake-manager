@@ -1,4 +1,4 @@
-import { PremakeCliTerminal } from 'cli/terminal';
+import { PremakeCliTerminal } from 'cli/manager/terminal';
 import * as os from "os";
 import { EnvironmentRefresher } from 'utils/vscode-utils';
 import * as vscode from 'vscode';
