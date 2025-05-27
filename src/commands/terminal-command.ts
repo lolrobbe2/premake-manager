@@ -8,8 +8,8 @@ export class TerminalCommand extends CommandRegistrar {
         const terminal: ManagerCliTerminal = new ManagerCliTerminal(this.context);
         terminal.openTerminal(true);
     }
-    constructor(context: vscode.ExtensionContext) {
-        super(context,'premake5.manager-cli')
+    constructor(context: vscode.ExtensionContext, register: boolean) {
+        super(context, register,'premake5.manager-cli', "manager terminal")
     }
 }
 
@@ -28,8 +28,8 @@ export class EnvironmentAwareTerminal extends CommandRegistrar {
         terminal.show();
     }
 
-    constructor(context: vscode.ExtensionContext) {
-        super(context, 'premake5.environment-cli')
+    constructor(context: vscode.ExtensionContext, register: boolean) {
+        super(context, register, 'premake5.environment-cli', "environment aware terminal")
     }
 }
 

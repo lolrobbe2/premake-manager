@@ -8,7 +8,7 @@ export class versionSetCommand extends CommandRegistrar {
         TerminalInterface.setVersion(tag);
     }
 
-    constructor(context: vscode.ExtensionContext) {
-        super(context,'premake5.version-set',"set premake version");
+    constructor(context: vscode.ExtensionContext, register: boolean) {
+        super(context, register, 'premake5.version-set',"set premake version");
     }
 }

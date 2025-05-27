@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { CommandRegistrar } from './command-registrar';
+import { CommandGroup } from './command-group';
 
 type CommandConstructor<T extends CommandRegistrar> = new (context: vscode.ExtensionContext) => T;
 
@@ -24,6 +25,39 @@ export class CommandManager {
         const instance = new ctor(this._context);
         this._commands.add(instance);
         return instance;
+    }
+    /**
+     * Finds a command instance by its command ID.
+     */
+    public static findById(commandId: string): CommandRegistrar | undefined {
+        return [...this._commands].find(cmd => cmd.id === commandId);
+    }
+    
+    /**
+     * Creates a CommandGroup, instantiates given command classes, adds them to the group,
+     * and registers the group command.
+     *
+     * @param groupId Command ID for the group
+     * @param groupName Display name for the group
+     * @param commandCtors Array of command class constructors to instantiate and add
+     * @returns The created CommandGroup instance
+     */
+    public static createCommandGroup(
+        groupId: string,
+        groupName: string,
+        commandCtors: CommandConstructor<CommandRegistrar>[]
+    ): CommandGroup {
+        const group = new CommandGroup(this._context, groupId, groupName);
+
+        for (const ctor of commandCtors) {
+            const cmdInstance = new ctor(this._context);
+            group.add(cmdInstance);
+            this._commands.add(cmdInstance);
+        }
+
+        this._commands.add(group);
+
+        return group;
     }
 
     /**

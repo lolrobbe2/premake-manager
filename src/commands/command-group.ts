@@ -5,8 +5,8 @@ import { Prompt } from 'utils/prompt-utils';
 export class CommandGroup extends CommandRegistrar {
     private readonly commands: CommandRegistrar[] = [];
 
-    constructor(context: vscode.ExtensionContext, commandId: string, name: string) {
-        super(context, commandId, name);
+    constructor(context: vscode.ExtensionContext, register: boolean, commandId: string, name: string) {
+        super(context, register, commandId, name);
     }
 
     /**

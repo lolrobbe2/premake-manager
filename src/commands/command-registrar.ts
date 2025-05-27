@@ -5,7 +5,7 @@ export abstract class CommandRegistrar {
     protected commandId: string;
     protected name: string
 
-    constructor(context: vscode.ExtensionContext, commandId: string, name: string) {
+    constructor(context: vscode.ExtensionContext,register: boolean, commandId: string, name: string) {
         this.context = context;
         this.commandId = commandId;
         this.name = name;

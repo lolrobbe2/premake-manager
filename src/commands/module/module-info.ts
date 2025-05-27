@@ -8,7 +8,7 @@ export class moduleInfoCommand extends CommandRegistrar {
         TerminalInterface.moduleInfo(githubLink);
     }
 
-    constructor(context: vscode.ExtensionContext) {
-        super(context,'premake5.module-info', "get module info");
+    constructor(context: vscode.ExtensionContext,register: boolean) {
+        super(context, register, 'premake5.module-info', "get module info");
     }
 }
