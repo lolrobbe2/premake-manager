@@ -9,6 +9,6 @@ export class moduleReleasesCommand extends CommandRegistrar {
     }
 
     constructor(context: vscode.ExtensionContext) {
-        super(context,'premake5.module-add');
+        super(context,'premake5.module-add',"add module");
     }
 }

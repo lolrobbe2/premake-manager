@@ -3,7 +3,7 @@ import { PathUtils } from 'utils/path-utils';
 import { Prompt } from 'utils/prompt-utils';
 import * as vscode from 'vscode';
 
-export class PremakeCliTerminal {
+export class ManagerCliTerminal {
     private terminal: vscode.Terminal | undefined;
     private context: vscode.ExtensionContext;
 
@@ -22,7 +22,7 @@ export class PremakeCliTerminal {
             return;
         }
 
-        const cliExecutable = PremakeCliTerminal.getCliExecutablePath(this.context);
+        const cliExecutable = ManagerCliTerminal.getCliExecutablePath(this.context);
 
         if (!cliExecutable) {
             Prompt.Error('Unsupported platform or CLI executable not found.');

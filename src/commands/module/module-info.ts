@@ -9,6 +9,6 @@ export class moduleInfoCommand extends CommandRegistrar {
     }
 
     constructor(context: vscode.ExtensionContext) {
-        super(context,'premake5.module-info');
+        super(context,'premake5.module-info', "get module info");
     }
 }

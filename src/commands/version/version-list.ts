@@ -7,7 +7,7 @@ export class versionListReleasesCommand extends CommandRegistrar {
     }
 
     constructor(context: vscode.ExtensionContext) {
-        super(context,'premake5.version-list-releases');
+        super(context,'premake5.version-list-releases', "list premake releases");
     }
 }
 
@@ -17,6 +17,6 @@ export class versionListInstalledCommand extends CommandRegistrar {
     }
 
     constructor(context: vscode.ExtensionContext) {
-        super(context, 'premake5.version-list-installed');
+        super(context, 'premake5.version-list-installed',"list installed versions");
     }
 }

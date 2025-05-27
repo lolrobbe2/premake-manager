@@ -1,11 +1,11 @@
-import { PremakeCliTerminal } from 'cli/manager/terminal';
+import { ManagerCliTerminal } from 'cli/manager/terminal';
 import * as os from "os";
 import { EnvironmentRefresher } from 'utils/vscode-utils';
 import * as vscode from 'vscode';
 import { CommandRegistrar } from "./command-registrar";
 export class TerminalCommand extends CommandRegistrar {
     protected execute(...args: any[]): void {
-        const terminal: PremakeCliTerminal = new PremakeCliTerminal(this.context);
+        const terminal: ManagerCliTerminal = new ManagerCliTerminal(this.context);
         terminal.openTerminal(true);
     }
     constructor(context: vscode.ExtensionContext) {

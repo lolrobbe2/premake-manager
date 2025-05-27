@@ -9,6 +9,6 @@ export class versionSetCommand extends CommandRegistrar {
     }
 
     constructor(context: vscode.ExtensionContext) {
-        super(context,'premake5.version-set');
+        super(context,'premake5.version-set',"set premake version");
     }
 }

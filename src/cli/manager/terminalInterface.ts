@@ -1,16 +1,16 @@
 import * as vscode from 'vscode';
-import { PremakeCliTerminal } from './terminal';
+import { ManagerCliTerminal } from './terminal';
 
 export class TerminalInterface {
-    private static cliTerminal: PremakeCliTerminal | undefined;
+    private static cliTerminal: ManagerCliTerminal | undefined;
 //#region init
     /**
-     * Initializes the PremakeCliTerminal instance if not already created.
+     * Initializes the ManagerCliTerminal instance if not already created.
      * Should be called during extension activation.
      */
     public static initialize(context: vscode.ExtensionContext): void {
         if (!this.cliTerminal) {
-            this.cliTerminal = new PremakeCliTerminal(context);
+            this.cliTerminal = new ManagerCliTerminal(context);
         }
     }
 
