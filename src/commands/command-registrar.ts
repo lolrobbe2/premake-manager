@@ -3,12 +3,16 @@ import * as vscode from 'vscode';
 export abstract class CommandRegistrar {
     protected context: vscode.ExtensionContext;
     protected commandId: string;
-    protected name: string
+    protected name: string;
+    protected description: string;
 
     constructor(context: vscode.ExtensionContext,register: boolean, commandId: string, name: string) {
         this.context = context;
         this.commandId = commandId;
-        this.name = name;
+
+        const parts = name.split('|');
+        this.name = parts[0].trim();
+        this.description = parts.length > 1 ? parts[1].trim() : "";
 
         const disposable = vscode.commands.registerCommand(this.commandId, (...args: any[]) => {
             this.execute(...args);
@@ -29,11 +33,21 @@ export abstract class CommandRegistrar {
         return this.name;
     }
     
+
+    /**
+     * this returns the name of the command
+     */
+    public get commandDescription(): string {
+        return this.description;
+    }
+
+
+
     /**
      * this getter returs the commands ID
      */
     public get id() : string {
-        return this.name;
+        return this.commandId;
     }
 
     

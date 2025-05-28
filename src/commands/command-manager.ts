@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
-import { CommandRegistrar } from './command-registrar';
 import { CommandGroup } from './command-group';
+import { CommandRegistrar } from './command-registrar';
 
-type CommandConstructor<T extends CommandRegistrar> = new (context: vscode.ExtensionContext) => T;
+export type CommandConstructor<T extends CommandRegistrar> = new (context: vscode.ExtensionContext, register: boolean) => T;
 
 export class CommandManager {
     private static readonly _commands: Set<CommandRegistrar> = new Set<CommandRegistrar>();
@@ -22,7 +22,7 @@ export class CommandManager {
      * @returns The instantiated command.
      */
     public static add<T extends CommandRegistrar>(ctor: CommandConstructor<T>): T {
-        const instance = new ctor(this._context);
+        const instance = new ctor(this._context,true);
         this._commands.add(instance);
         return instance;
     }
@@ -47,12 +47,11 @@ export class CommandManager {
         groupName: string,
         commandCtors: CommandConstructor<CommandRegistrar>[]
     ): CommandGroup {
-        const group = new CommandGroup(this._context, groupId, groupName);
+        const group = new CommandGroup(this._context,true, groupId, groupName);
 
         for (const ctor of commandCtors) {
-            const cmdInstance = new ctor(this._context);
-            group.add(cmdInstance);
-            this._commands.add(cmdInstance);
+            group.add(ctor);
+            this._commands.add(new ctor(this._context,true));
         }
 
         this._commands.add(group);

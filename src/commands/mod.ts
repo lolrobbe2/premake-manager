@@ -1,17 +1,12 @@
-import * as vscode from 'vscode';
-import { moduleInfoCommand } from './module/module-info';
-import { TerminalCommand } from './terminal-command';
-import { versionListInstalledCommand, versionListReleasesCommand } from './version/version-list';
-import { versionSetCommand } from './version/version-set';
 import { CommandManager } from './command-manager';
+import { ManagerCommandGroup } from './manager-group';
+import { ModuleCommandGroup } from './module/module-group';
+import { TerminalCommand } from './terminal-command';
+import { VersionCommandGroup } from './version/version-group';
 
 
 
 export function register(): void {
     CommandManager.add(TerminalCommand);
-    CommandManager.add(versionSetCommand);
-    CommandManager.add(versionListInstalledCommand);
-    CommandManager.add(versionListReleasesCommand);
-    CommandManager.add(moduleInfoCommand); 
+    CommandManager.add(ManagerCommandGroup);
 }
-

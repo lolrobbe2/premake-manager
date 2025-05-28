@@ -74,8 +74,12 @@ export class TerminalInterface {
         this.sendCommand(`module add ${githubLink}`);
     }
     
-    public static moduleInstall(githubLink: string | undefined) {
+    public static moduleInstall(githubLink: String | undefined) {
         this.sendCommand(`module install ${githubLink}`);
+    }
+
+    public static moduleRemove(githubLink: String | undefined) {
+        this.sendCommand(`module remove ${githubLink}`);
     }
 //#endregion
 //#endregion

@@ -64,29 +64,72 @@
       {
         "category": "Premake5",
         "command": "premake5.version-set",
-        "title": "Set the active premake5 version "
+        "title": "Set the active premake5 version ",
+        "when": "false"
       },
       {
         "category": "Premake5",
         "command": "premake5.version-list-installed",
-        "title": "List all the installed premake version"
+        "title": "List all the installed premake version",
+        "when": "false"
       },
       {
-        "category": "Premake5",
+        "category": "Premake5 version",
         "command": "premake5.version-list-releases",
-        "title": "List alle the available releases"
+        "title": "List alle the available releases",
+        "when": "false"
+      },
+      {
+        "category": "premake manager",
+        "command": "premake5.version-group",
+        "title": "version commands",
+        "icon": "resources/media/premake-logo-128.png"
       },
       {
         "category": "Premake5",
         "command": "premake5.module-info",
-        "title": "return the info from a premake module"
+        "title": "return the info from a premake module",
+        "icon": "resources/media/premake-logo-128.png",
+        "when": "false"
+      },
+      {
+        "category": "Premake5",
+        "command": "premake5.module-install",
+        "title": "install a premake module",
+        "icon": "resources/media/premake-logo-128.png",
+        "when": "false"
+      },
+      {
+        "category": "Premake5",
+        "command": "premake5.module-remove",
+        "title": "remove a premake module",
+        "icon": "resources/media/premake-logo-128.png",
+        "when": "false"
+      },
+      {
+        "category": "premake manager",
+        "command": "premake5.module-group",
+        "title": "module commands",
+        "icon": "resources/media/premake-logo-128.png",
+        "when": "false"
+      },
+      {
+        "category": "Premake5",
+        "command": "premake5.manager",
+        "icon": "resources/media/premake-logo-128.png",
+        "title": "manager"
       }
+
     ],
     "keybindings": [
       {
         "command": "premake5.manager-cli",
         "key": "ctrl+alt+p",
         "when": "terminalFocus == false"
+      },
+      {
+        "command": "premake5.manager",
+        "key": "ctrl+alt+m"
       }
     ],
     "menus": { 
@@ -113,13 +156,15 @@
   },
   "dependencies": {
     "@types/vscode": "^1.96.0",
-    "adm-zip": "^0.5.16",
     "axios": "^1.7.9",
     "chokidar": "^4.0.3",
     "cp": "^0.2.0",
-    "luaparse": "^0.3.1",
     "tar": "^7.4.3"
   },
+  "files": [
+    "out",
+    "resources"
+  ],
   "devDependencies": {
     "@octokit/types": "^13.6.2",
     "@types/adm-zip": "^0.5.7",

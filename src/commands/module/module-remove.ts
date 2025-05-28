@@ -2,13 +2,17 @@ import { TerminalInterface } from "cli/manager/terminalInterface";
 import { CommandRegistrar } from "commands/command-registrar";
 import { Prompt } from "utils/prompt-utils";
 import * as vscode from 'vscode';
-export class ModuleAddCommand extends CommandRegistrar {
+
+/**
+ * This command removes 
+ */
+export class ModuleRemoveCommand extends CommandRegistrar {
     protected async execute(...args: any[]): Promise<void> {
         const githubLink: String | undefined = await Prompt.Text("Pls enter the github link of the module","https://github.com/lolrobbe2/premake-config");
-        TerminalInterface.moduleAdd(githubLink);
+        TerminalInterface.moduleRemove(githubLink);
     }
 
     constructor(context: vscode.ExtensionContext, register: boolean) {
-        super(context, register,'premake5.module-add',"add module");
+        super(context, register, 'premake5.module-remove',"remove module | remove a premake module");
     }
 }
