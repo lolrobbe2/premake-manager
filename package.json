@@ -94,6 +94,13 @@
       },
       {
         "category": "Premake5",
+        "command": "premake5.module-info",
+        "title": "return the info from a premake module",
+        "icon": "resources/media/premake-logo-128.png",
+        "when": "false"
+      },
+      {
+        "category": "Premake5",
         "command": "premake5.module-install",
         "title": "install a premake module",
         "icon": "resources/media/premake-logo-128.png",
@@ -110,6 +117,13 @@
         "category": "premake manager",
         "command": "premake5.module-group",
         "title": "module commands",
+        "icon": "resources/media/premake-logo-128.png",
+        "when": "false"
+      },
+      {
+        "category": "premake manager",
+        "command": "premake5.config-group",
+        "title": "config commands",
         "icon": "resources/media/premake-logo-128.png",
         "when": "false"
       },

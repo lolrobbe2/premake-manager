@@ -82,5 +82,20 @@ export class TerminalInterface {
         this.sendCommand(`module remove ${githubLink}`);
     }
 //#endregion
+
+//#region CONFIG
+    public static configSetVersion(tag: String | undefined) {
+        if (tag !== undefined && tag !== '') {
+            this.sendCommand(`config version${tag}`);
+        } else {
+            this.sendCommand("config version");
+        }
+    }
+
+    public static configView()
+    {
+        this.sendCommand("config view");
+    }
+//#endregion
 //#endregion
 }
