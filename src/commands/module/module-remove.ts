@@ -9,8 +9,10 @@ import * as vscode from 'vscode';
 export class ModuleRemoveCommand extends CommandRegistrar {
     protected async execute(...args: any[]): Promise<void> {
         const githubLink: String | undefined = await Prompt.Text("Pls enter the github link of the module","https://github.com/lolrobbe2/premake-config");
-        if(githubLink !== undefined)
+        if(githubLink !== undefined && githubLink !== "")
             TerminalInterface.moduleRemove(this.addPrefix(githubLink));
+        else
+            TerminalInterface.moduleRemove("");
     }
 
     constructor(context: vscode.ExtensionContext, register: boolean) {

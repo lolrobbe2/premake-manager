@@ -87,7 +87,7 @@ export class ManagerCliTerminal {
         } else if (process.platform === 'linux') {
             return path.join(context.extensionPath, 'resources', 'cli', 'premake-manager-cli-linux');
         } else if (process.platform === 'darwin') {
-            return path.join(context.extensionPath, 'resources', 'cli', 'premake-manager-cli-mac');
+            return path.join(context.extensionPath, 'resources', 'cli', 'premake-manager-cli-darwin');
         }
         return undefined;
     }

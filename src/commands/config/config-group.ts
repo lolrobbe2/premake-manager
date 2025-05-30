@@ -1,7 +1,7 @@
 import { CommandGroup } from "commands/command-group";
 import * as vscode from 'vscode';
+import { configSetVersionCommand } from "./config-set-version";
 import { configViewCommand } from "./config-view";
-import { configSetVersionCommand } from "./";
 
 
 export class ConfigCommandGroup extends CommandGroup {
