@@ -132,6 +132,12 @@
         "command": "premake5.manager",
         "icon": "resources/media/premake-logo-128.png",
         "title": "manager"
+      },
+      {
+        "category": "Premake5",
+        "command": "premake5.environment-cli",
+        "icon": "resources/media/premake-logo-128.png",
+        "title": "environment terminal"
       }
 
     ],

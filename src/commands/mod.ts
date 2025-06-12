@@ -1,12 +1,11 @@
 import { CommandManager } from './command-manager';
 import { ManagerCommandGroup } from './manager-group';
-import { ModuleCommandGroup } from './module/module-group';
-import { TerminalCommand } from './terminal-command';
-import { VersionCommandGroup } from './version/version-group';
+import { EnvironmentAwareTerminal, TerminalCommand } from './terminal-command';
 
 
 
 export function register(): void {
     CommandManager.add(TerminalCommand);
+    CommandManager.add(EnvironmentAwareTerminal);
     CommandManager.add(ManagerCommandGroup);
 }

@@ -22,7 +22,8 @@ export class EnvironmentAwareTerminal extends CommandRegistrar {
         const terminal = vscode.window.createTerminal({
             name: 'Premake CLI',
             shellPath: shellPath,
-            env: process.env
+            env: process.env,
+            iconPath: vscode.Uri.file(this.context.asAbsolutePath("resources/media/premake-logo.png"))
         });
 
         terminal.show();

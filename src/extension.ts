@@ -47,6 +47,15 @@ export function activate(context: vscode.ExtensionContext) : TerminalInterface {
 		}
 	}));
 
+	const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
+
+	statusBarItem.text = '$(terminal) Premake5';
+	statusBarItem.tooltip = 'Open the Premake5 Terminal';
+	statusBarItem.command = 'premake5.environment-cli'; // must match a registered command
+	statusBarItem.show();
+
+	context.subscriptions.push(statusBarItem);
+
 	vscode.window.onDidOpenTerminal(async (terminal) => {
 		//console.log(await TerminalHandler.getBuiltInTerminalProfiles());
 		TerminalHandler.updateEnvironment(terminal);
