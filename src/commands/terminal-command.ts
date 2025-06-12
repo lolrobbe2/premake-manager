@@ -14,8 +14,8 @@ export class TerminalCommand extends CommandRegistrar {
 }
 
 export class EnvironmentAwareTerminal extends CommandRegistrar {
-    protected execute(...args: any[]): void {
-        EnvironmentRefresher.refreshWindowsPath();
+    protected async execute(...args: any[]): Promise<void> {
+        await EnvironmentRefresher.refreshWindowsPath();
 
         const isWindows = process.platform === 'win32';
         const shellPath = isWindows ? 'cmd.exe' : 'bash';

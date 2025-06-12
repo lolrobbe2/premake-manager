@@ -150,6 +150,11 @@
       {
         "command": "premake5.manager",
         "key": "ctrl+alt+m"
+      },
+      {
+        "command": "premake5.environment-cli",
+        "key": "ctrl+alt+t",
+        "when": "terminalFocus == false"
       }
     ],
     "menus": { 
