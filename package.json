@@ -32,11 +32,11 @@
       "profiles": [
         {
           "id": "premake5.terminal-profile",
-          "title": "Premake5"
+          "title": "Premake Manager"
         },
         {
           "id": "premake5.environment-profile",
-          "title": "CMD"
+          "title": "Premake5"
         }
       ]
     },
