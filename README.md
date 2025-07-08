@@ -8,47 +8,29 @@ this is an unofficial extension to manage [premake](https://premake.github.io) p
 
 1) install/manage multiple versions of premake at the same time.
 2) easily run premake actions
-3) auto detect premake5.lua
 ## Requirements
 
 If you have any requirements or dependencies, add a section describing those and how to install and configure them.
 ## installing test version
 type >VSIX in the top bar and press enter and select the package.
-## commands:
 
-1) premake.action.run
-    run premake action
-2) premake.setversion
-    set the used premake version
-3) premake.action.default.set
-    set default premake action
-4) premake.action.default.run
-    run default premake action
-5) premake.cleanup
-    cleanup the .premake folder
-6) premake.terminal.new
-    opens a new premake5 terminal
-7) premake.terminal.get
-    gets an existing premake5 terminal or opens a new one
 ## Extension Settings
 
 ## github access
 github is used to make it so you are not rate limited!
 
-### 0.0.3 - alpha
-the end of exams update  (i passed all of them!)
-#### features/bugfixes
-1) added vscode task support
-2) added the premake workspace explorer/viewer
-3) added premake5 terminal
-    - get new or existing terminal: ctrl+alt+p/cmd+alt+p
-    - get new terminal: ctrl+alt+m/cmd+alt+m
-    - get help for the terminal => just type: help
-4) moved from PremakeRunner to the new terminal.
-5) fixed bug where premake could no be executed on unix systems
-6) added workspace generation command (experimental/ ran out of time)
-7) added snippet for tasks
-8) added snippet for workspace and include
-9) general bug fixes
+### 0.1.0 - beta
+
+the summer update
+
+### TL;DR
+The extension has been reworked from the ground up to be more streamlined and easier to work with.
+This means that the available feature set has been lowered. This is with the goal of supporting plugins and extensions. The major culmination of this goal has been the creation of a CLI application called [premake-manager-cli](https://github.com/lolrobbe2/premake-manager-cli) wich will serve as the common interface for all future extensions. This also ensures the new premakeConfig.yml format is reusable accros future extensions. 
+
+With this new purpose build config file comes module support. (a module registry is in the works, and can be found here [premake-registry](https://github.com/lolrobbe2/premake-registry). The registry is still a work in progress).
+
+Enjoy this new version.
+
+And please leave feedback!
 
 **Enjoy!**

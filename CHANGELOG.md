@@ -30,4 +30,16 @@ the end of exams update  (i passed all of them!)
 8) added snippet for workspace and include
 9) general bug fixes
 
+### 0.1.0 - beta
 
+the summer update
+
+### TL;DR
+The extension has been reworked from the ground up to be more streamlined and easier to work with.
+This means that the available feature set has been lowered. This is with the goal of supporting plugins and extensions. The major culmination of this goal has been the creation of a CLI application called [premake-manager-cli](https://github.com/lolrobbe2/premake-manager-cli) wich will serve as the common interface for all future extensions. This also ensures the new premakeConfig.yml format is reusable accros future extensions. 
+
+With this new purpose build config file comes module support. (a module registry is in the works, and can be found here [premake-registry](https://github.com/lolrobbe2/premake-registry). The registry is still a work in progress).
+
+Enjoy this new version.
+
+And please leave feedback!

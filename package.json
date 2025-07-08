@@ -2,14 +2,15 @@
   "name": "premake-manager",
   "displayName": "premake manager",
   "description": "a extension to manage premake projects",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "type": "commonjs",
   "publisher": "lolrobbe2",
   "engines": {
     "vscode": "^1.92.1"
   },
   "categories": [
-    "Other","Snippets"
+    "Other",
+    "Snippets"
   ],
   "author": {
     "name": "robbe beernaert"
@@ -50,11 +51,7 @@
         "path": "./snippets/premake5.workspace.code-snippets"
       }
     ],
-    "taskDefinitions": [
-    ],
-    
-    
-    
+    "taskDefinitions": [],
     "commands": [
       {
         "category": "Premake5",
@@ -139,7 +136,6 @@
         "icon": "resources/media/premake-logo-128.png",
         "title": "environment terminal"
       }
-
     ],
     "keybindings": [
       {
@@ -157,14 +153,10 @@
         "when": "terminalFocus == false"
       }
     ],
-    "menus": { 
-     
-    },
+    "menus": {},
     "configuration": {
       "type": "object",
-      "properties": {
-        
-      }
+      "properties": {}
     }
   },
   "scripts": {
@@ -186,10 +178,6 @@
     "cp": "^0.2.0",
     "tar": "^7.4.3"
   },
-  "files": [
-    "out",
-    "resources"
-  ],
   "devDependencies": {
     "@octokit/types": "^13.6.2",
     "@types/adm-zip": "^0.5.7",
@@ -203,7 +191,7 @@
     "@vscode/vsce": "^3.2.1",
     "esbuild": "^0.24.2",
     "eslint": "^9.13.0",
-    "rimraf": "^5.0.5",
+    "rimraf": "^5.0.10",
     "typescript": "^5.7.2"
   }
 }
