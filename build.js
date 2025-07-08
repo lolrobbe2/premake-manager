@@ -12,4 +12,7 @@ build({
     external: external,
     outfile: './out/extension.js',
     format: 'cjs'
+}).then(() => {
+    // Copy resources folder
+    cpSync('resources', join('out', 'resources'), { recursive: true });
 }).catch(() => process.exit(1));

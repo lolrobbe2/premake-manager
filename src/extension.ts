@@ -1,122 +1,75 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import * as path from 'path';
-import { projectGenerator } from 'projectManagement/projectGenerator.js';
-import { projectManager } from 'projectManagement/projectManager';
-import { ProjectItem } from 'projectManagement/views/projectItem.js';
-import { TaskHandler, Terminal } from 'terminal/terminal.js';
+import { ManagerCliTerminal } from 'cli/manager/terminal';
+import { TerminalInterface } from 'cli/manager/terminalInterface';
+import { CommandManager } from 'commands/command-manager';
+import { TerminalHandler } from 'commands/terminal-command';
+import { EnvironmentRefresher } from 'utils/vscode-utils';
 import * as vscode from 'vscode';
-import { commands } from './commands/register.js';
-import { PremakeWatcher } from './premakeInstaller/premakeDetector';
-import { PremakeVersionManager } from './premakeInstaller/premakeVersionManger';
-import * as utils from './utils/mod.js';
-import { PremakeRunner } from './utils/premakeRunner.js';
+import * as commands from './commands/mod';
+
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
-	utils.VSCodeUtils.setExtensionContext(context);
-	context.subscriptions.push( 
-		vscode.workspace.onDidChangeWorkspaceFolders( 
-			async event => { await handleWorkspaceFoldersChanged(event); }
-		)
-	);
-	vscode.window.registerTreeDataProvider('workspacesList', projectManager.workspaceProvider);
-	registerCommands(context);
-	PremakeWatcher.registerWatcher();
-	//Terminal.init();
+export function activate(context: vscode.ExtensionContext) : TerminalInterface {
+	CommandManager.initialize(context)
+	commands.register();
+	TerminalInterface.initialize(context);
 	context.subscriptions.push(vscode.window.registerTerminalProfileProvider('premake5.terminal-profile', {
 		provideTerminalProfile: () => {
 			console.log('Terminal profile provider called');
+			
 			return {
 				options: {
-					name: 'premake5',
-					pty: new Terminal("",false),
+					name: 'premake manager',
+					shellPath: ManagerCliTerminal.getCliExecutablePath(context),
+					shellArgs: [ "--interactive" ],
 					iconPath: vscode.Uri.file(context.asAbsolutePath("resources/media/premake-logo.png"))
 				}
 			};
 		}
 	}));
-	const taskProvider = vscode.tasks.registerTaskProvider('premake5', {
-        provideTasks: () => {
-            return [];
-        },
-		resolveTask: async (task) => {
-            return await TaskHandler.runTask(task);
-        }
-    });
-	context.subscriptions.push(taskProvider);
-}
 
-function registerCommands(context: vscode.ExtensionContext) {
-	commands.registerCommand(context, "premake.setversion", async () => {
-		const version: string | undefined = await PremakeVersionManager.showVersionPicker();
-		if (version !== undefined) {
-			const installed: boolean = await PremakeVersionManager.isVersionReleaseInstalled(version);
-			if (!installed) {
-				const result: string | undefined = await vscode.window.showInformationMessage("premake is not installed for the selected version would you like to installe it?", 'yes', 'no');
-				if (result === 'yes') {
-					//await vscode.window.showInformationMessage(`installing premake version: ${version}`);
-					await PremakeVersionManager.installPremakeVersion(version);
-				}
-			}
-		}
-		return version;
-	});
-	commands.registerCommand(context, "premake.cleanup", async () => {
-		PremakeVersionManager.cleanPremakeFolder();
-	});
-	commands.registerCommand(context, "premake.action.run", async (action:string | undefined) => {
-		if (action === undefined) {
-			action = await PremakeRunner.getActionPicker(context);
-		}
-		if(action !== undefined) {
-			const terminal:vscode.Terminal = utils.VSCodeUtils.getPremakeTerminal();
-			terminal.show();
-			terminal.sendText(action,true);
-
-		}
-	});
-	commands.registerCommand(context, "premake.action.default.set", async () => {
-		const action = await PremakeRunner.getActionPicker(context);
-		if (action !== undefined) { await PremakeRunner.setDefaultAction(action); }
-		return await PremakeRunner.getCurrentAction();
-	});
-	commands.registerCommand(context, "premake.action.default.run", async () => {
-		let action = await PremakeRunner.getCurrentAction();
-		if (action !== undefined && action !== '') {
-			const terminal:vscode.Terminal = utils.VSCodeUtils.getPremakeTerminal();
-			terminal.show();
-			terminal.sendText(action,true);
-		} else {
-			await vscode.commands.executeCommand("premake.action.default.set");
-			await vscode.commands.executeCommand("premake.action.default.run");
-		}
-
-	});
+	context.subscriptions.push(vscode.window.registerTerminalProfileProvider('premake5.environment-profile', {
+		provideTerminalProfile: async () => {
+			await EnvironmentRefresher.refreshWindowsPath();
 	
-	commands.registerCommand(context,"extension.editProjectItem",(item: vscode.TreeItem) => {
-		if (item instanceof ProjectItem) {
-			item.edit();
+			const isWindows = process.platform === 'win32';
+			const shellPath = isWindows ? 'cmd.exe' : 'bash';
+		
+			return {
+				options: {
+					name: 'Premake CLI',
+					shellPath: shellPath,
+					env: process.env,
+					iconPath: vscode.Uri.file(context.asAbsolutePath("resources/media/premake-logo.png"))
+				}
+			};
 		}
-	});
-	commands.registerCommand(context, "premake.terminal.new", () => {new Terminal(undefined);});
-	commands.registerCommand(context, "premake.terminal.get", () => {const terminal:vscode.Terminal = utils.VSCodeUtils.getPremakeTerminal(); terminal.show()});
-	commands.registerCommand(context, "premake.workspace.create", () => projectGenerator.generateWorkspace());
-	//commands.registerCommand(context, "premake.project.create",() => projectGenerator.generateProject());
-	commands.registerCommand(context, "premake.workspace.refresh", ()=>{
-		projectManager.reload();
-	});
+	}));
+
+	const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 101); // Higher priority
+
+	statusBarItem.text = '$(terminal) Premake5';
+	statusBarItem.tooltip = 'Open the Premake5 Terminal';
+	statusBarItem.command = 'premake5.environment-cli'; // must match a registered command
+	statusBarItem.show();
+
+	const statusBarItemCliTerminal = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100); // Lower priority
+
+	statusBarItemCliTerminal.text = '$(gear) Premake Man';
+	statusBarItemCliTerminal.tooltip = 'Open the Premake Manager Terminal';
+	statusBarItemCliTerminal.command = 'premake5.manager-cli'; // must match a registered command
+	statusBarItemCliTerminal.show();
+
+	context.subscriptions.push(statusBarItem);
+	context.subscriptions.push(statusBarItemCliTerminal);
+
+
+	return TerminalInterface;
 }
 
-async function handleWorkspaceFoldersChanged(event: vscode.WorkspaceFoldersChangeEvent): Promise<void> { 
-	if (event.added.length > 0) {
-		if(utils.VSCodeUtils.getWorkspaceFolder() === '') { return; }
-		const filePath = path.join(utils.VSCodeUtils.getWorkspaceFolder(), PremakeWatcher.targetFile); 
-		await PremakeWatcher.checkWorkspaceAvailable(filePath); 
-	}
-}
+
 // This method is called when your extension is deactivated
 export function deactivate() 
 {
-	PremakeWatcher.unregisterWatcher();
 }
