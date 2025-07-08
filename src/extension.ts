@@ -47,24 +47,24 @@ export function activate(context: vscode.ExtensionContext) : TerminalInterface {
 		}
 	}));
 
-	const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
+	const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 101); // Higher priority
 
 	statusBarItem.text = '$(terminal) Premake5';
 	statusBarItem.tooltip = 'Open the Premake5 Terminal';
 	statusBarItem.command = 'premake5.environment-cli'; // must match a registered command
 	statusBarItem.show();
 
+	const statusBarItemCliTerminal = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100); // Lower priority
+
+	statusBarItemCliTerminal.text = '$(gear) Premake Man';
+	statusBarItemCliTerminal.tooltip = 'Open the Premake Manager Terminal';
+	statusBarItemCliTerminal.command = 'premake5.manager-cli'; // must match a registered command
+	statusBarItemCliTerminal.show();
+
 	context.subscriptions.push(statusBarItem);
+	context.subscriptions.push(statusBarItemCliTerminal);
 
-	vscode.window.onDidOpenTerminal(async (terminal) => {
-		//console.log(await TerminalHandler.getBuiltInTerminalProfiles());
-		TerminalHandler.updateEnvironment(terminal);
-	});
 
-	vscode.window.onDidCloseTerminal(async (terminal) => {
-		TerminalHandler.cleanupTerminal(terminal);
-		//await EnvironmentRefresher.refreshWindowsPath();
-	})
 	return TerminalInterface;
 }
 
