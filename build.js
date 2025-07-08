@@ -1,3 +1,5 @@
+const { cpSync } = require('fs');
+const { join } = require('path');
 const { build } = require('esbuild');
 const { dependencies } = require('./package.json');
 
