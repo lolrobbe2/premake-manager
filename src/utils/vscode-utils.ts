@@ -68,5 +68,4 @@ export class EnvironmentRefresher {
            Prompt.Error(`Error updating terminal environment: ${error instanceof Error ? error.message : error}`);
         }
     }
-
 }

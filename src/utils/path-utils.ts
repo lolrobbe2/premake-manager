@@ -1,3 +1,4 @@
+import * as path from 'path';
 import * as vscode from 'vscode';
 
 export class PathUtils {
@@ -10,5 +11,16 @@ export class PathUtils {
             return folders[0].uri.fsPath;
         }
         return undefined;
+    }
+
+    /**
+     * @param context extension context
+     */
+    public static getExtensionResourceRoot(context: vscode.ExtensionContext): string | undefined {
+        return path.join(context.extensionPath, 'resources');
+    }
+
+    public static getResource(context: vscode.ExtensionContext, subpaths: string[]): string | undefined {
+        return path.join(this.getExtensionResourceRoot(context)!,...subpaths);
     }
 }
