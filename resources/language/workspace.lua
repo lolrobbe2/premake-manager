@@ -1,4 +1,5 @@
 ---@meta
+
 ---<h1><a href="https://premake.github.io/docs/Workspaces-and-Projects/#workspaces">workspace</a></h1>
 ---Workspaces define a common set of build configurations and platforms to be used across all of the contained projects. You may also specify additional build settings (defines, include paths, etc.) at this level which will be similarly inherited by the projects.
 ---
@@ -10,7 +11,8 @@
 ```lua
 workspace "MyWorkspace"
 ```
-]] function workspace(name) end
+]]
+function workspace(name) end
 
 ---@alias PremakeConfiguration string | "Debug" | "Release"
 -- | "Debug" #debug configuration
