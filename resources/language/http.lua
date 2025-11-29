@@ -117,4 +117,27 @@ local resource, result_str, response_code = http.get("http://example.com/api.jso
 function http.get(url,options) end
 
 ---<h1><a href="https://premake.github.io/docs/http/http.post">http.post</a></h1>
+---Perform a HTTP POST request to the specified URL.
+---
+--[[
+```lua
+http.post(url, data, { options })
+```
+]]
+---
+---@param url string is the URL to POST to.
+---@param data any is a string containing the data to post.
+---@param options PremakeHttpOptions is a table of options used for this HTTP request.
+---@return any resource is the content that was retrieved or nil if it could not be retrieved.
+---@return string result_str is set to "OK" if successful or contains a description of the failure.
+---@return number result_code is the HTTP result code of the post.
+---
+---<h2>Example</h2>
+---
+---@example
+--[[
+```lua
+local resource, result_str, response_code = http.post("http://example.com/api.json", "somedata")
+```
+]]
 function http.post(url, data, options) end

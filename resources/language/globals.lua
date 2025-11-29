@@ -1,4 +1,6 @@
 ---@meta
+--#region globals
+
 ---<h1><a href="https://premake.github.io/docs/globals/_ARGS">_ACTION</a></h1>
 ---
 ---The `_ACTION` global variable stores the name of the action to be performed on this execution run.
@@ -250,3 +252,14 @@ function require(modname,versions) end
 ---@param format string is a formatting string containing C printf() style formatting codes. It is followed by a list of arguments to be substituted into the format string.
 ---@param vararg any | any[]
 function verbosef(format,vararg) end
+
+---@alias gitAction
+---| '"Off"' #Disable git integration.
+---| '"Always"' #Run premake on checkout.
+---| '"OnNewFiles"' #Run premake only when files are added/removed or if premake script has changed.
+
+---<h1><a href="https://premake.github.io/docs/gitintegration">gitintegration</a></h1>
+---Enable git integration to run premake on checkout.
+---@param action gitAction
+function gitintegration(action) end
+--#endregion globals

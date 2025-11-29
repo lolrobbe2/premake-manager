@@ -65,7 +65,15 @@ export function activate(context: vscode.ExtensionContext): TerminalInterface {
 	context.subscriptions.push(statusBarItemCliTerminal);
 
 	const sources: SourceRegistrar = new SourceRegistrar(context);
-	sources.registerSources(["workspace.lua", "globals.lua","common.lua","http.lua"]);
+	sources.registerSources([
+		"workspace.lua",
+		"globals.lua",
+		"common.lua",
+		"http.lua",
+		"io.lua",
+		"json.lua",
+		"project.lua"
+	]);
 
 	return TerminalInterface;
 }

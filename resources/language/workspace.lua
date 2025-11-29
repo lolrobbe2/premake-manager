@@ -14,9 +14,9 @@ workspace "MyWorkspace"
 ]]
 function workspace(name) end
 
----@alias PremakeConfiguration string | "Debug" | "Release"
--- | "Debug" #debug configuration
--- | "Release" #release configuration
+---@alias PremakeConfiguration string 
+---| "Debug" #debug configuration
+---| "Release" #release configuration
 
 ---<h1><a href="https://premake.github.io/docs/Configurations-and-Platforms/#platforms">configurations</a></h1>
 ---A configuration is a collection of settings to apply to a build, including flags and switches, header file and library search directories, and more. 
@@ -34,4 +34,3 @@ workspace "MyWorkspace"
 ```
 ]]
 function configurations(configurations) end
-
