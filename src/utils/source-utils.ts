@@ -21,7 +21,7 @@ export class SourceUtils {
 
         const resourcePath: string | undefined = this.getLanguageResource(context,path);
         if(current.includes(resourcePath!)){
-            console.error(`[SOURCE_UTILS] resource was already registered in current workspace`);
+            console.error(`[SOURCE_UTILS] resource was already registered in current workspace ${resourcePath}`);
             return;
         }
 

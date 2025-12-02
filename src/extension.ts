@@ -66,13 +66,14 @@ export function activate(context: vscode.ExtensionContext): TerminalInterface {
 
 	const sources: SourceRegistrar = new SourceRegistrar(context);
 	sources.registerSources([
-		"workspace.lua",
 		"globals.lua",
-		"common.lua",
 		"http.lua",
-		"io.lua",
 		"json.lua",
-		"project.lua"
+		"os.lua",
+		"path.lua",
+		"root.lua",
+		"string.lua",
+		"table.lua"
 	]);
 
 	return TerminalInterface;

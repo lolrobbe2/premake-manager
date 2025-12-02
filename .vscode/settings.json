@@ -11,5 +11,8 @@
   "Lua.diagnostics.globals": [
     "_ACTION"
   ],
+  "cSpell.words": [
+    "classconv"
+  ],
   
 }

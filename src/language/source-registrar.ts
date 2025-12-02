@@ -8,15 +8,15 @@ export class SourceRegistrar {
     }
 
     public registerSources(paths: string[]){
-        paths.forEach((path)=>this.registerSourcePath(path));
+        paths.forEach(async (path)=> await this.registerSourcePath(path));
     }
 
-    public registerSourcePath(path: string): void {
+    public async registerSourcePath(path: string): Promise<void> {
         const pathArr: string[] = path.split('/');
-        this.registerSource(pathArr);
+        await this.registerSource(pathArr);
     }
 
-    public registerSource(path: string[]): void {
-        SourceUtils.register(this.context, path);
+    public async registerSource(path: string[]): Promise<void> {
+        await SourceUtils.register(this.context, path);
     }
 }
