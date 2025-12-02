@@ -3,26 +3,26 @@
 import { ManagerCliTerminal } from 'cli/manager/terminal';
 import { TerminalInterface } from 'cli/manager/terminalInterface';
 import { CommandManager } from 'commands/command-manager';
-import { TerminalHandler } from 'commands/terminal-command';
+import { SourceRegistrar } from 'language/source-registrar';
 import { EnvironmentRefresher } from 'utils/vscode-utils';
 import * as vscode from 'vscode';
 import * as commands from './commands/mod';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) : TerminalInterface {
+export function activate(context: vscode.ExtensionContext): TerminalInterface {
 	CommandManager.initialize(context)
 	commands.register();
 	TerminalInterface.initialize(context);
 	context.subscriptions.push(vscode.window.registerTerminalProfileProvider('premake5.terminal-profile', {
 		provideTerminalProfile: () => {
 			console.log('Terminal profile provider called');
-			
+
 			return {
 				options: {
 					name: 'premake manager',
 					shellPath: ManagerCliTerminal.getCliExecutablePath(context),
-					shellArgs: [ "--interactive" ],
+					shellArgs: ["--interactive"],
 					iconPath: vscode.Uri.file(context.asAbsolutePath("resources/media/premake-logo.png"))
 				}
 			};
@@ -32,10 +32,10 @@ export function activate(context: vscode.ExtensionContext) : TerminalInterface {
 	context.subscriptions.push(vscode.window.registerTerminalProfileProvider('premake5.environment-profile', {
 		provideTerminalProfile: async () => {
 			await EnvironmentRefresher.refreshWindowsPath();
-	
+
 			const isWindows = process.platform === 'win32';
 			const shellPath = isWindows ? 'cmd.exe' : 'bash';
-		
+
 			return {
 				options: {
 					name: 'Premake CLI',
@@ -64,12 +64,22 @@ export function activate(context: vscode.ExtensionContext) : TerminalInterface {
 	context.subscriptions.push(statusBarItem);
 	context.subscriptions.push(statusBarItemCliTerminal);
 
+	const sources: SourceRegistrar = new SourceRegistrar(context);
+	sources.registerSources([
+		"globals.lua",
+		"http.lua",
+		"json.lua",
+		"os.lua",
+		"path.lua",
+		"root.lua",
+		"string.lua",
+		"table.lua"
+	]);
 
 	return TerminalInterface;
 }
 
 
 // This method is called when your extension is deactivated
-export function deactivate() 
-{
+export function deactivate() {
 }

@@ -12,6 +12,16 @@
       "args": ["--extensionDevelopmentPath=${workspaceFolder}"],
       "outFiles": ["${workspaceFolder}/out/extension.js"],
       "preLaunchTask": "${defaultBuildTask}"
+    },
+    {
+      "name": "Debug PremakeDocs",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/docs/docconvert.py",
+      "console": "integratedTerminal",
+      "args": [
+        "--repo", "https://github.com/premake/premake-core.git"
+      ]
     }
   ]
 }

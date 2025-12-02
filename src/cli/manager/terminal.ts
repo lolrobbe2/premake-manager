@@ -83,11 +83,11 @@ export class ManagerCliTerminal {
      */
     public static getCliExecutablePath(context: vscode.ExtensionContext): string | undefined {
         if (process.platform === 'win32') {
-            return path.join(context.extensionPath, 'resources', 'cli', 'premake-manager-cli-win.exe');
+            return PathUtils.getResource(context, ['cli', 'premake-manager-cli-win.exe']);
         } else if (process.platform === 'linux') {
-            return path.join(context.extensionPath, 'resources', 'cli', 'premake-manager-cli-linux');
+            return PathUtils.getResource(context, ['cli', 'premake-manager-cli-linux']);
         } else if (process.platform === 'darwin') {
-            return path.join(context.extensionPath, 'resources', 'cli', 'premake-manager-cli-darwin');
+            return PathUtils.getResource(context, ['cli', 'premake-manager-cli-darwin']);
         }
         return undefined;
     }
