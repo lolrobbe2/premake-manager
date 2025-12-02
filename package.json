@@ -2,7 +2,7 @@
   "name": "premake-manager",
   "displayName": "premake manager",
   "description": "a extension to manage premake projects",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "commonjs",
   "publisher": "lolrobbe2",
   "engines": {

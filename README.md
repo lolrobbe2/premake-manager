@@ -8,9 +8,11 @@ this is an unofficial extension to manage [premake](https://premake.github.io) p
 
 1) install/manage multiple versions of premake at the same time.
 2) easily run premake actions
+3) premake language support
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+Lua language extension
+
 ## installing test version
 type >VSIX in the top bar and press enter and select the package.
 
@@ -19,18 +21,14 @@ type >VSIX in the top bar and press enter and select the package.
 ## github access
 github is used to make it so you are not rate limited!
 
-### 0.1.0 - beta
+### 0.1.1 - beta
 
-the summer update
+the don't want to do math homework update
 
 ### TL;DR
-The extension has been reworked from the ground up to be more streamlined and easier to work with.
-This means that the available feature set has been lowered. This is with the goal of supporting plugins and extensions. The major culmination of this goal has been the creation of a CLI application called [premake-manager-cli](https://github.com/lolrobbe2/premake-manager-cli) wich will serve as the common interface for all future extensions. This also ensures the new premakeConfig.yml format is reusable accros future extensions. 
+i had some spare time on my hands so i figured out how to add language support for premake.
+this is done use `auto` generated lua meta files wich the extension then injects in to the workspace wich a lua language extension can then use
 
-With this new purpose build config file comes module support. (a module registry is in the works, and can be found here [premake-registry](https://github.com/lolrobbe2/premake-registry). The registry is still a work in progress).
-
-Enjoy this new version.
-
-And please leave feedback!
+there are still some issues due to the fact that no all the premake docs are formatted the same
 
 **Enjoy!**
