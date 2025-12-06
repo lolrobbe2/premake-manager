@@ -8,9 +8,27 @@ import { EnvironmentRefresher } from 'utils/vscode-utils';
 import * as vscode from 'vscode';
 import * as commands from './commands/mod';
 
+import fs from "fs";
+import path from "path";
+import { PathUtils } from 'utils/path-utils';
+
+function findPremakeFile(dir: string) {
+	const entries = fs.readdirSync(dir, { withFileTypes: true });
+	for (const entry of entries) {
+		const fullPath = path.join(dir, entry.name);
+		if (entry.isFile() && entry.name === "premake5.lua") {
+			return fullPath; // found it
+		}
+		if (entry.isDirectory()) {
+			const found: any = findPremakeFile(fullPath);
+			if (found) return found;
+		}
+	}
+	return null;
+}
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext): TerminalInterface {
+export async function activate(context: vscode.ExtensionContext): Promise<TerminalInterface> {
 	CommandManager.initialize(context)
 	commands.register();
 	TerminalInterface.initialize(context);
@@ -65,17 +83,19 @@ export function activate(context: vscode.ExtensionContext): TerminalInterface {
 	context.subscriptions.push(statusBarItemCliTerminal);
 
 	const sources: SourceRegistrar = new SourceRegistrar(context);
-	sources.registerSources([
-		"globals.lua",
-		"http.lua",
-		"json.lua",
-		"os.lua",
-		"path.lua",
-		"root.lua",
-		"string.lua",
-		"table.lua"
-	]);
+	const workspaceRoot = PathUtils.getWorkspaceRoot();
+	if (workspaceRoot) {
+		const premakeFile = findPremakeFile(workspaceRoot);
 
+		if (premakeFile) {
+			await sources.registerSources([
+				"premakeFields_1.lua",
+				"premakeFields_2.lua",
+				"premakeFields_3.lua",
+				"premakeGlobals.lua"
+			]);
+		}
+	}
 	return TerminalInterface;
 }
 
