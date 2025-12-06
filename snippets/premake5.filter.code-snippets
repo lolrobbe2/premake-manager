@@ -1,0 +1,52 @@
+{
+    "premake5.filter.action": {
+        "prefix": "filter action",
+        "body": "filter { \"action:${1:action}\"}",
+        "description": "add an action filter"
+    },
+    "premake5.filter.architecture": {
+        "prefix": "filter architecture",
+        "body": "filter { \"architecture:${1:architecture}\"}",
+        "description": "add an architecture filter"
+    },
+    "premake5.filter.configurations": {
+        "prefix": "filter configurations",
+        "body": "filter { \"configurations:${1:configurations}\"}",
+        "description": "add an configurations filter"
+    },
+    "premake5.filter.files": {
+        "prefix": "filter files",
+        "body": "filter { \"files:${1:files}\"}",
+        "description": "add a files filter"
+    },
+    "premake5.filter.kind": {
+        "prefix": "filter kind",
+        "body": "filter { \"kind:${1:kind}\"}",
+        "description": "add a kind filter"
+    },
+    "premake5.filter.language": {
+        "prefix": "filter language",
+        "body": "filter { \"language:${1:language}\"}",
+        "description": "add a language filter"
+    },
+    "premake5.filter.options": {
+        "prefix": "filter options",
+        "body": "filter { \"options:${1:options}\"}",
+        "description": "add an options filter"
+    },
+    "premake5.filter.platforms": {
+        "prefix": "filter platform",
+        "body": "filter { \"platforms:${1:platforms}\"}",
+        "description": "add an platforms filter"
+    },
+    "premake5.filter.system": {
+        "prefix": "filter system",
+        "body": "filter { \"system:${1:system}\"}",
+        "description": "add an system filter"
+    },
+    "premake5.filter.toolset": {
+        "prefix": "filter toolset",
+        "body": "filter { \"system:${1:system}\"}",
+        "description": "add an toolset filter"
+    }
+}

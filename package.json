@@ -10,7 +10,14 @@
   },
   "categories": [
     "Other",
-    "Snippets"
+    "Snippets",
+    "Linters"
+  ],
+  "keywords": [
+    "premake",
+    "autocomplete",
+    "install",
+    "snippets"
   ],
   "author": {
     "name": "robbe beernaert"
@@ -49,6 +56,14 @@
       {
         "language": "lua",
         "path": "./snippets/premake5.workspace.code-snippets"
+      },
+      {
+        "language": "lua",
+        "path": "./snippets/premake5.filter.code-snippets"
+      },
+      {
+        "language": "lua",
+        "path": "./snippets/premake5.project.code-snippets"
       }
     ],
     "taskDefinitions": [],
