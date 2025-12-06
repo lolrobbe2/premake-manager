@@ -13,7 +13,7 @@ this is an unofficial extension to manage [premake](https://premake.github.io) p
 
 ## Requirements
 
-Lua language extension
+Lua language extension for linting
 
 ## installing test version
 type >VSIX in the top bar and press enter and select the package.
@@ -23,14 +23,18 @@ type >VSIX in the top bar and press enter and select the package.
 ## github access
 github is used to make it so you are not rate limited!
 
-### 0.1.1 - beta
+### 0.1.2 - beta
 
-the don't want to do math homework update
+language support hotfix, snippets
 
 ### TL;DR
-i had some spare time on my hands so i figured out how to add language support for premake.
-this is done use `auto` generated lua meta files wich the extension then injects in to the workspace wich a lua language extension can then use
 
-there are still some issues due to the fact that no all the premake docs are formatted the same
+after some back and forth i was able to fix the auto genrating meta files. i also took the liberty of adding a couple of handy snippets
+
+### what is next?
+
+next on the agenda is the module, library registry for premake.
 
 **Enjoy!**
+
+(feedback and ideas are always welcome!!!)
