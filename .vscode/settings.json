@@ -14,5 +14,8 @@
   "cSpell.words": [
     "classconv"
   ],
+  "Lua.workspace.library": [
+    "c:\\Users\\robbe\\.vscode\\extensions\\lolrobbe2.premake-manager-0.1.1\\resources\\language\\table.lua"
+  ],
   
 }
