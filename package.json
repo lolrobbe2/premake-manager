@@ -169,7 +169,8 @@
     "test": "vscode-test",
     "tsc:w": "node --version",
     "resources": "cp -rv ./src/resources/** ./out/resources",
-    "icons": "fantasticon ./src/resources/media/ -o ./src/resources/media/"
+    "icons": "fantasticon ./src/resources/media/ -o ./src/resources/media/",
+    "meta": "node docs/metagen.mjs"
   },
   "dependencies": {
     "@types/vscode": "^1.96.0",

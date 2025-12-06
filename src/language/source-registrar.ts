@@ -7,9 +7,12 @@ export class SourceRegistrar {
         this.context = context;
     }
 
-    public registerSources(paths: string[]){
-        paths.forEach(async (path)=> await this.registerSourcePath(path));
+    public async registerSources(paths: string[]) {
+        for (const path of paths) {
+            await this.registerSourcePath(path);
+        }
     }
+
 
     public async registerSourcePath(path: string): Promise<void> {
         const pathArr: string[] = path.split('/');
