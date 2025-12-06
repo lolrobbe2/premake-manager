@@ -1,6 +1,6 @@
 {
     "premake5.workspace.c_project": {
-        "prefix": ["C Project"],
+        "prefix": "CProject",
         "body": [
             "project \"${2:ProjectName}\"",
             "   kind \"${3|ConsoleApp,StaticLib,SharedLib,StaticLib,Makefile,Utility,None,Packaging,SharedItems|}\"",
@@ -20,9 +20,7 @@
         "description": "generate a basic premake workspace with a C project"
     },
     "premake5.workspace.cpp_project": {
-        "prefix": [
-            "C++ Project"
-        ],
+        "prefix": "CPPProject",
         "body": [
             "project \"${2:ProjectName}\"",
             "   kind \"${3|ConsoleApp,StaticLib,SharedLib,Makefile,Utility,None,Packaging,SharedItems|}\"",

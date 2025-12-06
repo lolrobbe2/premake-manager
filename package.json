@@ -60,6 +60,10 @@
       {
         "language": "lua",
         "path": "./snippets/premake5.filter.code-snippets"
+      },
+      {
+        "language": "lua",
+        "path": "./snippets/premake5.project.code-snippets"
       }
     ],
     "taskDefinitions": [],
