@@ -26,7 +26,7 @@ _G.include=include;
 
 
 ---Premake's filter system allows you target build settings to the exact configurations in which you want them to appear.
----@param value string
+---@param value string[]
 local function filter(value) end
 _G.filter=filter;
 

@@ -9,6 +9,8 @@ this is an unofficial extension to manage [premake](https://premake.github.io) p
 1) install/manage multiple versions of premake at the same time.
 2) easily run premake actions
 3) premake language support
+4) handy snippets for easy setup
+
 ## Requirements
 
 Lua language extension

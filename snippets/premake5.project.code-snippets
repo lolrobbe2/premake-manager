@@ -1,18 +1,7 @@
 {
-    "premake5.workspace": {
-        "prefix": "workspace",
-        "body": [
-            "workspace \"${1:name}\"  ",
-            "   configurations { \"Debug\", \"Release\" }"
-        ],
-        "description": "generate a basic premake workspace"
-    },
     "premake5.workspace.c_project": {
-        "prefix": "workspace C Project",
+        "prefix": ["C Project"],
         "body": [
-            "workspace \"${1:WorkspaceName}\"",
-            "   configurations { \"Debug\", \"Release\" }",
-            "",
             "project \"${2:ProjectName}\"",
             "   kind \"${3|ConsoleApp,StaticLib,SharedLib,StaticLib,Makefile,Utility,None,Packaging,SharedItems|}\"",
             "   language \"C\"",
@@ -31,11 +20,10 @@
         "description": "generate a basic premake workspace with a C project"
     },
     "premake5.workspace.cpp_project": {
-        "prefix": "workspace C++ Project",
+        "prefix": [
+            "C++ Project"
+        ],
         "body": [
-            "workspace \"${1:WorkspaceName}\"",
-            "   configurations { \"Debug\", \"Release\" }",
-            "",
             "project \"${2:ProjectName}\"",
             "   kind \"${3|ConsoleApp,StaticLib,SharedLib,Makefile,Utility,None,Packaging,SharedItems|}\"",
             "   language \"C++\"",
@@ -52,21 +40,5 @@
             "      optimize \"On\""
         ],
         "description": "generate a basic premake workspace with a C++ project"
-    },
-    "premake5.include.project": {
-        "prefix": [
-            "include project",
-            "include"
-        ],
-        "body": "   include \"projects/${1:project}\"",
-        "description": "add a default include for projects"
-    },
-    "premake5.include.directory": {
-        "prefix": [
-            "include directory",
-            "include"
-        ],
-        "body": "   include \"${1:dir}\"",
-        "description": "add a default include for a directory"
-    },
+    }
 }
