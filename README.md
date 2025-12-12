@@ -23,17 +23,23 @@ type >VSIX in the top bar and press enter and select the package.
 ## github access
 github is used to make it so you are not rate limited!
 
-### 0.1.2 - beta
+### 0.1.3 - beta
 
-language support hotfix, snippets
+added first class support for modules and libraries!
 
+- Adding a module is now as simple as calling **module add**
+- Adding a library is now as simple as calling **library add**
+- 
 ### TL;DR
 
-after some back and forth i was able to fix the auto genrating meta files. i also took the liberty of adding a couple of handy snippets
+the registry is live and can be found [here](https://premake-registry.onrender.com/)
+feel free to register your own modules and libraries
 
 ### what is next?
 
-next on the agenda is the module, library registry for premake.
+1) cleaning of the registry and making it fully functional.
+2) updating Premaker for module support
+3) vscode integration with the registry.
 
 **Enjoy!**
 

@@ -2,7 +2,7 @@
   "name": "premake-manager",
   "displayName": "premake manager",
   "description": "a extension to manage premake projects",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "type": "commonjs",
   "publisher": "lolrobbe2",
   "engines": {
@@ -11,13 +11,16 @@
   "categories": [
     "Other",
     "Snippets",
-    "Linters"
+    "Linters",
+    "Formatters"
   ],
   "keywords": [
     "premake",
     "autocomplete",
     "install",
-    "snippets"
+    "snippets",
+    "libraries",
+    "modules"
   ],
   "author": {
     "name": "robbe beernaert"
@@ -106,13 +109,6 @@
       },
       {
         "category": "Premake5",
-        "command": "premake5.module-info",
-        "title": "return the info from a premake module",
-        "icon": "resources/media/premake-logo-128.png",
-        "when": "false"
-      },
-      {
-        "category": "Premake5",
         "command": "premake5.module-install",
         "title": "install a premake module",
         "icon": "resources/media/premake-logo-128.png",
@@ -132,10 +128,53 @@
         "icon": "resources/media/premake-logo-128.png",
         "when": "false"
       },
+
+       {
+        "category": "Premake5",
+        "command": "premake5.library-info",
+        "title": "return the info from a premake library",
+        "icon": "resources/media/premake-logo-128.png",
+        "when": "false"
+      },
+      {
+        "category": "Premake5",
+        "command": "premake5.library-install",
+        "title": "install a premake library",
+        "icon": "resources/media/premake-logo-128.png",
+        "when": "false"
+      },
+      {
+        "category": "Premake5",
+        "command": "premake5.library-remove",
+        "title": "remove a premake library",
+        "icon": "resources/media/premake-logo-128.png",
+        "when": "false"
+      },
+      {
+        "category": "premake manager",
+        "command": "premake5.library-group",
+        "title": "library commands",
+        "icon": "resources/media/premake-logo-128.png",
+        "when": "false"
+      },
       {
         "category": "premake manager",
         "command": "premake5.config-group",
         "title": "config commands",
+        "icon": "resources/media/premake-logo-128.png",
+        "when": "false"
+      },
+      {
+        "category": "premake manager",
+        "command": "premake5.config-view",
+        "title": "view config",
+        "icon": "resources/media/premake-logo-128.png",
+        "when": "false"
+      },
+      {
+        "category": "premake manager",
+        "command": "premake5.configure",
+        "title": "configure",
         "icon": "resources/media/premake-logo-128.png",
         "when": "false"
       },

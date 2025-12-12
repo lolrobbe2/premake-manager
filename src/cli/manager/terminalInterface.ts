@@ -82,6 +82,24 @@ export class TerminalInterface {
         this.sendCommand(`module remove ${githubLink}`);
     }
 //#endregion
+   public static libraryInfo(githubLink: String | undefined) {
+        this.sendCommand(`library info ${githubLink}`);
+    }
+
+    public static libraryAdd(githubLink: String  | undefined) {
+        this.sendCommand(`library add ${githubLink}`);
+    }
+    
+    public static libraryInstall(githubLink: String | undefined) {
+        this.sendCommand(`library install ${githubLink}`);
+    }
+
+    public static libraryRemove(githubLink: String | undefined) {
+        this.sendCommand(`library remove ${githubLink}`);
+    }
+//#region LIBRARIES
+
+//#endregion
 
 //#region CONFIG
     public static configSetVersion(tag: String | undefined) {
@@ -95,6 +113,11 @@ export class TerminalInterface {
     public static configView()
     {
         this.sendCommand("config view");
+    }
+
+    public static configure()
+    {
+        this.sendCommand("configure");
     }
 //#endregion
 //#endregion
