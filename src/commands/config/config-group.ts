@@ -2,6 +2,7 @@ import { CommandGroup } from "commands/command-group";
 import * as vscode from 'vscode';
 import { configSetVersionCommand } from "./config-set-version";
 import { configViewCommand } from "./config-view";
+import { configureCommand } from "./configure";
 
 
 export class ConfigCommandGroup extends CommandGroup {
@@ -9,7 +10,8 @@ export class ConfigCommandGroup extends CommandGroup {
         super(context, register,"premake5.config-group", "config commands | all the available configuration commands");
         this.addMultiple([
             configViewCommand,
-            configSetVersionCommand
+            configSetVersionCommand,
+            configureCommand
         ]);
     }
 }

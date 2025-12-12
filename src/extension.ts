@@ -29,7 +29,7 @@ function findPremakeFile(dir: string) {
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export async function activate(context: vscode.ExtensionContext): Promise<TerminalInterface> {
-	CommandManager.initialize(context)
+	CommandManager.initialize(context);
 	commands.register();
 	TerminalInterface.initialize(context);
 	context.subscriptions.push(vscode.window.registerTerminalProfileProvider('premake5.terminal-profile', {
