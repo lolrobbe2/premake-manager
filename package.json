@@ -2,7 +2,7 @@
   "name": "premake-manager",
   "displayName": "premake manager",
   "description": "a extension to manage premake projects",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "type": "commonjs",
   "publisher": "lolrobbe2",
   "engines": {
@@ -11,13 +11,16 @@
   "categories": [
     "Other",
     "Snippets",
-    "Linters"
+    "Linters",
+    "Formatters"
   ],
   "keywords": [
     "premake",
     "autocomplete",
     "install",
-    "snippets"
+    "snippets",
+    "libraries",
+    "modules"
   ],
   "author": {
     "name": "robbe beernaert"

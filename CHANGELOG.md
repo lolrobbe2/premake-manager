@@ -43,3 +43,34 @@ With this new purpose build config file comes module support. (a module registry
 Enjoy this new version.
 
 And please leave feedback!
+
+
+### 0.1.2 - beta
+
+language support hotfix, snippets
+
+### TL;DR
+
+after some back and forth i was able to fix the auto genrating meta files. i also took the liberty of adding a couple of handy snippets
+
+### what is next?
+
+next on the agenda is the module, library registry for premake.
+
+### 0.1.3 - beta
+
+added first class support for modules and libraries!
+
+- Adding a module is now as simple as calling **module add**
+- Adding a library is now as simple as calling **library add**
+
+### TL;DR
+
+the registry is live and can be found [here](https://premake-registry.onrender.com/)
+feel free to register your own modules and libraries
+
+### what is next?
+
+1) cleaning of the registry code and making it fully functional (almost done, API needs paging).
+2) updating Premaker for module, library support
+3) vscode visual integration with the registry.
