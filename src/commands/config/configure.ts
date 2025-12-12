@@ -3,7 +3,7 @@ import { CommandRegistrar } from "commands/command-registrar";
 import * as vscode from 'vscode';
 export class configureCommand extends CommandRegistrar {
     protected async execute(...args: any[]): Promise<void> {
-        TerminalInterface.configView();
+        TerminalInterface.configure();
     }
 
     constructor(context: vscode.ExtensionContext, register: boolean) {

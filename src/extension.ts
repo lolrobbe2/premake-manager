@@ -79,6 +79,13 @@ export async function activate(context: vscode.ExtensionContext): Promise<Termin
 	statusBarItemCliTerminal.command = 'premake5.manager-cli'; // must match a registered command
 	statusBarItemCliTerminal.show();
 
+	const statusBarItemConfigure = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100); // Lower priority
+
+	statusBarItemConfigure.text = '$(rocket) Premake Conf';
+	statusBarItemConfigure.tooltip = 'Configure the workspace';
+	statusBarItemConfigure.command = 'premake5.configure'; // must match a registered command
+	statusBarItemConfigure.show();
+
 	context.subscriptions.push(statusBarItem);
 	context.subscriptions.push(statusBarItemCliTerminal);
 
