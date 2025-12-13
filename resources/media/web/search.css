@@ -40,3 +40,23 @@
 .filter-btn:hover {
     background: var(--vscode-button-secondaryHoverBackground);
 }
+.module-item {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.module-item:hover {
+    background: var(--vscode-button-secondaryHoverBackground);
+}
+.module-item img {
+    width: 10%;
+    height: 10%;
+    padding: 5%;
+}
+.module-info {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+}

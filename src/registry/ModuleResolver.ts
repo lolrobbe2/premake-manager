@@ -16,7 +16,7 @@ export interface RegistryRepo {
     apiUrl: string;
 }
 
-class RepositoryResolver {
+export class RepositoryResolver {
     /**
      * Search modules from the API
      * @param type Search type (UserName, RepoName, Tag, Recent)
@@ -43,6 +43,31 @@ class RepositoryResolver {
 
         const data: RegistryRepo[] = await response.json() as RegistryRepo[];
         return data;
+    }
+    static async getInfo(repo: RegistryRepo) : Promise<any>{
+        const response = await fetch(repo.apiUrl, {
+            headers: {
+                "Accept": "application/json"
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch info: ${response.status} ${response.statusText}`);
+        }
+        return await response.json();
+    }
+
+    static async HasIcon(
+        repo: RegistryRepo
+    ): Promise<boolean> {
+        const url: string =
+            `https://raw.githubusercontent.com/${repo.userName}/${repo.repoName}/main/icon.svg}`;
+        try {
+            const response: Response = await fetch(url, { method: "HEAD" });
+            return response.ok;
+        } catch {
+            return false;
+        }
     }
 }
 

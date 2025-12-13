@@ -42,4 +42,19 @@
             }
         });
     });
+
+    const modulesDiv = document.getElementById('modules-div');
+
+    window.addEventListener('message', (event) => {
+        const message = event.data;
+
+        if (message.type === 'modules') {
+            if (!modulesDiv) {
+                return;
+            }
+
+            modulesDiv.innerHTML = message.value;
+        }
+    });
+
 }());

@@ -1,14 +1,24 @@
 import { PathUtils } from "utils/path-utils";
 import vscode from "vscode";
+import ModuleResolver, { RegistryRepo, RepoSearchType, RepositoryResolver } from "./ModuleResolver";
 
 
 class ModuleItem {
-    constructor() {
-
+    private readonly _repo: RegistryRepo;
+    constructor(repo: RegistryRepo) {
+        this._repo = repo;
     }
 
-    getHtml() {
-        return `<li>hello</li>`;
+    async getHtml(defaultIcon: vscode.Uri) {
+        const icon: string | vscode.Uri = await RepositoryResolver.HasIcon(this._repo) == true ? `https://raw.githubusercontent.com/${this._repo.userName}/${this._repo.repoName}/main/icon.svg}` : defaultIcon;
+        const info = await RepositoryResolver.getInfo(this._repo);
+        return `<div class="module-item">
+        <img src="${icon}" alt="icon"/>
+            <div class="module-info">
+                <p>${this._repo.repoName}</p>
+                <p>${info.description}</p>
+            </div>
+        </div>`;
     }
 }
 
@@ -19,7 +29,8 @@ interface WebViewMessage {
 export class ModuleProvider implements vscode.WebviewViewProvider {
     private type: string = "premake5.manager.module";
     private _view?: vscode.WebviewView;
-
+    private searchType: RepoSearchType = RepoSearchType.Recent;
+    private modules: ModuleItem[] = [];
     constructor(
         private readonly _extensionUri: vscode.Uri,
         private readonly _extensionContext: vscode.ExtensionContext
@@ -42,13 +53,16 @@ export class ModuleProvider implements vscode.WebviewViewProvider {
         };
         webviewView.webview.html = this.getModulesViewHtml(webviewView.webview);
         this._view!.webview.onDidReceiveMessage(
-            message => {
+            async message => {
                 const mess: WebViewMessage = message;
                 switch (mess.type) {
                     case "search":
-
+                        await this.search(mess.value);
+                        const defaultIcon = webviewView.webview.asWebviewUri(PathUtils.getMediaResource(this._extensionUri, ['web','premake-logo-128.png'])!);
+                        await webviewView.webview.postMessage({type:"modules",value: await this.getModulesHtml(defaultIcon)})
                         break;
-
+                    case "setSearchType":
+                        this.searchType = mess.value as RepoSearchType;
                     default:
                         break;
                 }
@@ -76,7 +90,7 @@ export class ModuleProvider implements vscode.WebviewViewProvider {
 					and only allow scripts that have a specific nonce.
 					(See the 'webview-sample' extension sample for img-src content security policy examples)
 				-->
-				<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource}; script-src 'nonce-${nonce}'; font-src ${webview.cspSource};">
+				<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource}; script-src 'nonce-${nonce}'; font-src ${webview.cspSource};img-src ${webview.cspSource};">
 
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
 				<link href="${styleMainCss}" rel="stylesheet">
@@ -86,6 +100,8 @@ export class ModuleProvider implements vscode.WebviewViewProvider {
 			</head>
 			<body>
 				${this.getSearchInputHtml()}
+                <div class="modules" id="modules-div">
+                </div>
                 <script nonce="${nonce}" src="${mainScript}" type="module"></script>
 			</body>
 			</html>`;
@@ -118,4 +134,16 @@ export class ModuleProvider implements vscode.WebviewViewProvider {
         }
         return text;
     }
+
+    async search(searchValue: string){
+        this.modules = (await ModuleResolver.getModules(this.searchType,searchValue,0)).map((repo)=> new ModuleItem(repo));
+    }
+    async getModulesHtml(defaultIcon: vscode.Uri):Promise<string>{
+        const htmlParts: string[] = await Promise.all(
+            this.modules.map(async (mod) => {
+                return await mod.getHtml(defaultIcon);
+            })
+        );
+
+        return htmlParts.join("\n");    }
 }
