@@ -10,6 +10,8 @@ import * as commands from './commands/mod';
 
 import fs from "fs";
 import path from "path";
+import { ModuleProvider } from 'registry/ModuleProvider';
+import ModuleResolver, { RepoSearchType } from 'registry/ModuleResolver';
 import { PathUtils } from 'utils/path-utils';
 
 function findPremakeFile(dir: string) {
@@ -103,6 +105,11 @@ export async function activate(context: vscode.ExtensionContext): Promise<Termin
 			]);
 		}
 	}
+	const moduleProvider = new ModuleProvider(context.extensionUri,context);
+	context.subscriptions.push(
+		vscode.window.registerWebviewViewProvider("premake5.manager.module", moduleProvider)
+	);
+	console.log(await ModuleResolver.getModules(RepoSearchType.Recent,"",0));
 	return TerminalInterface;
 }
 

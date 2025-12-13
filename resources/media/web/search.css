@@ -1,0 +1,42 @@
+.search-input{
+    display: flex;
+    flex-direction: row;
+    background: var(--vscode-input-background);
+    width: 100%;
+    border: 1px solid var(--vscode-input-border);
+    padding: 0.1rem;
+}
+
+.search-input:focus-within {
+   border-color: var(--vscode-focusBorder);
+}
+.search-input input{
+    all: unset;
+    margin-left: 0.1rem;
+    width: 90%;
+}
+
+.filter-panel {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background: var(--vscode-editor-background);
+    border: 0.0625rem solid var(--vscode-input-border);
+}
+.filter-panel[hidden] {
+    display: none;
+}
+.filter-btn {
+    background: var(--vscode-button-secondaryBackground);
+    color: var(--vscode-button-secondaryForeground);
+    border: 0;
+    padding: 0.25rem 0.5rem;
+    text-align: left;
+    cursor: pointer;
+    width: 100%;
+}
+
+.filter-btn:hover {
+    background: var(--vscode-button-secondaryHoverBackground);
+}

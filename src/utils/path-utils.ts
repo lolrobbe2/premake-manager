@@ -23,4 +23,8 @@ export class PathUtils {
     public static getResource(context: vscode.ExtensionContext, subpaths: string[]): string | undefined {
         return path.join(this.getExtensionResourceRoot(context)!,...subpaths);
     }
+
+    public static getMediaResource(extensionRoot:vscode.Uri, subpaths: string[]): vscode.Uri | undefined {
+        return vscode.Uri.joinPath(extensionRoot,'resources','media',...subpaths);
+    }
 }
