@@ -93,7 +93,11 @@ export default class Converter {
         if (this.Allowed === undefined) {
             return this.Kind.toParam();
         }
-        return this.Allowed.toParam();
+        var result = this.Allowed.toParam();
+        if (this.Kind.isList()) {
+            result += "[]";
+        }
+        return result;
     }
     toSignature() {
         return `local function ${this.name}(value) end`;
