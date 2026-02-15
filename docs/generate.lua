@@ -18,7 +18,7 @@ local function exportLoweredList()
             for k, val in pairs(v.allowed) do
                 if type(val) == "string" and not contains(allowedList, val) then
                     table.insert(allowedList, val)
-                    table.insert(allowedList, val:lower())
+                    -- table.insert(allowedList, val:lower())
                 end
             end
         end
