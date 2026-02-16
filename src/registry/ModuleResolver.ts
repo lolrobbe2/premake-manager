@@ -72,7 +72,7 @@ export class RepositoryResolver {
 }
 
 export default class ModuleResolver {
-    static baseUri = "https://premake-registry.onrender.com/";
+    static baseUri = "https://premake-registry-ywxg.onrender.com/";
 
     /**
      * Search modules from the API

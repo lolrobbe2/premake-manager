@@ -12,6 +12,7 @@ class ModuleItem {
     async getHtml(defaultIcon: vscode.Uri) {
         const icon: string | vscode.Uri = await RepositoryResolver.HasIcon(this._repo) == true ? `https://raw.githubusercontent.com/${this._repo.userName}/${this._repo.repoName}/main/icon.svg}` : defaultIcon;
         const info = await RepositoryResolver.getInfo(this._repo);
+
         return `<div class="module-item">
         <img src="${icon}" alt="icon"/>
             <div class="module-info">
