@@ -1,14 +1,17 @@
 {
   "compilerOptions": {
-    "module": "node16",
-    "moduleResolution": "node16",
+    "module": "node20",
+    "moduleResolution": "nodenext",
     "composite": true,
     "target": "ES2022",
     "lib": ["ES2022"],
     "sourceMap": true,
     "rootDir": "src",
     "strict": true,
-    "baseUrl": "./src",
+    "paths": {
+      "*": ["./src/*"],
+    },
+    "types": ["node", "vscode"],
     "outDir": "out",
   }
 }

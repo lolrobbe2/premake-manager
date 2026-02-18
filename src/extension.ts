@@ -14,6 +14,7 @@ import { ModuleProvider } from 'registry/ModuleProvider';
 import ModuleResolver, { RepoSearchType } from 'registry/ModuleResolver';
 import { PathUtils } from 'utils/path-utils';
 
+
 function findPremakeFile(dir: string) {
 	const entries = fs.readdirSync(dir, { withFileTypes: true });
 	for (const entry of entries) {
@@ -98,10 +99,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<Termin
 
 		if (premakeFile) {
 			await sources.registerSources([
-				"premakeFields_1.lua",
-				"premakeFields_2.lua",
-				"premakeFields_3.lua",
-				"premakeGlobals.lua"
+				"."
 			]);
 		}
 	}

@@ -10,10 +10,10 @@ class ModuleItem {
     }
 
     async getHtml(defaultIcon: vscode.Uri) {
-        const icon: string | vscode.Uri = await RepositoryResolver.HasIcon(this._repo) == true ? `https://raw.githubusercontent.com/${this._repo.userName}/${this._repo.repoName}/main/icon.svg}` : defaultIcon;
+        const icon: string | vscode.Uri = await RepositoryResolver.HasIcon(this._repo) === true ? `https://raw.githubusercontent.com/${this._repo.userName}/${this._repo.repoName}/main/icon.svg}` : defaultIcon;
         const info = await RepositoryResolver.getInfo(this._repo);
 
-        return `<div class="module-item">
+        return `<div class="module-item" id="module-item-div" data-repo-name="${this._repo.repoName}" data-user-name="${this._repo.userName}">
         <img src="${icon}" alt="icon"/>
             <div class="module-info">
                 <p>${this._repo.repoName}</p>
@@ -64,6 +64,8 @@ export class ModuleProvider implements vscode.WebviewViewProvider {
                         break;
                     case "setSearchType":
                         this.searchType = mess.value as RepoSearchType;
+                    case "moduleClicked":
+                        break;
                     default:
                         break;
                 }

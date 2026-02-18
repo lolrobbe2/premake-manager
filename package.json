@@ -228,9 +228,7 @@
       "type": "object",
       "properties": {}
     },
-    "menus": {
-      
-    }
+    "menus": {}
   },
   "scripts": {
     "clean": "rimraf out && rimraf tsconfig.extension.tsbuildinfo",
@@ -256,7 +254,7 @@
     "@octokit/types": "^13.6.2",
     "@types/adm-zip": "^0.5.7",
     "@types/mocha": "^10.0.9",
-    "@types/node": "^20.9.0",
+    "@types/node": "^22.16.0",
     "@types/vscode": "^1.96.0",
     "@types/vscode-webview": "^1.57.5",
     "@typescript-eslint/eslint-plugin": "^8.10.0",
@@ -264,9 +262,9 @@
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
     "@vscode/vsce": "^3.2.1",
-    "esbuild": "^0.24.2",
+    "esbuild": "^0.27.3",
     "eslint": "^9.13.0",
     "rimraf": "^5.0.10",
-    "typescript": "^5.7.2"
+    "typescript": "^5.9.3"
   }
 }

@@ -32,7 +32,7 @@ added first class support for modules and libraries!
 - 
 ### TL;DR
 
-the registry is live and can be found [here](https://premake-registry.onrender.com/)
+the registry is live and can be found [here](https://premake-registry-ywxg.onrender.com/)
 feel free to register your own modules and libraries
 
 ### what is next?

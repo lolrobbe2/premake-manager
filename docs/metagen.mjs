@@ -1,7 +1,7 @@
 // run-premake.mjs
 import { spawn } from "child_process";
 import fs from "fs";
-import Converter from "./conerter.mjs";
+import Converter from "./converter.mjs";
 import DocsFetch from "./docsfetch.mjs";
 /**
  * @description runs the premake fields generate
@@ -60,10 +60,9 @@ function chunkArray(arr, size) {
 
     console.log("\nDone!");
 
-    const chunks = chunkArray(metaFields,100)
+    const chunks = chunkArray(metaFields,100);
     const metaFieldsCombinedChunks = chunks.map(chunk => chunk.join("\n\n"));
 
-    // Example: write each chunk to its own file
     metaFieldsCombinedChunks.forEach((chunkStr, idx) => {
         fs.writeFileSync(`resources/language/premakeFields_${idx + 1}.lua`, chunkStr, "utf8");
     });

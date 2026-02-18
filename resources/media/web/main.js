@@ -1,4 +1,5 @@
 (function () {
+    // @ts-ignore
     const vscode = acquireVsCodeApi();
     vscode.postMessage({
         type: 'search',
@@ -54,6 +55,17 @@
             }
 
             modulesDiv.innerHTML = message.value;
+
+            document.querySelectorAll('.module-item').forEach((btn) => {
+                btn.addEventListener('click', () => {
+                    const repoName = btn.getAttribute('data-repo-name');
+                    const userName = btn.getAttribute('data-user-name');
+                    vscode.postMessage({
+                        type: 'moduleClicked',
+                        value: {repoName: repoName, userName: userName}
+                    });
+                });
+            });
         }
     });
 
