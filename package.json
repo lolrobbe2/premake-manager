@@ -213,6 +213,9 @@
           "title": "Premake Manager",
           "icon": "resources/media/premake-logo.svg"
         }
+      ],
+      "panel": [
+
       ]
     },
     "views": {

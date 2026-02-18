@@ -1,10 +1,11 @@
 import { PathUtils } from "utils/path-utils";
 import vscode from "vscode";
 import ModuleResolver, { RegistryRepo, RepoSearchType, RepositoryResolver } from "./ModuleResolver";
+import { DetailPanel } from "./DetailsPanel";
 
 
 class ModuleItem {
-    private readonly _repo: RegistryRepo;
+    public readonly _repo: RegistryRepo;
     constructor(repo: RegistryRepo) {
         this._repo = repo;
     }
@@ -25,7 +26,7 @@ class ModuleItem {
 
 interface WebViewMessage {
     type: string,
-    value: string,
+    value: any,
 }
 export class ModuleProvider implements vscode.WebviewViewProvider {
     private type: string = "premake5.manager.module";
@@ -60,11 +61,12 @@ export class ModuleProvider implements vscode.WebviewViewProvider {
                     case "search":
                         await this.search(mess.value);
                         const defaultIcon = webviewView.webview.asWebviewUri(PathUtils.getMediaResource(this._extensionUri, ['web','premake-logo-128.png'])!);
-                        await webviewView.webview.postMessage({type:"modules",value: await this.getModulesHtml(defaultIcon)})
+                        await webviewView.webview.postMessage({type:"modules",value: await this.getModulesHtml(defaultIcon)});
                         break;
                     case "setSearchType":
                         this.searchType = mess.value as RepoSearchType;
                     case "moduleClicked":
+                        DetailPanel.createOrShow(this.getModule(mess.value.userName,mess.value.repoName,)?._repo!,this._extensionUri);
                         break;
                     default:
                         break;
@@ -148,5 +150,15 @@ export class ModuleProvider implements vscode.WebviewViewProvider {
             })
         );
 
-        return htmlParts.join("\n");    }
+        return htmlParts.join("\n");    
+    }
+    /**
+     * Finds a ModuleItem instance by its repo and user name.
+     */
+    public getModule(userName: string, repoName: string): ModuleItem | undefined {
+        return this.modules.find(item => 
+            item._repo.userName === userName && 
+            item._repo.repoName === repoName
+        );
+    }
 }
