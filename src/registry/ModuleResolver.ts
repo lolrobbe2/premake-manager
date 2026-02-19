@@ -28,7 +28,7 @@ export class RepositoryResolver {
         const params = new URLSearchParams({
             type: type,
             value: value,
-            page: page.toString()
+            page: String(page)
         });
 
         const response = await fetch(`${ModuleResolver.baseUri}api/UserRepositories/search?${params.toString()}`, {
@@ -36,7 +36,7 @@ export class RepositoryResolver {
                 "Accept": "application/json"
             }
         });
-
+        
         if (!response.ok) {
             throw new Error(`Failed to fetch modules: ${response.status} ${response.statusText}`);
         }

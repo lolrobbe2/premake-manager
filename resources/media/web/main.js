@@ -3,7 +3,7 @@
     const vscode = acquireVsCodeApi();
     vscode.postMessage({
         type: 'search',
-        value: "test"
+        value: ""
     });
     const searchInput = /** @type {HTMLElement} */ document.getElementById('module-search');
     console.log("hello");
