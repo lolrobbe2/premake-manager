@@ -24,7 +24,9 @@ export class PathUtils {
         return path.join(this.getExtensionResourceRoot(context)!,...subpaths);
     }
 
-    public static getMediaResource(extensionRoot:vscode.Uri, subpaths: string[]): vscode.Uri | undefined {
-        return vscode.Uri.joinPath(extensionRoot,'resources','media',...subpaths);
+    public static getMediaResource(context: vscode.ExtensionContext, subpaths: string[]): vscode.Uri {
+        // REMOVED 'resources' from here because getExtensionResourceRoot already includes it
+        // This stops the "resources/resources" doubling
+        return vscode.Uri.file([context.extensionPath,'resources', 'media', ...subpaths].join('/'));
     }
 }

@@ -12,7 +12,8 @@ export interface RegistryRepo {
     createdAt: string; // or Date if you parse it
     isLib: boolean;
     repoUrl: string;
-    repoReadme: string;
+    repoMainReadme: string;
+    repoMasterReadme: string;
     apiUrl: string;
 }
 

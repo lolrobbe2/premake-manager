@@ -214,9 +214,7 @@
           "icon": "resources/media/premake-logo.svg"
         }
       ],
-      "panel": [
-
-      ]
+      "panel": []
     },
     "views": {
       "premake5-manager": [
@@ -244,14 +242,18 @@
     "tsc:w": "node --version",
     "resources": "cp -rv ./src/resources/** ./out/resources",
     "icons": "fantasticon ./src/resources/media/ -o ./src/resources/media/",
-    "meta": "node docs/metagen.mjs"
+    "meta": "node docs/metagen.mjs",
+    "build-details": "npm run build --prefix src/registry/media/details",
+    "build-modules": "npm run build --prefix src/registry/media/modules"
   },
   "dependencies": {
+    "@vscode-elements/elements": "^2.5.0",
     "@vscode/codicons": "^0.0.44",
     "axios": "^1.7.9",
     "chokidar": "^4.0.3",
     "cp": "^0.2.0",
-    "tar": "^7.4.3"
+    "tar": "^7.4.3",
+    "vscode-webview": "^1.0.1-beta.1"
   },
   "devDependencies": {
     "@octokit/types": "^13.6.2",

@@ -1,38 +1,16 @@
 import { PathUtils } from "utils/path-utils";
 import vscode from "vscode";
-import ModuleResolver, { RegistryRepo, RepoSearchType, RepositoryResolver } from "./ModuleResolver";
 import { DetailPanel } from "./DetailsPanel";
+import { RegistryRepo } from "./ModuleResolver";
 
-
-class ModuleItem {
-    public readonly _repo: RegistryRepo;
-    constructor(repo: RegistryRepo) {
-        this._repo = repo;
-    }
-
-    async getHtml(defaultIcon: vscode.Uri) {
-        const icon: string | vscode.Uri = await RepositoryResolver.HasIcon(this._repo) === true ? `https://raw.githubusercontent.com/${this._repo.userName}/${this._repo.repoName}/main/icon.svg}` : defaultIcon;
-        const info = await RepositoryResolver.getInfo(this._repo);
-
-        return `<div class="module-item" id="module-item-div" data-repo-name="${this._repo.repoName}" data-user-name="${this._repo.userName}">
-        <img src="${icon}" alt="icon"/>
-            <div class="module-info">
-                <p>${this._repo.repoName}</p>
-                <p>${info.description}</p>
-            </div>
-        </div>`;
-    }
-}
 
 interface WebViewMessage {
-    type: string,
-    value: any,
+    command: string,
+    repo: RegistryRepo,
 }
 export class ModuleProvider implements vscode.WebviewViewProvider {
     private type: string = "premake5.manager.module";
     private _view?: vscode.WebviewView;
-    private searchType: RepoSearchType = RepoSearchType.Recent;
-    private modules: ModuleItem[] = [];
     constructor(
         private readonly _extensionUri: vscode.Uri,
         private readonly _extensionContext: vscode.ExtensionContext
@@ -44,121 +22,68 @@ export class ModuleProvider implements vscode.WebviewViewProvider {
     resolveWebviewView(webviewView: vscode.WebviewView, context: vscode.WebviewViewResolveContext, token: vscode.CancellationToken): Thenable<void> | void {
         this._view = webviewView;
 
-        webviewView.webview.options = {
+        this._view!.webview.options = {
             enableForms: true,
             // Allow scripts in the webview
             enableScripts: true,
 
             localResourceRoots: [
-                this._extensionUri
+                this._extensionUri,
+                vscode.Uri.joinPath(this._extensionUri, 'node_modules')
+                
             ]
         };
-        webviewView.webview.html = this.getModulesViewHtml(webviewView.webview);
+        this._view!.webview.html = this._getFullHtml(this._extensionContext);
         this._view!.webview.onDidReceiveMessage(
             async message => {
                 const mess: WebViewMessage = message;
-                switch (mess.type) {
-                    case "search":
-                        await this.search(mess.value);
-                        const defaultIcon = webviewView.webview.asWebviewUri(PathUtils.getMediaResource(this._extensionUri, ['web','premake-logo-128.png'])!);
-                        await webviewView.webview.postMessage({type:"modules",value: await this.getModulesHtml(defaultIcon)});
+                switch (mess.command) {
+                    case "showModuleDetails":
+                        DetailPanel.createOrShow(mess.repo,this._extensionContext);
                         break;
-                    case "setSearchType":
-                        this.searchType = mess.value as RepoSearchType;
-                    case "moduleClicked":
-                        DetailPanel.createOrShow(this.getModule(mess.value.userName,mess.value.repoName,)?._repo!,this._extensionUri);
-                        break;
+                    case "closeModuleDetails":
+                        DetailPanel.close();
                     default:
                         break;
                 }
+               
 
 
             },
             null
         );
     }
-    getModulesViewHtml(webview: vscode.Webview) {
-        const styleMainCss = webview.asWebviewUri(PathUtils.getMediaResource(this._extensionUri, ['web', 'main.css'])!);
-        const styleSearchCss = webview.asWebviewUri(PathUtils.getMediaResource(this._extensionUri, ['web', 'search.css'])!);
-        const codiconsUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'node_modules', '@vscode/codicons', 'dist', 'codicon.css'));
 
-        const mainScript = webview.asWebviewUri(PathUtils.getMediaResource(this._extensionUri, ['web', 'main.js'])!);
+     private _getFullHtml(extensionContext: vscode.ExtensionContext): string {
+            const webview = this._view!.webview;
+         // 1. Get the path to the codicon.css inside the vscode-codicons package
+            const codiconsUri = webview.asWebviewUri(
+                vscode.Uri.joinPath(extensionContext.extensionUri,'node_modules/@vscode/codicons/dist/codicon.css')
+            );
 
-        const nonce: string = this.getNonce();
-        return `<!DOCTYPE html>
-			<html lang="en">
-			<head>
-				<meta charset="UTF-8">
-
-				<!--
-					Use a content security policy to only allow loading styles from our extension directory,
-					and only allow scripts that have a specific nonce.
-					(See the 'webview-sample' extension sample for img-src content security policy examples)
-				-->
-				<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource}; script-src 'nonce-${nonce}'; font-src ${webview.cspSource};img-src ${webview.cspSource};">
-
-				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<link href="${styleMainCss}" rel="stylesheet">
-                <link href="${styleSearchCss}" rel="stylesheet">
-				<link href="${codiconsUri}" rel="stylesheet" />
-				<title>Modules</title>
-			</head>
-			<body>
-				${this.getSearchInputHtml()}
-                <div class="modules" id="modules-div">
-                </div>
-                <script nonce="${nonce}" src="${mainScript}" type="module"></script>
-			</body>
-			</html>`;
-    }
-
-
-    getSearchInputHtml() {
-        return `
-    <div class="search-input icons">
-        <input
-            class="input"
-            type="text"
-            id="module-search"
-            placeholder="Search modules…"
-        />
-        <div class="icon" id="filter-button"><i class="codicon codicon-filter"></i></div>
-    </div>
-    <div class="filter-panel" id="filter-panel" hidden>
-        <button class="filter-btn" data-type="UserName">User name</button>
-        <button class="filter-btn" data-type="RepoName">Repository name</button>
-        <button class="filter-btn" data-type="Tag">Tag</button>
-        <button class="filter-btn" data-type="Recent">Recent</button>
-    </div>`
-    }
-    getNonce() {
-        let text: string = '';
-        const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        for (let i = 0; i < 32; i++) {
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
+         // 2. Add this to your HTML template
+         // <link href="${codiconsUri}" rel="stylesheet" />
+            // Use your PathUtils to find the JS and CSS bundles
+            const scriptUri = webview.asWebviewUri(
+                PathUtils.getMediaResource(extensionContext, ['modules', 'modules-bundle.js'])!
+            );
+    
+            const styleUri = webview.asWebviewUri(
+                PathUtils.getMediaResource(extensionContext, ['modules', 'modules-bundle.css'])!
+            );
+    
+            return `<!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link href="${codiconsUri}" rel="stylesheet" id="vscode-codicon-stylesheet"/>
+            <link href="${styleUri}" rel="stylesheet">
+        </head>
+        <body>
+            <div id="root"></div>
+            <script type="module" src="${scriptUri}"></script>
+        </body>
+        </html>`;
         }
-        return text;
-    }
-
-    async search(searchValue: string){
-        this.modules = (await ModuleResolver.getModules(this.searchType,searchValue,0)).map((repo)=> new ModuleItem(repo));
-    }
-    async getModulesHtml(defaultIcon: vscode.Uri):Promise<string>{
-        const htmlParts: string[] = await Promise.all(
-            this.modules.map(async (mod) => {
-                return await mod.getHtml(defaultIcon);
-            })
-        );
-
-        return htmlParts.join("\n");    
-    }
-    /**
-     * Finds a ModuleItem instance by its repo and user name.
-     */
-    public getModule(userName: string, repoName: string): ModuleItem | undefined {
-        return this.modules.find(item => 
-            item._repo.userName === userName && 
-            item._repo.repoName === repoName
-        );
-    }
 }
