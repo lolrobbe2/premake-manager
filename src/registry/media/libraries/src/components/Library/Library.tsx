@@ -3,10 +3,10 @@ import '@vscode-elements/elements/dist/vscode-label';
 import '@vscode-elements/elements/dist/vscode-textarea';
 
 import { type FC, useEffect, useState } from 'react';
-import { ModuleService, type RegistryRepo } from '../../services/ModuleService.js';
 import { getVsCodeApi } from '../../vscode.js';
-import './Module.css';
-interface ModuleProps {
+import './Library.css';
+import { LibraryService, type RegistryRepo } from '../../services/LibraryService.js';
+interface LibraryProps {
    repo: RegistryRepo;
    isActive: boolean;
    onSelect: () => void;
@@ -14,8 +14,8 @@ interface ModuleProps {
 
 const DEFAULT_ICON = "https://premake.github.io/img/premake-logo.png";
 
-const Module: FC<ModuleProps> = ({ repo, isActive, onSelect }) => {
-   const [imgSrc, setImgSrc] = useState(ModuleService.getIconUri(repo) || DEFAULT_ICON);
+const Library: FC<LibraryProps> = ({ repo, isActive, onSelect }) => {
+   const [imgSrc, setImgSrc] = useState(LibraryService.getIconUri(repo) || DEFAULT_ICON);
    const [description, setDescription] = useState("Loading description...");
    const vscode = getVsCodeApi();
 
@@ -23,7 +23,7 @@ const Module: FC<ModuleProps> = ({ repo, isActive, onSelect }) => {
       if(isActive === true)
          return;
       vscode.postMessage({
-         command: 'showModuleDetails',
+         command: 'showLibraryDetails',
          repo: repo
       });
    };
@@ -32,7 +32,7 @@ const Module: FC<ModuleProps> = ({ repo, isActive, onSelect }) => {
    const handleInstallClick = (e: React.MouseEvent) => {
       e.stopPropagation(); // Prevents handleCardClick from firing
       vscode.postMessage({
-         command: 'installModule',
+         command: 'installLibrary',
          repo: repo
       });
    };
@@ -57,7 +57,7 @@ const Module: FC<ModuleProps> = ({ repo, isActive, onSelect }) => {
 
    return (
       <div
-         className={`module-container ${isActive ? 'selected' : ''}`}
+         className={`library-container ${isActive ? 'selected' : ''}`}
          onClick={() => {
             onSelect();
             handleCardClick(isActive);   // Send message to extension
@@ -67,13 +67,13 @@ const Module: FC<ModuleProps> = ({ repo, isActive, onSelect }) => {
             <img
                src={imgSrc}
                className="main-icon"
-               alt={repo.repoName || 'module icon'}
+               alt={repo.repoName || 'library icon'}
                onError={() => imgSrc !== DEFAULT_ICON && setImgSrc(DEFAULT_ICON)}
             />
          </div>
-         <div className="module-info">
-            <vscode-label>{repo.repoName || "module"}</vscode-label>
-            <vscode-label className="module-description">
+         <div className="library-info">
+            <vscode-label>{repo.repoName || "library"}</vscode-label>
+            <vscode-label className="library-description">
                <span className="normal">{description}</span>
             </vscode-label>
          </div>
@@ -86,4 +86,4 @@ const Module: FC<ModuleProps> = ({ repo, isActive, onSelect }) => {
    );
 };
 
-export default Module;
+export default Library;

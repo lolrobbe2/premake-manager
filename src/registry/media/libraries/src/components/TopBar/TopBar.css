@@ -1,0 +1,33 @@
+/* Ensure the container actually takes up space */
+.top-bar-container {
+    display: flex;
+    width: 100%;
+    background-color: var(--vscode-sideBar-background);
+    border-bottom: 1px solid var(--vscode-panel-border);
+    align-items: center;
+    box-sizing: border-box;
+    justify-content: center;
+}
+
+/* Make the textfield stretch to fill the bar */
+.top-bar-container vscode-textfield {
+    width: 90%;
+    padding: 2%;
+    display: block;
+}
+
+/* Fix for the icon/menu positioning */
+.filter-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-right: 4px;
+}
+
+/* Ensure the context menu floats correctly */
+vscode-context-menu {
+    position: absolute;
+    top: 24px;
+    right: 0;
+    z-index: 1000;
+}

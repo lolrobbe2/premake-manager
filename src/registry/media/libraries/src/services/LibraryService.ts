@@ -27,11 +27,11 @@ const isDev = window.location.hostname === 'localhost';
 const BASE_URI = isDev ? '' : 'https://premake-registry-ywxg.onrender.com/';
 
 // Your fetch call becomes:
-export class ModuleService {
+export class LibraryService {
     /**
      * Search modules from the API
      */
-    static async getModules(type: RepoSearchType, value: string = "", page: number = 0): Promise<RegistryRepo[]> {
+    static async getLibraries(type: RepoSearchType, value: string = "", page: number = 0): Promise<RegistryRepo[]> {
         const params = new URLSearchParams({
             type: type,
             value: value,
@@ -48,7 +48,7 @@ export class ModuleService {
 
         const data: RegistryRepo[] = await response.json();
         // Filter out libraries as requested in your previous logic
-        return data.filter((repo) => repo.isLib === false);
+        return data.filter((repo) => repo.isLib === true);
     }
 
     /**

@@ -2,9 +2,9 @@ import '@vscode-elements/elements/dist/vscode-progress-ring';
 import "@vscode/codicons/dist/codicon.css";
 import { useCallback, useEffect, useState } from 'react';
 import './App.css';
-import Module from './components/Module/Module';
+import Library from './components/Library/Library';
 import TopBar from "./components/TopBar/TopBar";
-import { ModuleService, type RegistryRepo, RepoSearchType } from './services/ModuleService';
+import { LibraryService, type RegistryRepo, RepoSearchType } from './services/LibraryService';
 import { getVsCodeApi } from './vscode';
 
 function App() {
@@ -17,7 +17,7 @@ function App() {
   const loadModules = useCallback(async (query: string, type: RepoSearchType) => {
     setLoading(true);
     try {
-      const data = await ModuleService.getModules(type, query, 0);
+      const data = await LibraryService.getLibraries(type, query, 0);
       setRepos(data);
     } catch (err) {
       console.error("Search failed:", err);
@@ -72,9 +72,9 @@ function App() {
         {loading ? (
           <vscode-progress-ring></vscode-progress-ring>
         ) : (
-          <div className="module-list">
+          <div className="library-list">
             {repos.map((repo) => (
-              <Module
+              <Library
                 key={`${repo.userName}/${repo.repoName}`}
                 repo={repo}
                 onSelect={() => {

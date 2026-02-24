@@ -1,7 +1,7 @@
-import basicSsl from '@vitejs/plugin-basic-ssl'; // Ensure this is installed
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import { defineConfig } from 'vite';
+import basicSsl from '@vitejs/plugin-basic-ssl'; // Ensure this is installed
 
 export default defineConfig({
   plugins: [
@@ -23,13 +23,13 @@ export default defineConfig({
     'process.env': { NODE_ENV: 'production' }
   },
   build: {
-    outDir: path.resolve(__dirname, '../../../../resources/media/modules'),
+    outDir: path.resolve(__dirname, '../../../../resources/media/libraries'),
     emptyOutDir: false,
     minify: 'esbuild',
     lib: {
       entry: path.resolve(__dirname, 'src/main.tsx'),
       formats: ['es'],
-      fileName: 'modules-bundle',
+      fileName: 'libraries-bundle',
     },
     rollupOptions: {
       external: [],

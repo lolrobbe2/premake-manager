@@ -244,7 +244,9 @@
     "icons": "fantasticon ./src/resources/media/ -o ./src/resources/media/",
     "meta": "node docs/metagen.mjs",
     "build-details": "npm run build --prefix src/registry/media/details",
-    "build-modules": "npm run build --prefix src/registry/media/modules"
+    "build-modules": "npm run build --prefix src/registry/media/modules",
+    "build-libraries": "npm run build --prefix src/registry/media/libraries",
+    "build-views": "npm run build-details & npm run build-modules & npm run build-libraries & wait"
   },
   "dependencies": {
     "@vscode-elements/elements": "^2.5.0",
