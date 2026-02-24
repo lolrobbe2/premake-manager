@@ -1,6 +1,6 @@
 import { PathUtils } from 'utils/path-utils';
 import * as vscode from 'vscode';
-import { RegistryRepo } from './ModuleResolver';
+import { RegistryRepo } from './RepoResolver';
 
 export class DetailPanel {
     public static currentPanel: DetailPanel | undefined;

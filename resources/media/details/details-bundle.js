@@ -8552,7 +8552,7 @@ function O(e) {
 		attribute: !1
 	});
 }
-var Ze = "2.5.0", Qe = "__vscodeElements_disableRegistryWarning__", $e = (e, t) => {
+var Ze = "2.5.1", Qe = "__vscodeElements_disableRegistryWarning__", $e = (e, t) => {
 	t ? console.warn(`[VSCode Elements] ${e}\n%o`, t) : console.warn(`${e}\n%o`, t);
 }, et = class extends Ke {
 	/** VSCode Elements version */
@@ -8806,6 +8806,10 @@ var pt = [nt, g`
 	* id.
 	*/
 	_getStylesheetConfig() {
+		if (typeof document > "u") return {
+			nonce: void 0,
+			href: void 0
+		};
 		let e = document.getElementById("vscode-codicon-stylesheet"), t = e?.getAttribute("href") || void 0, n = e?.nonce || void 0;
 		if (!e) {
 			let e = "To use the Icon component, the codicons.css file must be included in the page with the id \"vscode-codicon-stylesheet\"! ";

@@ -222,6 +222,11 @@
           "type": "webview",
           "id": "premake5.manager.module",
           "name": "Modules"
+        },
+        {
+          "type": "webview",
+          "id": "premake5.manager.libraries",
+          "name": "Libraries"
         }
       ]
     },
@@ -243,6 +248,10 @@
     "resources": "cp -rv ./src/resources/** ./out/resources",
     "icons": "fantasticon ./src/resources/media/ -o ./src/resources/media/",
     "meta": "node docs/metagen.mjs",
+    "setup-details": "npm install --prefix src/registry/media/details",
+    "setup-modules": "npm install --prefix src/registry/media/modules",
+    "setup-libraries": "npm install --prefix src/registry/media/libraries",
+    "setup-views": "npm run setup-details & npm run setup-modules & npm run setup-libraries & wait",
     "build-details": "npm run build --prefix src/registry/media/details",
     "build-modules": "npm run build --prefix src/registry/media/modules",
     "build-libraries": "npm run build --prefix src/registry/media/libraries",

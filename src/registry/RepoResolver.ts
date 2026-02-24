@@ -86,3 +86,18 @@ export default class ModuleResolver {
         return (await RepositoryResolver.getRepositories(type, value, page)).filter((repo) => !repo.isLib);
     }
 }
+
+export class LibraryResolver {
+    static baseUri = "https://premake-registry-ywxg.onrender.com/";
+
+    /**
+     * Search modules from the API
+     * @param type Search type (UserName, RepoName, Tag, Recent)
+     * @param value Query string for search
+     * @param page Page number (default 0)
+     * @returns Array of RegistryRepo
+     */
+    static async getLibraries(type: RepoSearchType, value: string = "", page: number = 0): Promise<RegistryRepo[]> {
+        return (await RepositoryResolver.getRepositories(type, value, page)).filter((repo) => repo.isLib);
+    }
+}

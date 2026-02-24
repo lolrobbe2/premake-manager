@@ -1,3 +1,4 @@
+---cspell:disable
 ---Specifies generic filter tags.
 ---
 ---[docs](https://premake.github.io/docs/tags/)

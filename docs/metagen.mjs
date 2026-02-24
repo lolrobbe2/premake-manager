@@ -64,6 +64,7 @@ function chunkArray(arr, size) {
     const metaFieldsCombinedChunks = chunks.map(chunk => chunk.join("\n\n"));
 
     metaFieldsCombinedChunks.forEach((chunkStr, idx) => {
-        fs.writeFileSync(`resources/language/premakeFields_${idx + 1}.lua`, chunkStr, "utf8");
+        const ignoredSpelling = `--- cspell:disable\n${chunkStr}`;
+        fs.writeFileSync(`resources/language/premakeFields_${idx + 1}.lua`, ignoredSpelling, "utf8");
     });
 })();

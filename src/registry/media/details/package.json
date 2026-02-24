@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@vscode-elements/elements": "^2.5.0",
+    "premake-manager": "file:../../../..",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },

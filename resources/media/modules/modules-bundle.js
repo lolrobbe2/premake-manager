@@ -1,4 +1,5 @@
-var Ve = (c, f) => () => (f || c((f = { exports: {} }).exports, f), f.exports), Iv = Ve(((c) => {
+var Ve = (c, f) => () => (f || c((f = { exports: {} }).exports, f), f.exports);
+var Iv = /* @__PURE__ */ Ve(((c) => {
   var f = /* @__PURE__ */ Symbol.for("react.transitional.element"), r = /* @__PURE__ */ Symbol.for("react.portal"), d = /* @__PURE__ */ Symbol.for("react.fragment"), s = /* @__PURE__ */ Symbol.for("react.strict_mode"), p = /* @__PURE__ */ Symbol.for("react.profiler"), z = /* @__PURE__ */ Symbol.for("react.consumer"), x = /* @__PURE__ */ Symbol.for("react.context"), R = /* @__PURE__ */ Symbol.for("react.forward_ref"), H = /* @__PURE__ */ Symbol.for("react.suspense"), A = /* @__PURE__ */ Symbol.for("react.memo"), q = /* @__PURE__ */ Symbol.for("react.lazy"), j = /* @__PURE__ */ Symbol.for("react.activity"), bt = Symbol.iterator;
   function _t(y) {
     return y === null || typeof y != "object" ? null : (y = bt && y[bt] || y["@@iterator"], typeof y == "function" ? y : null);
@@ -296,9 +297,10 @@ var Ve = (c, f) => () => (f || c((f = { exports: {} }).exports, f), f.exports), 
   }, c.useTransition = function() {
     return P.H.useTransition();
   }, c.version = "19.2.4";
-})), Wf = Ve(((c, f) => {
+})), Wf = /* @__PURE__ */ Ve(((c, f) => {
   f.exports = Iv();
-})), Pv = Ve(((c) => {
+}));
+var Pv = /* @__PURE__ */ Ve(((c) => {
   function f(B, C) {
     var N = B.length;
     B.push(C);
@@ -499,9 +501,10 @@ var Ve = (c, f) => () => (f || c((f = { exports: {} }).exports, f), f.exports), 
       }
     };
   };
-})), ty = Ve(((c, f) => {
+})), ty = /* @__PURE__ */ Ve(((c, f) => {
   f.exports = Pv();
-})), ey = Ve(((c) => {
+}));
+var ey = /* @__PURE__ */ Ve(((c) => {
   var f = Wf();
   function r(H) {
     var A = "https://react.dev/errors/" + H;
@@ -618,7 +621,7 @@ var Ve = (c, f) => () => (f || c((f = { exports: {} }).exports, f), f.exports), 
   }, c.useFormStatus = function() {
     return x.H.useHostTransitionStatus();
   }, c.version = "19.2.4";
-})), ly = Ve(((c, f) => {
+})), ly = /* @__PURE__ */ Ve(((c, f) => {
   function r() {
     if (!(typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ > "u" || typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE != "function"))
       try {
@@ -627,7 +630,8 @@ var Ve = (c, f) => () => (f || c((f = { exports: {} }).exports, f), f.exports), 
       }
   }
   r(), f.exports = ey();
-})), ay = Ve(((c) => {
+}));
+var ay = /* @__PURE__ */ Ve(((c) => {
   var f = ty(), r = Wf(), d = ly();
   function s(t) {
     var e = "https://react.dev/errors/" + t;
@@ -8280,7 +8284,7 @@ Error generating stack: ` + a.message + `
     var l = !1, a = "", n = Z0, u = w0, i = K0;
     return e != null && (e.unstable_strictMode === !0 && (l = !0), e.identifierPrefix !== void 0 && (a = e.identifierPrefix), e.onUncaughtError !== void 0 && (n = e.onUncaughtError), e.onCaughtError !== void 0 && (u = e.onCaughtError), e.onRecoverableError !== void 0 && (i = e.onRecoverableError)), e = Xv(t, 1, !1, null, null, l, a, null, n, u, i, kv), t[cn] = e.current, Td(t), new Zf(e);
   };
-})), ny = Ve(((c, f) => {
+})), ny = /* @__PURE__ */ Ve(((c, f) => {
   function r() {
     if (!(typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ > "u" || typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE != "function"))
       try {
@@ -8289,7 +8293,8 @@ Error generating stack: ` + a.message + `
       }
   }
   r(), f.exports = ay();
-})), uy = ny(), Jt = Wf(), Si = globalThis, Ff = Si.ShadowRoot && (Si.ShadyCSS === void 0 || Si.ShadyCSS.nativeShadow) && "adoptedStyleSheets" in Document.prototype && "replace" in CSSStyleSheet.prototype, If = /* @__PURE__ */ Symbol(), uh = /* @__PURE__ */ new WeakMap(), Sh = class {
+})), uy = ny(), Jt = Wf();
+var Si = globalThis, Ff = Si.ShadowRoot && (Si.ShadyCSS === void 0 || Si.ShadyCSS.nativeShadow) && "adoptedStyleSheets" in Document.prototype && "replace" in CSSStyleSheet.prototype, If = /* @__PURE__ */ Symbol(), uh = /* @__PURE__ */ new WeakMap(), Sh = class {
   constructor(c, f, r) {
     if (this._$cssResult$ = !0, r !== If) throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");
     this.cssText = c, this.t = f;
@@ -8320,7 +8325,8 @@ Error generating stack: ` + a.message + `
   let r = "";
   for (const d of f.cssRules) r += d.cssText;
   return Pf(r);
-})(c) : c, { is: cy, defineProperty: fy, getOwnPropertyDescriptor: oy, getOwnPropertyNames: sy, getOwnPropertySymbols: ry, getPrototypeOf: dy } = Object, Ti = globalThis, ch = Ti.trustedTypes, hy = ch ? ch.emptyScript : "", vy = Ti.reactiveElementPolyfillSupport, Pn = (c, f) => c, Ei = {
+})(c) : c;
+var { is: cy, defineProperty: fy, getOwnPropertyDescriptor: oy, getOwnPropertyNames: sy, getOwnPropertySymbols: ry, getPrototypeOf: dy } = Object, Ti = globalThis, ch = Ti.trustedTypes, hy = ch ? ch.emptyScript : "", vy = Ti.reactiveElementPolyfillSupport, Pn = (c, f) => c, Ei = {
   toAttribute(c, f) {
     switch (f) {
       case Boolean:
@@ -8726,7 +8732,7 @@ var gy = class {
     return this._$AM._$AU;
   }
   constructor(c, f, r, d, s) {
-    this.type = 1, this._$AH = pt, this._$AN = void 0, this.element = c, this.name = f, this._$AM = d, this.options = s, r.length > 2 || r[0] !== "" || r[1] !== "" ? (this._$AH = Array(r.length - 1).fill(new String()), this.strings = r) : this._$AH = pt;
+    this.type = 1, this._$AH = pt, this._$AN = void 0, this.element = c, this.name = f, this._$AM = d, this.options = s, r.length > 2 || r[0] !== "" || r[1] !== "" ? (this._$AH = Array(r.length - 1).fill(/* @__PURE__ */ new String()), this.strings = r) : this._$AH = pt;
   }
   _$AI(c, f = this, r, d) {
     const s = this.strings;
@@ -8789,7 +8795,8 @@ var zy = (c, f, r) => {
     d._$litPart$ = s = new no(f.insertBefore(tu(), p), p, void 0, r ?? {});
   }
   return s._$AI(c), s;
-}, uo = globalThis, ra = class extends Ia {
+};
+var uo = globalThis, ra = class extends Ia {
   constructor() {
     super(...arguments), this.renderOptions = { host: this }, this._$Do = void 0;
   }
@@ -8884,9 +8891,10 @@ function io(c, f) {
     } });
   };
 }
-var Ai = "2.5.0", ph = "__vscodeElements_disableRegistryWarning__", xh = (c, f) => {
+var Ai = "2.5.1", ph = "__vscodeElements_disableRegistryWarning__", xh = (c, f) => {
   const r = "[VSCode Elements] ";
 }, jl = class extends ra {
+  /** VSCode Elements version */
   get version() {
     return Ai;
   }
@@ -9025,7 +9033,8 @@ var Ch = {
   update(c, f) {
     return this.render(...f);
   }
-}, lu = Uh(class extends Dh {
+};
+var lu = Uh(class extends Dh {
   constructor(c) {
     if (super(c), c.type !== Ch.ATTRIBUTE || c.name !== "class" || c.strings?.length > 2) throw Error("`classMap()` can only be used in the `class` attribute and must be the only part in the attribute.");
   }
@@ -9046,7 +9055,8 @@ var Ch = {
     }
     return fl;
   }
-}), Bt = (c) => c ?? pt, Cy = class extends Dh {
+});
+var Bt = (c) => c ?? pt, Cy = class extends Dh {
   constructor(c) {
     if (super(c), this._prevProperties = {}, c.type !== Ch.PROPERTY || c.name !== "style") throw new Error("The `stylePropertyMap` directive must be used in the `style` property");
   }
@@ -9136,7 +9146,17 @@ var Uy = [$l, ol`
     const { href: f, nonce: r } = this._getStylesheetConfig();
     In.stylesheetHref = f, In.nonce = r;
   }
+  /**
+  * For using web fonts in web components, the font stylesheet must be included
+  * twice: on the page and in the web component. This function looks for the
+  * font stylesheet on the page and returns the stylesheet URL and the nonce
+  * id.
+  */
   _getStylesheetConfig() {
+    if (typeof document > "u") return {
+      nonce: void 0,
+      href: void 0
+    };
     const f = document.getElementById("vscode-codicon-stylesheet"), r = f?.getAttribute("href") || void 0, d = f?.nonce || void 0;
     if (!f) {
       let s = 'To use the Icon component, the codicons.css file must be included in the page with the id "vscode-codicon-stylesheet"! ';
@@ -9775,12 +9795,16 @@ var jy = [$l, ol`
   get value() {
     return this._value;
   }
+  /**
+  * Getter for the inner textarea element if it needs to be accessed for some reason.
+  */
   get wrappedElement() {
     return this._textareaEl;
   }
   get form() {
     return this._internals.form;
   }
+  /** @internal */
   get type() {
     return "textarea";
   }
@@ -9793,12 +9817,18 @@ var jy = [$l, ol`
   get willValidate() {
     return this._internals.willValidate;
   }
+  /**
+  * Lowercase alias to minLength
+  */
   set minlength(f) {
     this.minLength = f;
   }
   get minlength() {
     return this.minLength;
   }
+  /**
+  * Lowercase alias to maxLength
+  */
   set maxlength(f) {
     this.maxLength = f;
   }
@@ -9826,9 +9856,11 @@ var jy = [$l, ol`
       break;
     }
   }
+  /** @internal */
   formResetCallback() {
     this.value = this.defaultValue;
   }
+  /** @internal */
   formStateRestoreCallback(f, r) {
     this.updateComplete.then(() => {
       this._value = f;
@@ -9954,6 +9986,9 @@ const cl = {
   Recent: "Recent"
 };
 var Yy = window.location.hostname === "localhost" ? "" : "https://premake-registry-ywxg.onrender.com/", Hh = class {
+  /**
+  * Search modules from the API
+  */
   static async getModules(c, f = "", r = 0) {
     const d = new URLSearchParams({
       type: c,
@@ -9963,6 +9998,9 @@ var Yy = window.location.hostname === "localhost" ? "" : "https://premake-regist
     if (!s.ok) throw new Error(`Failed to fetch: ${s.status}`);
     return (await s.json()).filter((p) => p.isLib === !1);
   }
+  /**
+  * Helper to get the default GitHub icon path
+  */
   static getIconUri(c) {
     return `https://raw.githubusercontent.com/${c.userName}/${c.repoName}/main/icon.svg`;
   }
@@ -9976,7 +10014,7 @@ function Rh() {
     getState: () => ({})
   }), window._vscodeApi;
 }
-var $y = Ve(((c) => {
+var $y = /* @__PURE__ */ Ve(((c) => {
   var f = /* @__PURE__ */ Symbol.for("react.transitional.element"), r = /* @__PURE__ */ Symbol.for("react.fragment");
   function d(s, p, z) {
     var x = null;
@@ -9993,7 +10031,7 @@ var $y = Ve(((c) => {
     };
   }
   c.jsx = d, c.jsxs = d;
-})), Vy = Ve(((c, f) => {
+})), Vy = /* @__PURE__ */ Ve(((c, f) => {
   f.exports = $y();
 })), St = Vy(), Jf = "https://premake.github.io/img/premake-logo.png", Gy = ({ repo: c, isActive: f, onSelect: r }) => {
   const [d, s] = (0, Jt.useState)(Hh.getIconUri(c) || Jf), [p, z] = (0, Jt.useState)("Loading description..."), x = Rh(), R = (A) => {
@@ -10017,34 +10055,34 @@ var $y = Ve(((c) => {
       }
       z((await j.json().catch(() => ({}))).description || "No description available.");
     })(), () => A.abort();
-  }, [c.apiUrl]), (0, St.jsxs)("div", {
+  }, [c.apiUrl]), /* @__PURE__ */ (0, St.jsxs)("div", {
     className: `module-container ${f ? "selected" : ""}`,
     onClick: () => {
       r(), R(f);
     },
     children: [
-      (0, St.jsx)("div", {
+      /* @__PURE__ */ (0, St.jsx)("div", {
         className: "icon-container",
-        children: (0, St.jsx)("img", {
+        children: /* @__PURE__ */ (0, St.jsx)("img", {
           src: d,
           className: "main-icon",
           alt: c.repoName || "module icon",
           onError: () => d !== Jf && s(Jf)
         })
       }),
-      (0, St.jsxs)("div", {
+      /* @__PURE__ */ (0, St.jsxs)("div", {
         className: "module-info",
-        children: [(0, St.jsx)("vscode-label", { children: c.repoName || "module" }), (0, St.jsx)("vscode-label", {
+        children: [/* @__PURE__ */ (0, St.jsx)("vscode-label", { children: c.repoName || "module" }), /* @__PURE__ */ (0, St.jsx)("vscode-label", {
           className: "module-description",
-          children: (0, St.jsx)("span", {
+          children: /* @__PURE__ */ (0, St.jsx)("span", {
             className: "normal",
             children: p
           })
         })]
       }),
-      (0, St.jsx)("div", {
+      /* @__PURE__ */ (0, St.jsx)("div", {
         className: "install-button",
-        children: (0, St.jsx)("vscode-button", {
+        children: /* @__PURE__ */ (0, St.jsx)("vscode-button", {
           icon: "cloud-download",
           title: "Settings",
           onClick: H
@@ -10435,6 +10473,10 @@ var bh = Pf(Bh()), Ly = [$l, ol`
   else for (var x = c.length - 1; x >= 0; x--) (z = c[x]) && (p = (s < 3 ? z(p) : s > 3 ? z(f, r, p) : z(f, r)) || p);
   return s > 3 && p && Object.defineProperty(f, r, p), p;
 }, st = class extends jl {
+  /**
+  * Same as the `type` of the native `<input>` element but only a subset of types are supported.
+  * The supported ones are: `color`,`date`,`datetime-local`,`email`,`file`,`month`,`number`,`password`,`search`,`tel`,`text`,`time`,`url`,`week`
+  */
   set type(f) {
     this._type = [
       "color",
@@ -10464,12 +10506,18 @@ var bh = Pf(Bh()), Ly = [$l, ol`
   get value() {
     return this._value;
   }
+  /**
+  * Lowercase alias to minLength
+  */
   set minlength(f) {
     this.minLength = f;
   }
   get minlength() {
     return this.minLength;
   }
+  /**
+  * Lowercase alias to maxLength
+  */
   set maxlength(f) {
     this.maxLength = f;
   }
@@ -10488,6 +10536,13 @@ var bh = Pf(Bh()), Ly = [$l, ol`
   get willValidate() {
     return this._internals.willValidate;
   }
+  /**
+  * Check the component's validity state when built-in validation is used.
+  * Built-in validation is triggered when any validation-related attribute is set. Validation-related
+  * attributes are: `max, maxlength, min, minlength, pattern, required, step`.
+  * See this [the MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/checkValidity) for more details.
+  * @returns {boolean}
+  */
   checkValidity() {
     return this._setValidityFromInput(), this._internals.checkValidity();
   }
@@ -10518,9 +10573,11 @@ var bh = Pf(Bh()), Ly = [$l, ol`
       this._setValidityFromInput();
     });
   }
+  /** @internal */
   formResetCallback() {
     this.value = this.defaultValue, this.requestUpdate();
   }
+  /** @internal */
   formStateRestoreCallback(f, r) {
     this.value = f;
   }
@@ -10665,28 +10722,28 @@ var Zy = ({ onSearch: c, onEnter: f, onFilterChange: r, currentFilter: d, search
       };
       return x.current.addEventListener("vsc-context-menu-select", H), () => x.current?.removeEventListener("vsc-context-menu-select", H);
     }
-  }, [r, d]), (0, St.jsx)("div", {
+  }, [r, d]), /* @__PURE__ */ (0, St.jsx)("div", {
     className: "top-bar-container",
-    children: (0, St.jsxs)("vscode-textfield", {
+    children: /* @__PURE__ */ (0, St.jsxs)("vscode-textfield", {
       value: s,
       placeholder: `Search ${d}...`,
       onInput: (H) => c(H.target.value),
       onKeyDown: R,
-      children: [(0, St.jsx)("vscode-icon", {
+      children: [/* @__PURE__ */ (0, St.jsx)("vscode-icon", {
         slot: "content-after",
         name: "clear-all",
         title: "Clear",
         "action-icon": !0,
         onClick: () => c("")
-      }), (0, St.jsxs)("div", {
+      }), /* @__PURE__ */ (0, St.jsxs)("div", {
         className: "filter-wrapper",
         slot: "content-after",
-        children: [(0, St.jsx)("vscode-icon", {
+        children: [/* @__PURE__ */ (0, St.jsx)("vscode-icon", {
           name: "filter",
           title: "Filter Type",
           "action-icon": !0,
           onClick: () => z(!p)
-        }), (0, St.jsx)("vscode-context-menu", {
+        }), /* @__PURE__ */ (0, St.jsx)("vscode-context-menu", {
           ref: x,
           show: p,
           onBlur: () => z(!1)
@@ -10723,19 +10780,19 @@ function wy() {
     r,
     s,
     A
-  ]), (0, St.jsxs)("div", {
+  ]), /* @__PURE__ */ (0, St.jsxs)("div", {
     className: "main-container",
-    children: [(0, St.jsx)(Zy, {
+    children: [/* @__PURE__ */ (0, St.jsx)(Zy, {
       searchQuery: r,
       currentFilter: s,
       onFilterChange: p,
       onSearch: (F) => q(F, !1),
       onEnter: () => A(r, s)
-    }), (0, St.jsx)("div", {
+    }), /* @__PURE__ */ (0, St.jsx)("div", {
       className: "content",
-      children: z ? (0, St.jsx)("vscode-progress-ring", {}) : (0, St.jsx)("div", {
+      children: z ? /* @__PURE__ */ (0, St.jsx)("vscode-progress-ring", {}) : /* @__PURE__ */ (0, St.jsx)("div", {
         className: "module-list",
-        children: c.map((F) => (0, St.jsx)(Gy, {
+        children: c.map((F) => /* @__PURE__ */ (0, St.jsx)(Gy, {
           repo: F,
           onSelect: () => {
             bt !== F.repoName ? _t(F.repoName) : (_t(null), j(F));
@@ -10747,4 +10804,4 @@ function wy() {
   });
 }
 var _h = document.getElementById("root");
-_h && (0, uy.createRoot)(_h).render((0, St.jsx)(Jt.StrictMode, { children: (0, St.jsx)(wy, {}) }));
+_h && (0, uy.createRoot)(_h).render(/* @__PURE__ */ (0, St.jsx)(Jt.StrictMode, { children: /* @__PURE__ */ (0, St.jsx)(wy, {}) }));

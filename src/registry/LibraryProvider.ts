@@ -8,8 +8,8 @@ interface WebViewMessage {
     command: string,
     repo: RegistryRepo,
 }
-export class ModuleProvider implements vscode.WebviewViewProvider {
-    private type: string = "premake5.manager.module";
+export class LibraryProvider implements vscode.WebviewViewProvider {
+    private type: string = "premake5.manager.library";
     private _view?: vscode.WebviewView;
     constructor(
         private readonly _extensionUri: vscode.Uri,
@@ -38,10 +38,10 @@ export class ModuleProvider implements vscode.WebviewViewProvider {
             async message => {
                 const mess: WebViewMessage = message;
                 switch (mess.command) {
-                    case "showModuleDetails":
+                    case "showLibraryDetails":
                         DetailPanel.createOrShow(mess.repo,this._extensionContext);
                         break;
-                    case "closeModuleDetails":
+                    case "closeLibraryDetails":
                         DetailPanel.close();
                     default:
                         break;
@@ -65,11 +65,11 @@ export class ModuleProvider implements vscode.WebviewViewProvider {
          // <link href="${codiconsUri}" rel="stylesheet" />
             // Use your PathUtils to find the JS and CSS bundles
             const scriptUri = webview.asWebviewUri(
-                PathUtils.getMediaResource(extensionContext, ['modules', 'modules-bundle.js'])!
+                PathUtils.getMediaResource(extensionContext, ['libraries', 'libraries-bundle.js'])!
             );
     
             const styleUri = webview.asWebviewUri(
-                PathUtils.getMediaResource(extensionContext, ['modules', 'modules-bundle.css'])!
+                PathUtils.getMediaResource(extensionContext, ['libraries', 'libraries-bundle.css'])!
             );
     
             return `<!DOCTYPE html>
