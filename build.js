@@ -2,6 +2,22 @@ const { cpSync } = require('fs');
 const { join } = require('path');
 const { build } = require('esbuild');
 const { dependencies } = require('./package.json');
+const { execSync } = require('child_process');
+
+
+function buildMediaComponents() {
+    const subProjects = [
+        'src/registry/media/details',
+        'src/registry/media/modules',
+        'src/registry/media/libraries'
+    ];
+    console.log('Building media sub-projects...');
+    subProjects.forEach(dir => {
+        execSync('npm run build', { cwd: dir, stdio: 'inherit' });
+    });
+}
+
+buildMediaComponents();
 
 // List of external dependencies to exclude from the bundle
 const external = ['vscode'];

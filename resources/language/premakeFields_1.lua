@@ -4,13 +4,30 @@
 ---| '"On"'
 ---| '"Off'"
 
----allmodulespublic
+---Specifies if all modules in the C++ projects are public.
 ---
 ---[docs](https://premake.github.io/docs/allmodulespublic/)
 ---
 ---@param value Boolean
 local function allmodulespublic(value) end
 _G.allmodulespublic=allmodulespublic
+
+---@alias allowcopylocalAllowed
+---| "Default"
+---| "On"
+---| "Off"
+---| "Off"
+---| "On"
+---| "Default"
+
+
+---Specifies whether or not to allow for copy local of assemblies.
+---
+---[docs](https://premake.github.io/docs/allowcopylocal/)
+---
+---@param value allowcopylocalAllowed
+local function allowcopylocal(value) end
+_G.allowcopylocal=allowcopylocal
 
 ---Specifies the target Android API level.
 ---
@@ -33,7 +50,7 @@ _G.androidapplibname=androidapplibname
 ---| "x86"
 ---| "x86_64"
 ---| "ARM"
----| "ARM64"
+---| "AARCH64"
 ---| "RISCV64"
 ---| "loongarch64"
 ---| "ppc"
@@ -41,28 +58,20 @@ _G.androidapplibname=androidapplibname
 ---| "wasm32"
 ---| "wasm64"
 ---| "e2k"
----| "armv5"
----| "armv7"
----| "aarch64"
----| "mips"
----| "mips64"
----| "wasm64"
----| "armv7"
----| "mips"
----| "aarch64"
----| "e2k"
----| "ppc64"
----| "x86"
----| "ARM"
----| "mips64"
----| "x86_64"
----| "wasm32"
----| "armv5"
----| "loongarch64"
+---| "mips64el"
 ---| "universal"
----| "ARM64"
+---| "loongarch64"
+---| "wasm32"
+---| "x86_64"
+---| "ppc64"
+---| "mips64el"
+---| "ARM"
+---| "AARCH64"
 ---| "RISCV64"
+---| "e2k"
+---| "wasm64"
 ---| "ppc"
+---| "x86"
 
 
 ---Specifies the system architecture to be targeted by the configuration.
@@ -73,7 +82,7 @@ _G.androidapplibname=androidapplibname
 local function architecture(value) end
 _G.architecture=architecture
 
----assemblydebug - This page was auto-generated.
+---Specifies if assembly debug features should be turned on.
 ---
 ---[docs](https://premake.github.io/docs/assemblydebug/)
 ---
@@ -85,8 +94,8 @@ _G.assemblydebug=assemblydebug
 ---| "Off"
 ---| "Dynamic"
 ---| "Static"
----| "Static"
 ---| "Off"
+---| "Static"
 ---| "Dynamic"
 
 
@@ -113,6 +122,23 @@ _G.basedir=basedir
 ---@param value string[]
 local function bindirs(value) end
 _G.bindirs=bindirs
+
+---@alias buffersecuritycheckAllowed
+---| "Default"
+---| "On"
+---| "Off"
+---| "Off"
+---| "On"
+---| "Default"
+
+
+---Specifies whether to use stack and buffer protections.
+---
+---[docs](https://premake.github.io/docs/buffersecuritycheck/)
+---
+---@param value buffersecuritycheckAllowed
+local function buffersecuritycheck(value) end
+_G.buffersecuritycheck=buffersecuritycheck
 
 ---Specifies how a file or set of files should be treated during the compilation process.
 ---
@@ -189,8 +215,8 @@ _G.buildoutputs=buildoutputs
 ---@alias buildstlmodulesAllowed
 ---| "On"
 ---| "Off"
----| "Off"
 ---| "On"
+---| "Off"
 
 
 ---Sets whether or not the compiler should build STL modules.
@@ -206,10 +232,10 @@ _G.buildstlmodules=buildstlmodules
 ---| "FastCall"
 ---| "StdCall"
 ---| "VectorCall"
----| "FastCall"
+---| "Cdecl"
 ---| "VectorCall"
 ---| "StdCall"
----| "Cdecl"
+---| "FastCall"
 
 
 ---Sets the [function calling convention](https://en.wikipedia.org/wiki/X86_calling_conventions).
@@ -234,22 +260,22 @@ _G.callingconvention=callingconvention
 ---| "gnu11"
 ---| "gnu17"
 ---| "gnu23"
----| "C99"
----| "Default"
----| "C89"
----| "C90"
----| "gnu11"
----| "gnu23"
----| "gnu17"
 ---| "gnu89"
----| "gnu99"
----| "C17"
+---| "gnu23"
+---| "gnu11"
+---| "gnu17"
+---| "C90"
 ---| "C11"
----| "C23"
 ---| "gnu90"
+---| "gnu99"
+---| "C89"
+---| "C17"
+---| "C99"
+---| "C23"
+---| "Default"
 
 
----cdialect
+---Specifies the C dialect to compile with.
 ---
 ---[docs](https://premake.github.io/docs/cdialect/)
 ---
@@ -262,10 +288,10 @@ _G.cdialect=cdialect
 ---| "ASCII"
 ---| "MBCS"
 ---| "Unicode"
----| "Default"
+---| "Unicode"
 ---| "MBCS"
 ---| "ASCII"
----| "Unicode"
+---| "Default"
 
 
 ---Set the character encoding.
@@ -307,12 +333,12 @@ _G.cleanextensions=cleanextensions
 ---| "Safe"
 ---| "Unsafe"
 ---| "NetCore"
----| "On"
----| "NetCore"
----| "Pure"
----| "Safe"
----| "Unsafe"
 ---| "Off"
+---| "Pure"
+---| "On"
+---| "Unsafe"
+---| "NetCore"
+---| "Safe"
 
 
 ---Enables Microsoft's Common Language Runtime for a project or configuration.
@@ -333,16 +359,16 @@ _G.clr=clr
 ---| "ModulePartition"
 ---| "HeaderUnit"
 ---| "HeaderUnit"
----| "Default"
----| "C++"
----| "Objective-C"
 ---| "Module"
+---| "Objective-C"
+---| "ModulePartition"
 ---| "Objective-C++"
 ---| "C"
----| "ModulePartition"
+---| "C++"
+---| "Default"
 
 
----compileas
+---Specifies how to treat a file for compilation.
 ---
 ---[docs](https://premake.github.io/docs/compileas/)
 ---
@@ -374,7 +400,7 @@ _G.configmap=configmap
 local function configurations(value) end
 _G.configurations=configurations
 
----conformancemode - This page was auto-generated.
+---Specifies if conformance mode should be enabled.
 ---
 ---[docs](https://premake.github.io/docs/conformancemode/)
 ---
@@ -423,33 +449,33 @@ _G.copylocal=copylocal
 ---| "gnu++20"
 ---| "gnu++2b"
 ---| "gnu++23"
+---| "C++0x"
+---| "C++17"
+---| "C++98"
+---| "C++1z"
+---| "C++2a"
+---| "gnu++1z"
 ---| "C++latest"
+---| "gnu++2a"
+---| "gnu++2b"
+---| "gnu++98"
+---| "C++11"
+---| "gnu++20"
+---| "gnu++23"
+---| "gnu++17"
+---| "gnu++14"
+---| "C++1y"
+---| "C++14"
+---| "C++23"
+---| "gnu++1y"
+---| "gnu++11"
+---| "C++20"
+---| "C++2b"
 ---| "gnu++0x"
 ---| "Default"
----| "C++23"
----| "C++20"
----| "gnu++23"
----| "C++0x"
----| "C++2a"
----| "C++1z"
----| "C++1y"
----| "gnu++17"
----| "C++14"
----| "gnu++2a"
----| "C++98"
----| "gnu++2b"
----| "gnu++1z"
----| "gnu++11"
----| "C++2b"
----| "C++17"
----| "gnu++14"
----| "gnu++1y"
----| "gnu++20"
----| "C++11"
----| "gnu++98"
 
 
----cppdialect
+---Specifies the C++ dialect to compile with.
 ---
 ---[docs](https://premake.github.io/docs/cppdialect/)
 ---
@@ -465,7 +491,7 @@ _G.cppdialect=cppdialect
 local function csversion(value) end
 _G.csversion=csversion
 
----customtoolnamespace
+---Specifies the custom tool namespace property of a project.
 ---
 ---[docs](https://premake.github.io/docs/customtoolnamespace/)
 ---
@@ -513,6 +539,40 @@ _G.debugdir=debugdir
 local function debugenvs(value) end
 _G.debugenvs=debugenvs
 
+---@alias debugenvsinheritAllowed
+---| "Default"
+---| "On"
+---| "Off"
+---| "Off"
+---| "On"
+---| "Default"
+
+
+---Specifies whether to inherit the parent environment when using debug environment variables.
+---
+---[docs](https://premake.github.io/docs/debugenvsinherit/)
+---
+---@param value debugenvsinheritAllowed
+local function debugenvsinherit(value) end
+_G.debugenvsinherit=debugenvsinherit
+
+---@alias debugenvsmergeAllowed
+---| "Default"
+---| "On"
+---| "Off"
+---| "Off"
+---| "On"
+---| "Default"
+
+
+---Specifies whether to merge debug environment variables with the system environment.
+---
+---[docs](https://premake.github.io/docs/debugenvsmerge/)
+---
+---@param value debugenvsmergeAllowed
+local function debugenvsmerge(value) end
+_G.debugenvsmerge=debugenvsmerge
+
 ---Specifies to use the 'extended-remote' protocol, which instructs GDB to maintain a persistent connection to gdbserver.
 ---
 ---[docs](https://premake.github.io/docs/debugextendedprotocol/)
@@ -526,10 +586,10 @@ _G.debugextendedprotocol=debugextendedprotocol
 ---| "c7"
 ---| "Dwarf"
 ---| "SplitDwarf"
----| "c7"
 ---| "SplitDwarf"
----| "Default"
+---| "c7"
 ---| "Dwarf"
+---| "Default"
 
 
 ---Specifies the desired format of the debug information written to the output binaries.
@@ -548,41 +608,22 @@ _G.debugformat=debugformat
 ---| "VisualStudioRemote"
 ---| "VisualStudioWebBrowser"
 ---| "VisualStudioWebService"
+---| "VisualStudioWebService"
 ---| "VisualStudioWebBrowser"
+---| "VisualStudioRemote"
+---| "VisualStudioLocal"
 ---| "GDB"
 ---| "LLDB"
----| "VisualStudioLocal"
----| "VisualStudioWebService"
----| "VisualStudioRemote"
 ---| "Default"
 
 
----debugger
+---Specifies the debugger to use.
 ---
 ---[docs](https://premake.github.io/docs/debugger/)
 ---
 ---@param value debuggerAllowed
 local function debugger(value) end
 _G.debugger=debugger
-
----@alias debuggerflavorAllowed
----| "Local"
----| "Remote"
----| "WebBrowser"
----| "WebService"
----| "Remote"
----| "WebService"
----| "Local"
----| "WebBrowser"
-
-
----debuggerflavor - This page was auto-generated.
----
----[docs](https://premake.github.io/docs/debuggerflavor/)
----
----@param value debuggerflavorAllowed
-local function debuggerflavor(value) end
-_G.debuggerflavor=debuggerflavor
 
 ---@alias debuggertypeAllowed
 ---| "Mixed"
@@ -595,7 +636,7 @@ _G.debuggerflavor=debuggerflavor
 ---| "ManagedOnly"
 
 
----debuggertype
+---Specifies the debugger type.
 ---
 ---[docs](https://premake.github.io/docs/debuggertype/)
 ---
@@ -699,13 +740,13 @@ _G.dotnetframework=dotnetframework
 ---| "Blazor"
 ---| "WindowsDesktop"
 ---| "MSTest"
----| "Razor"
----| "Default"
----| "MSTest"
----| "Worker"
----| "WindowsDesktop"
----| "Web"
 ---| "Blazor"
+---| "MSTest"
+---| "Razor"
+---| "Worker"
+---| "Web"
+---| "WindowsDesktop"
+---| "Default"
 
 
 ---Selects a .NET SDK
@@ -721,10 +762,10 @@ _G.dotnetsdk=dotnetsdk
 ---| "None"
 ---| "High"
 ---| "HighPerMonitor"
----| "HighPerMonitor"
 ---| "High"
----| "Default"
+---| "HighPerMonitor"
 ---| "None"
+---| "Default"
 
 
 ---Sets the DPI awareness settings.
@@ -739,12 +780,12 @@ _G.dpiawareness=dpiawareness
 ---| "Default"
 ---| "On"
 ---| "Off"
+---| "Off"
 ---| "On"
 ---| "Default"
----| "Off"
 
 
----Turns the edit-and-continue features of a toolset or platform on and off.
+---Specifies if the binary has edit-and-continue debugging support.
 ---
 ---[docs](https://premake.github.io/docs/editandcontinue/)
 ---
@@ -776,7 +817,24 @@ _G.embed=embed
 local function embedandsign(value) end
 _G.embedandsign=embedandsign
 
----enabledefaultcompileitems - This page was auto-generated.
+---@alias enable64bitchecksAllowed
+---| "Default"
+---| "On"
+---| "Off"
+---| "Off"
+---| "On"
+---| "Default"
+
+
+---Sets whether or not to check for 64 bit portability problems.
+---
+---[docs](https://premake.github.io/docs/enable64bitchecks/)
+---
+---@param value enable64bitchecksAllowed
+local function enable64bitchecks(value) end
+_G.enable64bitchecks=enable64bitchecks
+
+---Specifies if implicitly included C# and language extension files should be compiled.
 ---
 ---[docs](https://premake.github.io/docs/enabledefaultcompileitems/)
 ---
@@ -787,8 +845,8 @@ _G.enabledefaultcompileitems=enabledefaultcompileitems
 ---@alias enablemodulesAllowed
 ---| "On"
 ---| "Off"
----| "Off"
 ---| "On"
+---| "Off"
 
 
 ---Sets whether or not the compiler should enable C++20 modules.
@@ -799,11 +857,28 @@ _G.enabledefaultcompileitems=enabledefaultcompileitems
 local function enablemodules(value) end
 _G.enablemodules=enablemodules
 
+---@alias enablepchAllowed
+---| "Default"
+---| "On"
+---| "Off"
+---| "Off"
+---| "On"
+---| "Default"
+
+
+---Controls whether precompiled headers (PCH) are enabled for a configuration.
+---
+---[docs](https://premake.github.io/docs/enablepch/)
+---
+---@param value enablepchAllowed
+local function enablepch(value) end
+_G.enablepch=enablepch
+
 ---@alias enableunitybuildAllowed
 ---| "On"
 ---| "Off"
----| "Off"
 ---| "On"
+---| "Off"
 
 
 ---Enables Unity Builds in Visual Studio, also known as Jumbo Builds
@@ -822,23 +897,6 @@ _G.enableunitybuild=enableunitybuild
 local function enablewarnings(value) end
 _G.enablewarnings=enablewarnings
 
----@alias endianAllowed
----| "Default"
----| "Little"
----| "Big"
----| "Little"
----| "Default"
----| "Big"
-
-
----Specifies the target endian for endian-agnostic architectures.
----
----[docs](https://premake.github.io/docs/endian/)
----
----@param value endianAllowed
-local function endian(value) end
-_G.endian=endian
-
 ---Specify the program entry point, e.g.
 ---
 ---[docs](https://premake.github.io/docs/entrypoint/)
@@ -854,12 +912,12 @@ _G.entrypoint=entrypoint
 ---| "SEH"
 ---| "CThrow"
 ---| "UnwindTables"
----| "On"
----| "Default"
----| "SEH"
----| "CThrow"
----| "UnwindTables"
 ---| "Off"
+---| "On"
+---| "CThrow"
+---| "SEH"
+---| "UnwindTables"
+---| "Default"
 
 
 ---Enable or disable exception handling.
@@ -870,11 +928,19 @@ _G.entrypoint=entrypoint
 local function exceptionhandling(value) end
 _G.exceptionhandling=exceptionhandling
 
+---Excludes a project from the build or a source file from a configuration.
+---
+---[docs](https://premake.github.io/docs/excludefrombuild/)
+---
+---@param value Boolean
+local function excludefrombuild(value) end
+_G.excludefrombuild=excludefrombuild
+
 ---@alias externalanglebracketsAllowed
 ---| "On"
 ---| "Off"
----| "Off"
 ---| "On"
+---| "Off"
 
 
 ---Treats all headers included by `#include <header>`, where the header file is enclosed in angle brackets (`< >`), as external headers.
@@ -899,11 +965,11 @@ _G.externalincludedirs=externalincludedirs
 ---| "High"
 ---| "Extra"
 ---| "Everything"
----| "Off"
----| "Default"
 ---| "High"
 ---| "Extra"
 ---| "Everything"
+---| "Off"
+---| "Default"
 
 
 ---Controls the level of warnings that are shown by the compiler for headers that are considered external.
@@ -914,7 +980,7 @@ _G.externalincludedirs=externalincludedirs
 local function externalwarnings(value) end
 _G.externalwarnings=externalwarnings
 
----fastuptodate - This page was auto-generated.
+---Specifies whether or not Visual Studio should perform Fast Up To Date Checks before invoking MSBuild.
 ---
 ---[docs](https://premake.github.io/docs/fastuptodate/)
 ---
@@ -958,53 +1024,43 @@ _G.files=files
 ---| "DebugEnvsDontMerge"
 ---| "DebugEnvsInherit"
 ---| "ExcludeFromBuild"
----| "FatalCompileWarnings"
----| "FatalLinkWarnings"
----| "FatalWarnings"
----| "LinkTimeOptimization"
 ---| "Maps"
----| "MFC"
 ---| "MultiProcessorCompile"
 ---| "No64BitChecks"
----| "NoCopyLocal"
----| "NoImplicitLink"
 ---| "NoImportLib"
 ---| "NoIncrementalLink"
 ---| "NoManifest"
 ---| "NoMinimalRebuild"
 ---| "NoPCH"
----| "NoRuntimeChecks"
 ---| "NoBufferSecurityCheck"
 ---| "OmitDefaultLibrary"
 ---| "RelativeLinks"
 ---| "ShadowedVariables"
 ---| "UndefinedIdentifiers"
 ---| "WPF"
+---| "NoImplicitLink"
+---| "NoCopyLocal"
+---| "NoRuntimeChecks"
+---| "NoPCH"
+---| "NoIncrementalLink"
+---| "Maps"
+---| "NoImplicitLink"
+---| "NoManifest"
 ---| "DebugEnvsDontMerge"
----| "FatalWarnings"
----| "OmitDefaultLibrary"
----| "NoCopyLocal"
----| "FatalCompileWarnings"
----| "WPF"
----| "UndefinedIdentifiers"
----| "NoBufferSecurityCheck"
----| "RelativeLinks"
----| "DebugEnvsInherit"
----| "ShadowedVariables"
----| "MFC"
----| "ExcludeFromBuild"
----| "NoIncrementalLink"
----| "No64BitChecks"
 ---| "NoImportLib"
----| "NoManifest"
----| "NoPCH"
----| "NoMinimalRebuild"
----| "NoImplicitLink"
----| "LinkTimeOptimization"
----| "NoRuntimeChecks"
----| "FatalLinkWarnings"
+---| "UndefinedIdentifiers"
+---| "ShadowedVariables"
+---| "NoCopyLocal"
 ---| "MultiProcessorCompile"
----| "Maps"
+---| "RelativeLinks"
+---| "WPF"
+---| "NoRuntimeChecks"
+---| "ExcludeFromBuild"
+---| "No64BitChecks"
+---| "OmitDefaultLibrary"
+---| "NoBufferSecurityCheck"
+---| "NoMinimalRebuild"
+---| "DebugEnvsInherit"
 
 
 ---Specifies build flags to modify the compiling or linking process.
@@ -1016,12 +1072,12 @@ local function flags(value) end
 _G.flags=flags
 
 ---@alias floatabiAllowed
----| "soft"
----| "softfp"
----| "hard"
----| "softfp"
----| "soft"
----| "hard"
+---| "Soft"
+---| "SoftFP"
+---| "Hard"
+---| "Soft"
+---| "SoftFP"
+---| "Hard"
 
 
 ---Specifies the floating point ABI to use.
@@ -1037,8 +1093,8 @@ _G.floatabi=floatabi
 ---| "Fast"
 ---| "Strict"
 ---| "Fast"
----| "Default"
 ---| "Strict"
+---| "Default"
 
 
 ---Specifies the style of floating point math which should be used.
@@ -1049,7 +1105,7 @@ _G.floatabi=floatabi
 local function floatingpoint(value) end
 _G.floatingpoint=floatingpoint
 
----floatingpointexceptions
+---Specifies whether or not unmasked floating point exceptions should be raised at the point they occur.
 ---
 ---[docs](https://premake.github.io/docs/floatingpointexceptions/)
 ---
@@ -1073,22 +1129,7 @@ _G.forceincludes=forceincludes
 local function forceusings(value) end
 _G.forceusings=forceusings
 
----@alias fpuAllowed
----| "Software"
----| "Hardware"
----| "Hardware"
----| "Software"
-
-
----Specifies whether to generate code for a hardware FPU.
----
----[docs](https://premake.github.io/docs/fpu/)
----
----@param value fpuAllowed
-local function fpu(value) end
-_G.fpu=fpu
-
----frameworkdirs - This page was auto-generated.
+---Specifies directories to search for frameworks in.
 ---
 ---[docs](https://premake.github.io/docs/frameworkdirs/)
 ---
@@ -1096,7 +1137,7 @@ _G.fpu=fpu
 local function frameworkdirs(value) end
 _G.frameworkdirs=frameworkdirs
 
----functionlevellinking
+---Specifies if the compiler should package individual functions as packaged functions (COMDATs).
 ---
 ---[docs](https://premake.github.io/docs/functionlevellinking/)
 ---
@@ -1145,22 +1186,6 @@ _G.icon=icon
 local function ignoredefaultlibraries(value) end
 _G.ignoredefaultlibraries=ignoredefaultlibraries
 
----Passes arguments directly to the image tool command line without translation.
----
----[docs](https://premake.github.io/docs/imageoptions/)
----
----@param value string[]
-local function imageoptions(value) end
-_G.imageoptions=imageoptions
-
----Sets the file name of the deployment image produced by the build.
----
----[docs](https://premake.github.io/docs/imagepath/)
----
----@param value string
-local function imagepath(value) end
-_G.imagepath=imagepath
-
 ---Specifies the import library output directory.
 ---
 ---[docs](https://premake.github.io/docs/implibdir/)
@@ -1192,19 +1217,3 @@ _G.implibname=implibname
 ---@param value string
 local function implibprefix(value) end
 _G.implibprefix=implibprefix
-
----Specifies a file name suffix for the import library base file name.
----
----[docs](https://premake.github.io/docs/implibsuffix/)
----
----@param value string
-local function implibsuffix(value) end
-_G.implibsuffix=implibsuffix
-
----Specifies the include file search paths for the compiler.
----
----[docs](https://premake.github.io/docs/includedirs/)
----
----@param value string[]
-local function includedirs(value) end
-_G.includedirs=includedirs

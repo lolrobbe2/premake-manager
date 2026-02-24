@@ -12,6 +12,30 @@
       "args": ["--extensionDevelopmentPath=${workspaceFolder}"],
       "outFiles": ["${workspaceFolder}/out/extension.js"],
       "preLaunchTask": "${defaultBuildTask}"
+    },
+    {
+      "name": "Debug Modules Webview (Chrome)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "https://localhost:5173",
+      "webRoot": "${workspaceFolder}/src/registry/media/modules",
+      "preLaunchTask": "npm: dev:modules", // This ensures npm runs first
+      "presentation": {
+        "group": "UI",
+        "order": 1
+      }
+    },
+    {
+      "name": "Debug Libraries Webview (Chrome)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "https://localhost:5173",
+      "webRoot": "${workspaceFolder}/src/registry/media/libraries",
+      "preLaunchTask": "npm: dev:libraries", // This ensures npm runs first
+      "presentation": {
+        "group": "UI",
+        "order": 1
+      }
     }
   ]
 }

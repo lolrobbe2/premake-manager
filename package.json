@@ -128,8 +128,7 @@
         "icon": "resources/media/premake-logo-128.png",
         "when": "false"
       },
-
-       {
+      {
         "category": "Premake5",
         "command": "premake5.library-info",
         "title": "return the info from a premake library",
@@ -207,11 +206,35 @@
         "when": "terminalFocus == false"
       }
     ],
-    "menus": {},
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "premake5-manager",
+          "title": "Premake Manager",
+          "icon": "resources/media/premake-logo.svg"
+        }
+      ],
+      "panel": []
+    },
+    "views": {
+      "premake5-manager": [
+        {
+          "type": "webview",
+          "id": "premake5.manager.module",
+          "name": "Modules"
+        },
+        {
+          "type": "webview",
+          "id": "premake5.manager.libraries",
+          "name": "Libraries"
+        }
+      ]
+    },
     "configuration": {
       "type": "object",
       "properties": {}
-    }
+    },
+    "menus": {}
   },
   "scripts": {
     "clean": "rimraf out && rimraf tsconfig.extension.tsbuildinfo",
@@ -224,29 +247,40 @@
     "tsc:w": "node --version",
     "resources": "cp -rv ./src/resources/** ./out/resources",
     "icons": "fantasticon ./src/resources/media/ -o ./src/resources/media/",
-    "meta": "node docs/metagen.mjs"
+    "meta": "node docs/metagen.mjs",
+    "setup-details": "npm install --prefix src/registry/media/details",
+    "setup-modules": "npm install --prefix src/registry/media/modules",
+    "setup-libraries": "npm install --prefix src/registry/media/libraries",
+    "setup-views": "npm run setup-details & npm run setup-modules & npm run setup-libraries & wait",
+    "build-details": "npm run build --prefix src/registry/media/details",
+    "build-modules": "npm run build --prefix src/registry/media/modules",
+    "build-libraries": "npm run build --prefix src/registry/media/libraries",
+    "build-views": "npm run build-details & npm run build-modules & npm run build-libraries & wait"
   },
   "dependencies": {
-    "@types/vscode": "^1.96.0",
+    "@vscode-elements/elements": "^2.5.0",
+    "@vscode/codicons": "^0.0.44",
     "axios": "^1.7.9",
     "chokidar": "^4.0.3",
     "cp": "^0.2.0",
-    "tar": "^7.4.3"
+    "tar": "^7.4.3",
+    "vscode-webview": "^1.0.1-beta.1"
   },
   "devDependencies": {
     "@octokit/types": "^13.6.2",
     "@types/adm-zip": "^0.5.7",
     "@types/mocha": "^10.0.9",
-    "@types/node": "^20.9.0",
-    "@types/vscode": "^1.92.1",
+    "@types/node": "^22.16.0",
+    "@types/vscode": "^1.96.0",
+    "@types/vscode-webview": "^1.57.5",
     "@typescript-eslint/eslint-plugin": "^8.10.0",
     "@typescript-eslint/parser": "^8.7.0",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
     "@vscode/vsce": "^3.2.1",
-    "esbuild": "^0.24.2",
+    "esbuild": "^0.27.3",
     "eslint": "^9.13.0",
     "rimraf": "^5.0.10",
-    "typescript": "^5.7.2"
+    "typescript": "^5.9.3"
   }
 }

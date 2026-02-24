@@ -1,0 +1,60 @@
+
+.main-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  font-family: var(--vscode-font-family);
+  color: var(--vscode-foreground);
+}
+
+.header {
+  display: flex;
+  padding: 20px;
+  gap: 20px;
+  background-color: var(--vscode-sideBar-background);
+  border-bottom: 1px solid var(--vscode-panel-border);
+}
+
+.main-icon,
+.icon-placeholder {
+  height: 90px;
+}
+
+.main-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  /* Prevents whole page scroll */
+}
+
+.readme-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  /* Scroll only the README */
+}
+
+.side-panel {
+  width: 200px;
+  padding: 10px 20px;
+  background: var(--vscode-editor-background);
+  border-left: 1px solid var(--vscode-panel-border);
+}
+
+.vscode-link,
+.repo-link {
+  color: var(--vscode-textLink-foreground);
+  text-decoration: none;
+}
+
+.vscode-link:hover {
+  text-decoration: underline;
+}
+
+h3 {
+  font-size: 11px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  color: var(--vscode-descriptionForeground);
+}

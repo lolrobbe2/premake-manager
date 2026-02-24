@@ -1,3 +1,36 @@
+---Specifies a file name suffix for the import library base file name.
+---
+---[docs](https://premake.github.io/docs/implibsuffix/)
+---
+---@param value string
+local function implibsuffix(value) end
+_G.implibsuffix=implibsuffix
+
+---@alias implicitlinkAllowed
+---| "Default"
+---| "On"
+---| "Off"
+---| "Off"
+---| "On"
+---| "Default"
+
+
+---Sets whether or not to implicitly link dependent libraries.
+---
+---[docs](https://premake.github.io/docs/implicitlink/)
+---
+---@param value implicitlinkAllowed
+local function implicitlink(value) end
+_G.implicitlink=implicitlink
+
+---Specifies the include file search paths for the compiler.
+---
+---[docs](https://premake.github.io/docs/includedirs/)
+---
+---@param value string[]
+local function includedirs(value) end
+_G.includedirs=includedirs
+
 ---Specifies the include directories to parse last per the toolset ordering and marks the directory as an external include directory.
 ---
 ---[docs](https://premake.github.io/docs/includedirsafter/)
@@ -5,6 +38,23 @@
 ---@param value string[]
 local function includedirsafter(value) end
 _G.includedirsafter=includedirsafter
+
+---@alias incrementallinkAllowed
+---| "Default"
+---| "On"
+---| "Off"
+---| "Off"
+---| "On"
+---| "Default"
+
+
+---Controls whether incremental linking is enabled for a configuration.
+---
+---[docs](https://premake.github.io/docs/incrementallink/)
+---
+---@param value incrementallinkAllowed
+local function incrementallink(value) end
+_G.incrementallink=incrementallink
 
 ---inheritdependencies
 ---
@@ -17,11 +67,11 @@ _G.inheritdependencies=inheritdependencies
 ---@alias inlinesvisibilityAllowed
 ---| "Default"
 ---| "Hidden"
----| "Default"
 ---| "Hidden"
+---| "Default"
 
 
----inlinesvisibility - This page was auto-generated.
+---Specifies the inline symbol visibility.
 ---
 ---[docs](https://premake.github.io/docs/inlinesvisibility/)
 ---
@@ -34,10 +84,10 @@ _G.inlinesvisibility=inlinesvisibility
 ---| "Disabled"
 ---| "Explicit"
 ---| "Auto"
+---| "Disabled"
 ---| "Auto"
 ---| "Explicit"
 ---| "Default"
----| "Disabled"
 
 
 ---Tells the compiler when it should inline functions.
@@ -60,12 +110,12 @@ _G.intrinsics=intrinsics
 ---| "iPhone/iPod touch"
 ---| "iPad"
 ---| "Universal"
----| "iPad"
 ---| "iPhone/iPod touch"
 ---| "Universal"
+---| "iPad"
 
 
----iosfamily - This page was auto-generated.
+---Specifies the family of iOS device to be targeted.
 ---
 ---[docs](https://premake.github.io/docs/iosfamily/)
 ---
@@ -85,20 +135,20 @@ _G.iosfamily=iosfamily
 ---| "FMA"
 ---| "FMA4"
 ---| "RDRND"
----| "AES"
----| "BMI2"
 ---| "LZCNT"
----| "PCLMUL"
----| "FMA"
----| "FMA4"
----| "POPCNT"
----| "RDRND"
----| "BMI"
----| "MOVBE"
 ---| "F16C"
+---| "POPCNT"
+---| "FMA4"
+---| "AES"
+---| "PCLMUL"
+---| "BMI"
+---| "RDRND"
+---| "MOVBE"
+---| "BMI2"
+---| "FMA"
 
 
----isaextensions - This page was auto-generated.
+---Specifies a list of supported instruction set architecture extensions.
 ---
 ---[docs](https://premake.github.io/docs/isaextensions/)
 ---
@@ -109,8 +159,8 @@ _G.isaextensions=isaextensions
 ---@alias justmycodeAllowed
 ---| "On"
 ---| "Off"
----| "Off"
 ---| "On"
+---| "Off"
 
 
 ---Enables or disables Visual Studio Just My Code debugging feature by passing /JMC option to the compiler.
@@ -131,15 +181,15 @@ _G.justmycode=justmycode
 ---| "Utility"
 ---| "SharedItems"
 ---| "Packaging"
----| "Packaging"
----| "WindowedApp"
----| "ConsoleApp"
----| "SharedLib"
----| "Makefile"
----| "None"
+---| "StaticLib"
 ---| "Utility"
 ---| "SharedItems"
----| "StaticLib"
+---| "ConsoleApp"
+---| "Packaging"
+---| "WindowedApp"
+---| "None"
+---| "SharedLib"
+---| "Makefile"
 
 
 ---Sets the kind of binary object being created by the project or configuration, such as a console or windowed application, or a shared or static library.
@@ -155,10 +205,10 @@ _G.kind=kind
 ---| "C++"
 ---| "C#"
 ---| "F#"
----| "F#"
+---| "C#"
 ---| "C"
 ---| "C++"
----| "C#"
+---| "F#"
 
 
 ---Sets the programming language used by a project.
@@ -169,7 +219,7 @@ _G.kind=kind
 local function language(value) end
 _G.language=language
 
----largeaddressaware
+---Specifies to the linker that the 32 bit application can handle addresses larger than 2GB.
 ---
 ---[docs](https://premake.github.io/docs/largeaddressaware/)
 ---
@@ -196,8 +246,8 @@ _G.linkbuildoutputs=linkbuildoutputs
 ---@alias linkerAllowed
 ---| "Default"
 ---| "LLD"
----| "Default"
 ---| "LLD"
+---| "Default"
 
 
 ---Specifies the linker.
@@ -219,8 +269,8 @@ _G.linkerfatalwarnings=linkerfatalwarnings
 ---@alias linkgroupsAllowed
 ---| "Off"
 ---| "On"
----| "On"
 ---| "Off"
+---| "On"
 
 
 ---Turns on or off the linkgroups for option for linked libraries.
@@ -250,8 +300,8 @@ _G.links=links
 ---@alias linksectiondataAllowed
 ---| "On"
 ---| "Off"
----| "Off"
 ---| "On"
+---| "Off"
 
 
 ---Emit each data item in a separate section.
@@ -265,8 +315,8 @@ _G.linksectiondata=linksectiondata
 ---@alias linksectionfunctionAllowed
 ---| "On"
 ---| "Off"
----| "Off"
 ---| "On"
+---| "Off"
 
 
 ---Emit each function item in a separate section.
@@ -280,13 +330,15 @@ _G.linksectionfunction=linksectionfunction
 ---@alias linktimeoptimizationAllowed
 ---| "Default"
 ---| "On"
+---| "Fast"
 ---| "Off"
+---| "Off"
+---| "Fast"
 ---| "On"
 ---| "Default"
----| "Off"
 
 
----The **linktimeoptimization** function specifies whether or not the toolset should perform link time optimization.
+---Specifies whether or not the toolset should perform link time optimization.
 ---
 ---[docs](https://premake.github.io/docs/linktimeoptimization/)
 ---
@@ -334,17 +386,59 @@ _G.location=location
 local function makesettings(value) end
 _G.makesettings=makesettings
 
+---@alias manifestAllowed
+---| "Default"
+---| "On"
+---| "Off"
+---| "Off"
+---| "On"
+---| "Default"
+
+
+---Controls whether a Windows manifest file should be generated for the project.
+---
+---[docs](https://premake.github.io/docs/manifest/)
+---
+---@param value manifestAllowed
+local function manifest(value) end
+_G.manifest=manifest
+
+---@alias mapfileAllowed
+---| "Default"
+---| "On"
+---| "Off"
+---| "Off"
+---| "On"
+---| "Default"
+
+
+---Specifies whether or not to generate a mapfile.
+---
+---[docs](https://premake.github.io/docs/mapfile/)
+---
+---@param value mapfileAllowed
+local function mapfile(value) end
+_G.mapfile=mapfile
+
+---Specifies the path to generate a mapfile at.
+---
+---[docs](https://premake.github.io/docs/mapfilepath/)
+---
+---@param value string
+local function mapfilepath(value) end
+_G.mapfilepath=mapfilepath
+
 ---@alias mfcAllowed
 ---| "Default"
 ---| "Off"
 ---| "On"
 ---| "Static"
 ---| "Dynamic"
----| "On"
----| "Default"
----| "Static"
----| "Dynamic"
 ---| "Off"
+---| "On"
+---| "Dynamic"
+---| "Static"
+---| "Default"
 
 
 ---Sets the version of the MFC libraries to link against.
@@ -354,6 +448,40 @@ _G.makesettings=makesettings
 ---@param value mfcAllowed
 local function mfc(value) end
 _G.mfc=mfc
+
+---@alias minimalrebuildAllowed
+---| "Default"
+---| "On"
+---| "Off"
+---| "Off"
+---| "On"
+---| "Default"
+
+
+---Sets the minimal rebuild option for Visual Studio projects.
+---
+---[docs](https://premake.github.io/docs/minimalrebuild/)
+---
+---@param value minimalrebuildAllowed
+local function minimalrebuild(value) end
+_G.minimalrebuild=minimalrebuild
+
+---@alias multiprocessorcompileAllowed
+---| "Default"
+---| "On"
+---| "Off"
+---| "Off"
+---| "On"
+---| "Default"
+
+
+---Controls whether multiple processors are used for compilation.
+---
+---[docs](https://premake.github.io/docs/multiprocessorcompile/)
+---
+---@param value multiprocessorcompileAllowed
+local function multiprocessorcompile(value) end
+_G.multiprocessorcompile=multiprocessorcompile
 
 ---Sets the root namespace of a project.
 ---
@@ -367,9 +495,9 @@ _G.namespace=namespace
 ---| "Default"
 ---| "On"
 ---| "Off"
+---| "Off"
 ---| "On"
 ---| "Default"
----| "Off"
 
 
 ---Enables or disables native wchar (wide character) support by the compiler.
@@ -379,6 +507,23 @@ _G.namespace=namespace
 ---@param value nativewcharAllowed
 local function nativewchar(value) end
 _G.nativewchar=nativewchar
+
+---@alias nodefaultlibAllowed
+---| "Default"
+---| "On"
+---| "Off"
+---| "Off"
+---| "On"
+---| "Default"
+
+
+---Specifies whether to omit default libraries when linking.
+---
+---[docs](https://premake.github.io/docs/nodefaultlib/)
+---
+---@param value nodefaultlibAllowed
+local function nodefaultlib(value) end
+_G.nodefaultlib=nodefaultlib
 
 ---Specifies a list of NuGet packages that this project depends on.
 ---
@@ -408,9 +553,9 @@ _G.objdir=objdir
 ---| "Default"
 ---| "On"
 ---| "Off"
+---| "Off"
 ---| "On"
 ---| "Default"
----| "Off"
 
 
 ---Controls whether the frame pointer is omitted during compilation.
@@ -424,8 +569,8 @@ _G.omitframepointer=omitframepointer
 ---@alias openmpAllowed
 ---| "On"
 ---| "Off"
----| "Off"
 ---| "On"
+---| "Off"
 
 
 ---Enables or disables [OpenMP](https://en.wikipedia.org/wiki/OpenMP).
@@ -443,11 +588,11 @@ _G.openmp=openmp
 ---| "Size"
 ---| "Speed"
 ---| "Full"
+---| "Off"
+---| "Speed"
 ---| "On"
 ---| "Full"
----| "Off"
 ---| "Size"
----| "Speed"
 ---| "Debug"
 
 
@@ -478,8 +623,8 @@ _G.pchsource=pchsource
 ---@alias picAllowed
 ---| "Off"
 ---| "On"
----| "On"
 ---| "Off"
+---| "On"
 
 
 ---Enable generation of position independent code.
@@ -535,11 +680,11 @@ _G.prebuildmessage=prebuildmessage
 ---| "x86"
 ---| "x86_64"
 ---| "x86_64"
----| "Default"
 ---| "x86"
+---| "Default"
 
 
----preferredtoolarchitecture
+---Specifies the preferred architecture to use for the Visual Studio toolchain.
 ---
 ---[docs](https://premake.github.io/docs/preferredtoolarchitecture/)
 ---
@@ -658,7 +803,7 @@ _G.resoptions=resoptions
 ---| "internal"
 
 
----resourcegenerator
+---Specifies the resource generator to use.
 ---
 ---[docs](https://premake.github.io/docs/resourcegenerator/)
 ---
@@ -670,9 +815,9 @@ _G.resourcegenerator=resourcegenerator
 ---| "Default"
 ---| "On"
 ---| "Off"
+---| "Off"
 ---| "On"
 ---| "Default"
----| "Off"
 
 
 ---Enable or disable [run-time type information](https://en.wikipedia.org/wiki/Run-time_type_information).
@@ -722,6 +867,27 @@ _G.runpathdirs=runpathdirs
 local function runtime(value) end
 _G.runtime=runtime
 
+---@alias runtimechecksAllowed
+---| "Default"
+---| "Off"
+---| "StackFrames"
+---| "UninitializedVariables"
+---| "FastChecks"
+---| "Off"
+---| "FastChecks"
+---| "UninitializedVariables"
+---| "StackFrames"
+---| "Default"
+
+
+---Controls whether runtime error checking is enabled for Visual Studio C/C++ projects.
+---
+---[docs](https://premake.github.io/docs/runtimechecks/)
+---
+---@param value runtimechecksAllowed
+local function runtimechecks(value) end
+_G.runtimechecks=runtimechecks
+
 ---@alias sanitizeAllowed
 ---| "Address"
 ---| "Fuzzer"
@@ -753,12 +919,12 @@ _G.scanformoduledependencies=scanformoduledependencies
 ---| "NoListing"
 ---| "AssemblyCode"
 ---| "AssemblyCodeAndHex"
----| "AssemblyCodeAndHex"
----| "NoListing"
 ---| "AssemblyCode"
+---| "NoListing"
+---| "AssemblyCodeAndHex"
 
 
----shaderassembler - This page was auto-generated.
+---Specifies the shader assembler output.
 ---
 ---[docs](https://premake.github.io/docs/shaderassembler/)
 ---
@@ -766,7 +932,7 @@ _G.scanformoduledependencies=scanformoduledependencies
 local function shaderassembler(value) end
 _G.shaderassembler=shaderassembler
 
----shaderassembleroutput - This page was auto-generated.
+---Specifies the output file of shader assembly.
 ---
 ---[docs](https://premake.github.io/docs/shaderassembleroutput/)
 ---
@@ -774,7 +940,7 @@ _G.shaderassembler=shaderassembler
 local function shaderassembleroutput(value) end
 _G.shaderassembleroutput=shaderassembleroutput
 
----shaderdefines - This page was auto-generated.
+---Specifies defines to pass to shader compilation.
 ---
 ---[docs](https://premake.github.io/docs/shaderdefines/)
 ---
@@ -782,7 +948,7 @@ _G.shaderassembleroutput=shaderassembleroutput
 local function shaderdefines(value) end
 _G.shaderdefines=shaderdefines
 
----shaderentry - This page was auto-generated.
+---Specifies shader entrypoint.
 ---
 ---[docs](https://premake.github.io/docs/shaderentry/)
 ---
@@ -790,7 +956,7 @@ _G.shaderdefines=shaderdefines
 local function shaderentry(value) end
 _G.shaderentry=shaderentry
 
----shaderheaderfileoutput - This page was auto-generated.
+---Specifies the generated shader header output file.
 ---
 ---[docs](https://premake.github.io/docs/shaderheaderfileoutput/)
 ---
@@ -798,7 +964,7 @@ _G.shaderentry=shaderentry
 local function shaderheaderfileoutput(value) end
 _G.shaderheaderfileoutput=shaderheaderfileoutput
 
----shaderincludedirs - This page was auto-generated.
+---Specifies a list of include directories for shader compilation.
 ---
 ---[docs](https://premake.github.io/docs/shaderincludedirs/)
 ---
@@ -824,23 +990,23 @@ _G.shaderincludedirs=shaderincludedirs
 ---| "6.4"
 ---| "6.5"
 ---| "6.6"
----| "6.5"
----| "4.0_level_9_3"
----| "rootsig_1.0"
----| "6.1"
----| "5.1"
----| "4.1"
----| "4.0_level_9_1"
----| "6.4"
----| "rootsig_1.1"
----| "6.0"
----| "6.3"
----| "6.6"
 ---| "6.2"
+---| "6.4"
+---| "4.0_level_9_1"
+---| "6.1"
+---| "4.1"
+---| "6.0"
 ---| "5.0"
+---| "2.0"
 ---| "4.0"
 ---| "3.0"
----| "2.0"
+---| "6.6"
+---| "rootsig_1.1"
+---| "6.3"
+---| "4.0_level_9_3"
+---| "rootsig_1.0"
+---| "6.5"
+---| "5.1"
 
 
 ---Specifies the shader model.
@@ -859,7 +1025,7 @@ _G.shadermodel=shadermodel
 local function shaderobjectfileoutput(value) end
 _G.shaderobjectfileoutput=shaderobjectfileoutput
 
----shaderoptions - This page was auto-generated.
+---Specifies a list of options to pass to the shader compiler.
 ---
 ---[docs](https://premake.github.io/docs/shaderoptions/)
 ---
@@ -880,18 +1046,18 @@ _G.shaderoptions=shaderoptions
 ---| "Amplification"
 ---| "Texture"
 ---| "RootSignature"
----| "Effect"
----| "Compute"
----| "Mesh"
----| "Geometry"
 ---| "Pixel"
----| "Vertex"
----| "RootSignature"
 ---| "Hull"
----| "Amplification"
----| "Domain"
+---| "RootSignature"
+---| "Geometry"
 ---| "Texture"
+---| "Vertex"
+---| "Mesh"
+---| "Effect"
+---| "Amplification"
 ---| "Library"
+---| "Domain"
+---| "Compute"
 
 
 ---Specifies the type of shader.
@@ -902,7 +1068,7 @@ _G.shaderoptions=shaderoptions
 local function shadertype(value) end
 _G.shadertype=shadertype
 
----shadervariablename - This page was auto-generated.
+---Specifies a name for the variable name in the header file.
 ---
 ---[docs](https://premake.github.io/docs/shadervariablename/)
 ---
@@ -914,12 +1080,12 @@ _G.shadervariablename=shadervariablename
 ---| "OSXBundle"
 ---| "OSXFramework"
 ---| "XCTest"
----| "OSXBundle"
 ---| "OSXFramework"
 ---| "XCTest"
+---| "OSXBundle"
 
 
----sharedlibtype
+---Specifies the shared library type for Apple targets.
 ---
 ---[docs](https://premake.github.io/docs/sharedlibtype/)
 ---
@@ -939,12 +1105,12 @@ _G.startproject=startproject
 ---| "Default"
 ---| "On"
 ---| "Off"
+---| "Off"
 ---| "On"
 ---| "Default"
----| "Off"
 
 
----staticruntime
+---Specifies if the static runtime should be used.
 ---
 ---[docs](https://premake.github.io/docs/staticruntime/)
 ---
@@ -959,10 +1125,10 @@ _G.staticruntime=staticruntime
 ---| "gnu"
 ---| "libc++"
 ---| "none"
----| "gnu"
----| "stlport"
 ---| "libc++"
 ---| "gabi++"
+---| "gnu"
+---| "stlport"
 
 
 ---Specifies which C++ Standard Library to use.
@@ -978,10 +1144,10 @@ _G.stl=stl
 ---| "Level1"
 ---| "Level2"
 ---| "Level3"
----| "Level3"
 ---| "Off"
----| "Level2"
 ---| "Level1"
+---| "Level3"
+---| "Level2"
 
 
 ---Sets the level of allowed pointer aliasing.
@@ -992,7 +1158,7 @@ _G.stl=stl
 local function strictaliasing(value) end
 _G.strictaliasing=strictaliasing
 
----stringpooling
+---Specifies if string pooling should be used.
 ---
 ---[docs](https://premake.github.io/docs/stringpooling/)
 ---
@@ -1006,14 +1172,14 @@ _G.stringpooling=stringpooling
 ---| "4"
 ---| "8"
 ---| "16"
+---| "4"
+---| "2"
 ---| "16"
 ---| "8"
 ---| "1"
----| "2"
----| "4"
 
 
----structmemberalign - Specifies 1, 2, 4, 8, 16-byte boundary for struct member alignment.
+---Specifies 1, 2, 4, 8, 16-byte boundary for struct member alignment.
 ---
 ---[docs](https://premake.github.io/docs/structmemberalign/)
 ---
@@ -1025,12 +1191,12 @@ _G.structmemberalign=structmemberalign
 ---| "4.0"
 ---| "4.2"
 ---| "5.0"
+---| "4.2"
 ---| "5.0"
 ---| "4.0"
----| "4.2"
 
 
----swiftversion - This page was auto-generated.
+---Specifies the version of Swift to compile with.
 ---
 ---[docs](https://premake.github.io/docs/swiftversion/)
 ---
@@ -1044,11 +1210,11 @@ _G.swiftversion=swiftversion
 ---| "Off"
 ---| "FastLink"
 ---| "Full"
----| "On"
----| "Default"
----| "Full"
 ---| "Off"
+---| "On"
 ---| "FastLink"
+---| "Full"
+---| "Default"
 
 
 ---Turn on/off debug symbol table generation.
@@ -1067,14 +1233,6 @@ _G.symbols=symbols
 local function symbolspath(value) end
 _G.symbolspath=symbolspath
 
----**This function has been deprecated in Premake 5.0 beta2.** Use the new [externalincludedirs](externalincludedirs.md) function instead.
----
----[docs](https://premake.github.io/docs/sysincludedirs/)
----
----@param value string[]
-local function sysincludedirs(value) end
-_G.sysincludedirs=sysincludedirs
-
 ---Specifies the system library search paths.
 ---
 ---[docs](https://premake.github.io/docs/syslibdirs/)
@@ -1088,6 +1246,7 @@ _G.syslibdirs=syslibdirs
 ---| "bsd"
 ---| "emscripten"
 ---| "haiku"
+---| "hurd"
 ---| "ios"
 ---| "linux"
 ---| "macosx"
@@ -1097,19 +1256,20 @@ _G.syslibdirs=syslibdirs
 ---| "wii"
 ---| "windows"
 ---| "android"
----| "haiku"
----| "wii"
 ---| "ios"
----| "linux"
----| "windows"
----| "uwp"
----| "macosx"
 ---| "aix"
----| "bsd"
+---| "emscripten"
 ---| "android"
 ---| "solaris"
 ---| "tvos"
----| "emscripten"
+---| "linux"
+---| "bsd"
+---| "windows"
+---| "wii"
+---| "hurd"
+---| "uwp"
+---| "macosx"
+---| "haiku"
 
 
 ---Specifies the target operating system.
@@ -1127,117 +1287,3 @@ _G.system=system
 ---@param value string
 local function systemversion(value) end
 _G.systemversion=systemversion
-
----tags
----
----[docs](https://premake.github.io/docs/tags/)
----
----@param value string[]
-local function tags(value) end
-_G.tags=tags
-
----tailcalls - This page was auto-generated.
----
----[docs](https://premake.github.io/docs/tailcalls/)
----
----@param value Boolean
-local function tailcalls(value) end
-_G.tailcalls=tailcalls
-
----Specifies the bundle extension for the MacOSX bundle.
----
----[docs](https://premake.github.io/docs/targetbundleextension/)
----
----@param value string
-local function targetbundleextension(value) end
-_G.targetbundleextension=targetbundleextension
-
----Sets the destination directory for the compiled binary target.
----
----[docs](https://premake.github.io/docs/targetdir/)
----
----@param value string
-local function targetdir(value) end
-_G.targetdir=targetdir
-
----Specifies the file extension for the compiled binary target.
----
----[docs](https://premake.github.io/docs/targetextension/)
----
----@param value string
-local function targetextension(value) end
-_G.targetextension=targetextension
-
----Specifies the base file name for the compiled binary target.
----
----[docs](https://premake.github.io/docs/targetname/)
----
----@param value string
-local function targetname(value) end
-_G.targetname=targetname
-
----Specifies the file name prefix for the compiled binary target.
----
----[docs](https://premake.github.io/docs/targetprefix/)
----
----@param value string
-local function targetprefix(value) end
-_G.targetprefix=targetprefix
-
----Specifies a file name suffix for the compiled binary target.
----
----[docs](https://premake.github.io/docs/targetsuffix/)
----
----@param value string
-local function targetsuffix(value) end
-_G.targetsuffix=targetsuffix
-
----@alias thumbmodeAllowed
----| "thumb"
----| "arm"
----| "disabled"
----| "arm"
----| "disabled"
----| "thumb"
-
-
----Specifies whether the code generation uses ARM or Thumb instruction sets.
----
----[docs](https://premake.github.io/docs/thumbmode/)
----
----@param value thumbmodeAllowed
-local function thumbmode(value) end
-_G.thumbmode=thumbmode
-
----@alias toolchainversionAllowed
----| "remote"
----| "wsl"
----| "wsl2"
----| "4.6"
----| "4.8"
----| "4.9"
----| "3.4"
----| "3.5"
----| "3.6"
----| "3.8"
----| "5.0"
----| "4.9"
----| "3.6"
----| "3.8"
----| "5.0"
----| "4.8"
----| "3.5"
----| "4.6"
----| "3.4"
----| "wsl"
----| "remote"
----| "wsl2"
-
-
----Specifies the version of the toolchain to use.
----
----[docs](https://premake.github.io/docs/toolchainversion/)
----
----@param value toolchainversionAllowed
-local function toolchainversion(value) end
-_G.toolchainversion=toolchainversion

@@ -1,0 +1,29 @@
+.main-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  /* Centering Logic */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Target the ring only when it's the only child or specifically when loading */
+.content>vscode-progress-ring {
+  margin: auto;
+  /* The simplest way to center a flex child both ways */
+  width: 50px;
+  /* Optional: define a size */
+  height: 50px;
+}
+
+.module-list {
+  display: flex;
+  flex-direction: column;
+  /* No gap, use borders between items for a native feel */
+}

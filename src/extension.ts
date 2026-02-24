@@ -10,7 +10,11 @@ import * as commands from './commands/mod';
 
 import fs from "fs";
 import path from "path";
+import ModuleResolver, { RepoSearchType } from 'registry/RepoResolver';
 import { PathUtils } from 'utils/path-utils';
+import { ModuleProvider } from 'registry/ModuleProvider';
+import { LibraryProvider } from 'registry/LibraryProvider';
+
 
 function findPremakeFile(dir: string) {
 	const entries = fs.readdirSync(dir, { withFileTypes: true });
@@ -96,13 +100,20 @@ export async function activate(context: vscode.ExtensionContext): Promise<Termin
 
 		if (premakeFile) {
 			await sources.registerSources([
-				"premakeFields_1.lua",
-				"premakeFields_2.lua",
-				"premakeFields_3.lua",
-				"premakeGlobals.lua"
+				"."
 			]);
 		}
 	}
+	const moduleProvider = new ModuleProvider(context.extensionUri,context);
+	const libraryProvider = new LibraryProvider(context.extensionUri,context);
+
+	context.subscriptions.push(
+		vscode.window.registerWebviewViewProvider("premake5.manager.module", moduleProvider)
+	);
+	context.subscriptions.push(
+		vscode.window.registerWebviewViewProvider("premake5.manager.libraries", libraryProvider)
+	);
+	console.log(await ModuleResolver.getModules(RepoSearchType.Recent,"",0));
 	return TerminalInterface;
 }
 

@@ -1,0 +1,69 @@
+.module-container {
+    display: flex;
+    background-color: var(--vscode-sideBar-background);
+    padding-inline: 10px;
+}
+
+.module-container:hover {
+    background-color: var(--vscode-descriptionforeground);
+}
+.module-container:hover {
+    background-color: var(--vscode-list-hoverBackground);
+    color: var(--vscode-list-hoverForeground);
+}
+
+/* Selected/Active State - Matches Extension item selection */
+/* You will need to toggle an 'active' or 'selected' class in React */
+.module-container.selected {
+    background-color: var(--vscode-list-activeSelectionBackground);
+    color: var(--vscode-list-activeSelectionForeground);
+}
+
+/* If the list item is focused but not necessarily "active" */
+.module-container:focus {
+    outline: 1px solid var(--vscode-list-focusOutline);
+    outline-offset: -1px;
+}
+.icon-container {
+    /* Set the base width to 8% of the container */
+    width: 10%;
+
+    /* Prevent it from getting TOO small on tiny sidebars */
+    min-width: 32px;
+
+    /* Keeps the container a perfect square based on its width */
+    aspect-ratio: 1 / 1;
+
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+.main-icon {
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+    border-radius: 4px;
+        padding: 5%;
+}
+
+.module-info {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+}
+
+.module-info vscode-textarea,
+.module-info vscode-label {
+    width: 96%;
+    padding: 2%;
+}
+.install-button {
+    width: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
