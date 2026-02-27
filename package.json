@@ -2,7 +2,7 @@
   "name": "premake-manager",
   "displayName": "premake manager",
   "description": "a extension to manage premake projects",
-  "version": "0.1.3",
+  "version": "0.1.4-dev",
   "type": "commonjs",
   "publisher": "lolrobbe2",
   "engines": {
@@ -36,6 +36,9 @@
   },
   "activationEvents": [
     "onStartupFinished"
+  ],
+  "extensionDependencies": [
+    "vscode.github-authentication"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -231,8 +234,23 @@
       ]
     },
     "configuration": {
-      "type": "object",
-      "properties": {}
+      "title": "Premake Manager",
+      "order": 0,
+      "properties": {
+        "premakeManager.cli-source": {
+          "type": "string",
+          "default": "latest",
+          "enum": [
+            "latest",
+            "artifact"
+          ],
+          "enumDescriptions": [
+            "Download the official latest release",
+            "Download the latest artifact from the main branch (CI build)"
+          ],
+          "description": "Choose where to fetch the CLI binary from."
+        }
+      }
     },
     "menus": {}
   },
@@ -258,8 +276,10 @@
     "build-views": "npm run build-details & npm run build-modules & npm run build-libraries & wait"
   },
   "dependencies": {
+    "@octokit/rest": "^22.0.1",
     "@vscode-elements/elements": "^2.5.0",
     "@vscode/codicons": "^0.0.44",
+    "adm-zip": "^0.5.16",
     "axios": "^1.7.9",
     "chokidar": "^4.0.3",
     "cp": "^0.2.0",
@@ -271,7 +291,7 @@
     "@types/adm-zip": "^0.5.7",
     "@types/mocha": "^10.0.9",
     "@types/node": "^22.16.0",
-    "@types/vscode": "^1.96.0",
+    "@types/vscode": "^1.92.1",
     "@types/vscode-webview": "^1.57.5",
     "@typescript-eslint/eslint-plugin": "^8.10.0",
     "@typescript-eslint/parser": "^8.7.0",

@@ -1,6 +1,7 @@
 import * as path from 'path';
 import { PathUtils } from 'utils/path-utils';
 import { Prompt } from 'utils/prompt-utils';
+import { VersionManager } from 'utils/version-manager';
 import * as vscode from 'vscode';
 
 export class ManagerCliTerminal {
@@ -9,7 +10,7 @@ export class ManagerCliTerminal {
 
     constructor(context: vscode.ExtensionContext) {
         this.context = context;
-        this.terminal?.shellIntegration
+        this.terminal?.shellIntegration;
     }
 
     /**
@@ -82,13 +83,6 @@ export class ManagerCliTerminal {
      * Resolves the full path to the CLI executable based on platform
      */
     public static getCliExecutablePath(context: vscode.ExtensionContext): string | undefined {
-        if (process.platform === 'win32') {
-            return PathUtils.getResource(context, ['cli', 'premake-manager-cli-win.exe']);
-        } else if (process.platform === 'linux') {
-            return PathUtils.getResource(context, ['cli', 'premake-manager-cli-linux']);
-        } else if (process.platform === 'darwin') {
-            return PathUtils.getResource(context, ['cli', 'premake-manager-cli-darwin']);
-        }
-        return undefined;
+       return VersionManager.GetExecutablePath().fsPath;
     }
 }
