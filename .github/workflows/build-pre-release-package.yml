@@ -44,13 +44,17 @@ jobs:
 
       # 4. Run your tests
       - name: Package extension
-        run: npx @vscode/vsce package --pre-release
+        run: |
+          npx @vscode/vsce package --pre-release
+          TEMP_VSIX=$(ls *.vsix)
+          echo "VSIX_PATH=$TEMP_VSIX" >> $GITHUB_ENV
+          echo "vsix_name=$TEMP_VSIX" >> $GITHUB_OUTPUT
 
       - name: Upload VSIX Artifact  
         uses: actions/upload-artifact@v7
         with:
           name: premake-manager-dev.vsix
-          path: "*.vsix"
+          path: ${{ env.VSIX_PATH }}
           retention-days: 14
           archive: false
 
@@ -59,6 +63,6 @@ jobs:
         with:
           pat: ${{ secrets.MARKET_PLACE_TOKEN }}
           registryUrl: https://marketplace.visualstudio.com
-          extensionFile: "*.vsix"  # Point it to your existing file
+          extensionFile: ${{ env.VSIX_PATH }}  # Point it to your existing file
           preRelease: true
           skipDuplicate: true
