@@ -256,7 +256,7 @@
   },
   "scripts": {
     "clean": "rimraf out && rimraf tsconfig.extension.tsbuildinfo",
-    "compile": "npm run clean && node build.js",
+    "compile": "npm run clean && npm run build-views && node build.js",
     "vscode:prepublish": "npm run compile",
     "watch": "npm run compile && tsc -watch -p tsconfig.extension.json",
     "pretest": "npm run compile && npm run lint",
@@ -273,7 +273,8 @@
     "build-details": "npm run build --prefix src/registry/media/details",
     "build-modules": "npm run build --prefix src/registry/media/modules",
     "build-libraries": "npm run build --prefix src/registry/media/libraries",
-    "build-views": "npm run build-details & npm run build-modules & npm run build-libraries & wait"
+    "build-views": "npm run build-details & npm run build-modules & npm run build-libraries & wait",
+    "postinstall": "npm run setup-views"
   },
   "dependencies": {
     "@octokit/rest": "^22.0.1",

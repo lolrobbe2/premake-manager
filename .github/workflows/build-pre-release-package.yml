@@ -25,15 +25,24 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '22'
-          cache: 'npm'
 
       # 3. Install dependencies
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        id: node-cache
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Install dependencies
-        run: npm install
+        if: steps.node-cache.outputs.cache-hit != 'true'
+        run: npm ci  # This triggers 'postinstall' which runs 'setup-views'
 
       # 4. Run your tests
       - name: Package extension
-        run: npx @vscode/vsce package --pre-release
+        run: vsce package --pre-release
 
       - name: Upload VSIX Artifact  
         uses: actions/upload-artifact@v7
