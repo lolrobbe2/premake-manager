@@ -1,0 +1,53 @@
+name: Build and publish prerelease
+
+# This section defines what triggers the workflow
+on:
+  push:
+    branches:
+      - main  # Only runs when code is pushed to the main branch
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for manual run'
+        required: false
+        default: 'Manual test/deploy'
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Pulls your code from the repository into the runner
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      # 2. Setup your environment (Example: Node.js)
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # 4. Run your tests
+      - name: Package extension
+        run: vsce package --pre-release
+
+      - name: Upload VSIX Artifact  
+        uses: actions/upload-artifact@v7
+        with:
+          name: premake-manager-dev.vsix
+          path: "*.vsix"
+          retention-days: 14
+          archive: false
+
+      - name: Publish to Visual Studio Marketplace
+        uses: HaaLeo/publish-vscode-extension@v2
+        with:
+          pat: ${{ secrets.MARKET_PLACE_TOKEN }}
+          registryUrl: https://marketplace.visualstudio.com
+          extensionFile: "*.vsix"  # Point it to your existing file
+          preRelease: true
+          skipDuplicate: true
