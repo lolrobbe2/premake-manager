@@ -256,7 +256,7 @@
   },
   "scripts": {
     "clean": "rimraf out && rimraf tsconfig.extension.tsbuildinfo",
-    "compile": "npm run clean && node build.js",
+    "compile": "npm run clean && npm run build-views && node build.js",
     "vscode:prepublish": "npm run compile",
     "watch": "npm run compile && tsc -watch -p tsconfig.extension.json",
     "pretest": "npm run compile && npm run lint",
@@ -266,14 +266,15 @@
     "resources": "cp -rv ./src/resources/** ./out/resources",
     "icons": "fantasticon ./src/resources/media/ -o ./src/resources/media/",
     "meta": "node docs/metagen.mjs",
-    "setup-details": "npm install --prefix src/registry/media/details",
-    "setup-modules": "npm install --prefix src/registry/media/modules",
-    "setup-libraries": "npm install --prefix src/registry/media/libraries",
-    "setup-views": "npm run setup-details & npm run setup-modules & npm run setup-libraries & wait",
+    "setup-details": "cd src/registry/media/details && npm install --ignore-scripts",
+    "setup-modules": "cd src/registry/media/modules && npm install --ignore-scripts",
+    "setup-libraries": "cd src/registry/media/libraries && npm install --ignore-scripts",
+    "setup-views": "npm run setup-details && npm run setup-modules && npm run setup-libraries",
     "build-details": "npm run build --prefix src/registry/media/details",
     "build-modules": "npm run build --prefix src/registry/media/modules",
     "build-libraries": "npm run build --prefix src/registry/media/libraries",
-    "build-views": "npm run build-details & npm run build-modules & npm run build-libraries & wait"
+    "build-views": "npm run build-details && npm run build-modules && npm run build-libraries",
+    "postinstall": "npm run setup-views"
   },
   "dependencies": {
     "@octokit/rest": "^22.0.1",

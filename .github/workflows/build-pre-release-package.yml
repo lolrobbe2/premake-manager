@@ -25,21 +25,52 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '22'
-          cache: 'npm'
 
       # 3. Install dependencies
-      - name: Install dependencies
-        run: npm install
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        id: node-cache
+        with:
+          path: |
+            node_modules
+            **/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
-      # 4. Run your tests
+      - name: Install dependencies
+        if: steps.node-cache.outputs.cache-hit != 'true'
+        run: npm install  # This triggers 'postinstall' which runs 'setup-views'
+
+      - name: Determine Release Type
+        id: release_type
+        run: |
+          # Default to pre-release
+          RELEASE_FLAG="--pre-release"
+          
+          # If triggered by a tag OR manual 'is_stable' input, make it a stable release
+          if [[ "${{ github.ref_type }}" == "tag" ]] || [[ "${{ github.event.inputs.is_stable }}" == "true" ]]; then
+            RELEASE_FLAG=""
+            echo "Publishing STABLE release"
+            echo "IS_PRE_RELEASE=false" >> $GITHUB_ENV
+          else
+            echo "Publishing PRE-RELEASE"
+            echo "IS_PRE_RELEASE=true" >> $GITHUB_ENV
+          fi
+          
+          echo "RELEASE_FLAG=$RELEASE_FLAG" >> $GITHUB_ENV
       - name: Package extension
-        run: npx @vscode/vsce package --pre-release
+        run: |
+          npx @vscode/vsce package ${{ env.RELEASE_FLAG }}
+          TEMP_VSIX=$(ls *.vsix)
+          echo "VSIX_PATH=$TEMP_VSIX" >> $GITHUB_ENV
+          echo "vsix_name=$TEMP_VSIX" >> $GITHUB_OUTPUT
 
       - name: Upload VSIX Artifact  
         uses: actions/upload-artifact@v7
         with:
           name: premake-manager-dev.vsix
-          path: "*.vsix"
+          path: ${{ env.VSIX_PATH }}
           retention-days: 14
           archive: false
 
@@ -48,6 +79,6 @@ jobs:
         with:
           pat: ${{ secrets.MARKET_PLACE_TOKEN }}
           registryUrl: https://marketplace.visualstudio.com
-          extensionFile: "*.vsix"  # Point it to your existing file
-          preRelease: true
+          extensionFile: ${{ env.VSIX_PATH }}  # Point it to your existing file
+          preRelease: ${{ env.IS_PRE_RELEASE }}
           skipDuplicate: true
