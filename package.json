@@ -217,6 +217,13 @@
       },
       {
         "category": "premake manager",
+        "command": "premake5.index-edit",
+        "title": "index edit",
+        "icon": "resources/media/premake-logo-128.png",
+        "when": "false"
+      },
+      {
+        "category": "premake manager",
         "command": "premake5.remotes-group",
         "title": "remotes commands",
         "icon": "resources/media/premake-logo-128.png",
@@ -368,12 +375,14 @@
     "axios": "^1.7.9",
     "chokidar": "^4.0.3",
     "cp": "^0.2.0",
+    "js-yaml": "^4.1.1",
     "tar": "^7.4.3",
     "vscode-webview": "^1.0.1-beta.1"
   },
   "devDependencies": {
     "@octokit/types": "^13.6.2",
     "@types/adm-zip": "^0.5.7",
+    "@types/js-yaml": "^4.0.9",
     "@types/mocha": "^10.0.9",
     "@types/node": "^22.16.0",
     "@types/vscode": "^1.92.1",

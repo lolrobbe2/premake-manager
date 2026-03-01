@@ -3,6 +3,7 @@ import * as vscode from 'vscode';
 import { IndexAddLibraryCommand } from "./index-add-library";
 import { IndexAddUriLibraryCommand } from "./index-add-uri-library";
 import { IndexAddDependencyCommand } from "./index-add-dependency";
+import { IndexEditCommand } from "./index-edit";
 
 
 
@@ -12,7 +13,8 @@ export class IndexAddCommandGroup extends CommandGroup {
         this.addMultiple([
             IndexAddLibraryCommand,
             IndexAddUriLibraryCommand,
-            IndexAddDependencyCommand
+            IndexAddDependencyCommand,
+            IndexEditCommand,
         ]);
     }
 }
