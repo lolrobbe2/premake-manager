@@ -44,7 +44,7 @@ jobs:
 
       # 4. Run your tests
       - name: Package extension
-        run: vsce package --pre-release
+        run: npx @vscode/vsce package --pre-release
 
       - name: Upload VSIX Artifact  
         uses: actions/upload-artifact@v7
