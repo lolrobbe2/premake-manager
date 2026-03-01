@@ -175,6 +175,90 @@
       },
       {
         "category": "premake manager",
+        "command": "premake5.index-group",
+        "title": "index commands",
+        "icon": "resources/media/premake-logo-128.png",
+        "when": "false"
+      },
+      {
+        "category": "premake manager",
+        "command": "premake5.index-new",
+        "title": "index new",
+        "icon": "resources/media/premake-logo-128.png",
+        "when": "false"
+      },
+      {
+        "category": "premake manager",
+        "command": "premake5.index-add-group",
+        "title": "index add commands",
+        "icon": "resources/media/premake-logo-128.png",
+        "when": "false"
+      },
+      {
+        "category": "premake manager",
+        "command": "premake5.index-add-library",
+        "title": "index add library",
+        "icon": "resources/media/premake-logo-128.png",
+        "when": "false"
+      },
+      {
+        "category": "premake manager",
+        "command": "premake5.index-add-uri-library",
+        "title": "index add uri library",
+        "icon": "resources/media/premake-logo-128.png",
+        "when": "false"
+      },
+      {
+        "category": "premake manager",
+        "command": "premake5.index-add-dependency",
+        "title": "index add library dependency",
+        "icon": "resources/media/premake-logo-128.png",
+        "when": "false"
+      },
+      {
+        "category": "premake manager",
+        "command": "premake5.remotes-group",
+        "title": "remotes commands",
+        "icon": "resources/media/premake-logo-128.png",
+        "when": "false"
+      },
+      {
+        "category": "premake manager",
+        "command": "premake5.remotes-view",
+        "title": "remotes view",
+        "icon": "resources/media/premake-logo-128.png",
+        "when": "false"
+      },
+      {
+        "category": "premake manager",
+        "command": "premake5.remotes-add",
+        "title": "remotes add",
+        "icon": "resources/media/premake-logo-128.png",
+        "when": "false"
+      },
+      {
+        "category": "premake manager",
+        "command": "premake5.remotes-update",
+        "title": "remotes update",
+        "icon": "resources/media/premake-logo-128.png",
+        "when": "false"
+      },
+      {
+        "category": "premake manager",
+        "command": "premake5.remotes-remove",
+        "title": "remotes remove",
+        "icon": "resources/media/premake-logo-128.png",
+        "when": "false"
+      },
+      {
+        "category": "premake manager",
+        "command": "premake5.remotes-reset",
+        "title": "remotes reset",
+        "icon": "resources/media/premake-logo-128.png",
+        "when": "false"
+      },
+      {
+        "category": "premake manager",
         "command": "premake5.configure",
         "title": "configure",
         "icon": "resources/media/premake-logo-128.png",
