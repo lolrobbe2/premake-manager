@@ -40,7 +40,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.node-cache.outputs.cache-hit != 'true'
-        run: npm ci  # This triggers 'postinstall' which runs 'setup-views'
+        run: npm install  # This triggers 'postinstall' which runs 'setup-views'
 
       # 4. Run your tests
       - name: Package extension
