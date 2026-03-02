@@ -9,32 +9,3 @@
 }
 
 
-.main-icon,
-.icon-placeholder {
-  height: 90px;
-}
-
-.main-container {
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-  /* Prevents whole page scroll */
-}
-é
-
-.vscode-link,
-.repo-link {
-  color: var(--vscode-textLink-foreground);
-  text-decoration: none;
-}
-
-.vscode-link:hover {
-  text-decoration: underline;
-}
-
-h3 {
-  font-size: 11px;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-  color: var(--vscode-descriptionForeground);
-}

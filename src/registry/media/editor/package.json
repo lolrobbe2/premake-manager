@@ -12,6 +12,7 @@
   "dependencies": {
     "@vitejs/plugin-basic-ssl": "^2.1.4",
     "@vscode-elements/elements": "^2.5.0",
+    "@vscode/codicons": "^0.0.44",
     "premake-manager": "file:../../../..",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
