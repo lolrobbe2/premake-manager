@@ -36,6 +36,18 @@
         "group": "UI",
         "order": 1
       }
+    },
+    {
+      "name": "Debug Editor Webview (Chrome)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "https://localhost:5173",
+      "webRoot": "${workspaceFolder}/src/registry/media/editor",
+      "preLaunchTask": "npm: dev:editor", // This ensures npm runs first
+      "presentation": {
+        "group": "UI",
+        "order": 1
+      }
     }
   ]
 }
