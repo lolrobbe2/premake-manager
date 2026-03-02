@@ -1,32 +1,44 @@
+import { useEffect, useState } from 'react';
+import './App.css';
+import Header from "./Header";
+import { IndexReader } from "./IndexReader";
+import { IndexViewer } from "./IndexViewer";
+
+// Import elements for registration
 import "@vscode-elements/elements/dist/vscode-badge";
 import "@vscode-elements/elements/dist/vscode-button";
 import "@vscode-elements/elements/dist/vscode-divider";
 import "@vscode-elements/elements/dist/vscode-progress-ring";
+import { AddLibraryModal } from './modal/AddLibrary';
 
-import { useEffect } from 'react';
-import './App.css';
-import Header from "./Header";
-import { IndexReader } from "./IndexReader";
+function App() {
+  const [filterText, setFilterText] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  useEffect(() => {
+    IndexReader.Initialize();
+  }, []);
+  const handleAddLibrary = (githubLink: string) => {
+    console.log("Processing link:", githubLink);
+    // Your logic to handle the new library
+  };
+  return (
+    <div className="main-wrapper">
+      {/* Pass the setter function to the Header */}
+      <Header onFilterChange={setFilterText} onAddClick={() => setIsModalOpen(true)} />
 
-  function App() {
-    
-    useEffect(() => {
-      const init = async () => {
-        IndexReader.Initialize();
-        const res = await IndexReader.GetIndex();
-        const test = 1;
-      };
+      {/* Pass the current filter string to the Viewer */}
+      <IndexViewer
+        indexPromise={IndexReader.GetIndex()}
+        filter={filterText}
+      />
 
-      init();
-    }, []);
+      <AddLibraryModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onAdd={handleAddLibrary}
+      />
+    </div>
+  );
+}
 
-    // Helper to render a centered loader for a section
-  
-    return (
-      <div className="main-wrapper">
-        <Header></Header>
-      </div>
-    );
-  }
-
-  export default App;
+export default App;

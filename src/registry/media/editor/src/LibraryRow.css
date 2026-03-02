@@ -1,0 +1,11 @@
+.remove-button {
+    text-align: right;
+    vertical-align: middle;
+    padding-right: 1rem;
+}
+
+vscode-table-cell {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    vertical-align: middle;
+}

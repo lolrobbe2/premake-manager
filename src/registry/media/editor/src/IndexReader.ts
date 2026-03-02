@@ -16,6 +16,6 @@ export class IndexReader {
     }
 
     public static async GetIndex() : Promise<IndexView>{
-        return await this.bridge!.request<IndexView>("GetIndex");
+        return await this.bridge!.request<IndexView>("GetIndex",undefined);
     }
 }
