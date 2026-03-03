@@ -10,10 +10,9 @@ import * as commands from "./commands/mod";
 
 import fs from "fs";
 import path from "path";
-import { LocalStorage, PathUtils } from "utils/path-utils";
-import { ModuleProvider } from "registry/ModuleProvider";
 import { LibraryProvider } from "registry/LibraryProvider";
-import { GithubUtils } from "utils/github-utils";
+import { ModuleProvider } from "registry/ModuleProvider";
+import { LocalStorage, PathUtils } from "utils/path-utils";
 import { VersionManager } from "utils/version-manager";
 
 function findPremakeFile(dir: string) {
@@ -91,7 +90,7 @@ function registerTerminals(context: vscode.ExtensionContext) {
           options: {
             name: "premake manager",
             shellPath: ManagerCliTerminal.getCliExecutablePath(context),
-            shellArgs: ["--interive"],
+            shellArgs: ["--interactive"],
             iconPath: vscode.Uri.file(
               context.asAbsolutePath("resources/media/premake-logo.png"),
             ),

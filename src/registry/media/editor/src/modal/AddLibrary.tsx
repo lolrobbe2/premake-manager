@@ -18,7 +18,7 @@ export function AddLibraryModal({ isOpen, onClose, onAdd }: AddLibraryModalProps
     const handleAdd = () => {
         if (repoLink.trim()) {
             onAdd(repoLink);
-            setRepoLink("");
+            setRepoLink(repoLink);
             onClose();
         }
     };

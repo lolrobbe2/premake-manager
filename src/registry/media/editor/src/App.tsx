@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import './App.css';
 import Header from "./Header";
 import { IndexReader } from "./IndexReader";
@@ -14,11 +14,28 @@ import { AddLibraryModal } from './modal/AddLibrary';
 function App() {
   const [filterText, setFilterText] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [refreshTick, setRefreshTick] = useState(0);
+
+  const refresh = () => setRefreshTick(prev => prev + 1);
+
   useEffect(() => {
     IndexReader.Initialize();
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'F4') {
+        e.preventDefault(); // Stop the webview from blanking out
+        refresh();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
+
+  const indexPromise = useMemo(() => IndexReader.GetIndex(), [refreshTick]);
+
   const handleAddLibrary = (githubLink: string) => {
-    console.log("Processing link:", githubLink);
+    IndexReader.AddLibrary(githubLink);
+    refresh();
     // Your logic to handle the new library
   };
   return (
@@ -28,7 +45,7 @@ function App() {
 
       {/* Pass the current filter string to the Viewer */}
       <IndexViewer
-        indexPromise={IndexReader.GetIndex()}
+        indexPromise={indexPromise}
         filter={filterText}
       />
 

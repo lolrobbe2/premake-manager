@@ -54,8 +54,6 @@ export function IndexViewer({ indexPromise, filter }: LibraryIndexProps) {
             {Object.entries(filteredIndex).map(([owner, libs]) => (
                 <OwnerLibs key={owner} ownerName={owner} libs={libs} isFiltering={isFiltering} />
             ))}
-
-            {/* Show a message if nothing matches the filter */}
         </section>
     );
 }

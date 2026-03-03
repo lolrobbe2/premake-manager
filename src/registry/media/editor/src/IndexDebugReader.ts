@@ -50,7 +50,6 @@ export class IndexDebugReader {
         const vscode = getVsCodeApi();
         if(vscode !== undefined) {
             this.bridge = new MessageBridge(window.addEventListener, vscode.postMessage);
-
         } else {
             this.bridge = new MessageBridge(window.addEventListener,window.postMessage);
         }
@@ -58,8 +57,7 @@ export class IndexDebugReader {
         this.bridge.on("GetIndex",this.OnGetIndex.bind(this));
     }
 
-    public static OnGetIndex(data: any) : IndexView {
-        console.log("test");
+    public static OnGetIndex(_: any) : IndexView {
         return this.index;
     }
 }

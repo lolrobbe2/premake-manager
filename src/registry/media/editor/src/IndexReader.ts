@@ -18,4 +18,8 @@ export class IndexReader {
     public static async GetIndex() : Promise<IndexView>{
         return await this.bridge!.request<IndexView>("GetIndex",undefined);
     }
+
+    public static async AddLibrary(githubLink: string){
+        return await this.bridge!.request<void>("AddLibrary", githubLink);
+    }
 }

@@ -6,7 +6,7 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   plugins: [react(), basicSsl()],
   server: {
-    https: true,
+    port: 3000,
     proxy: {
       // Adjust the key (e.g., '/api') to match your backend route
       '/api': {

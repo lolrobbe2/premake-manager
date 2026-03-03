@@ -41,7 +41,7 @@
       "name": "Debug Editor Webview (Chrome)",
       "type": "chrome",
       "request": "launch",
-      "url": "https://localhost:5173",
+      "url": "https://localhost:3000",
       "webRoot": "${workspaceFolder}/src/registry/media/editor",
       "preLaunchTask": "npm: dev:editor", // This ensures npm runs first
       "presentation": {
