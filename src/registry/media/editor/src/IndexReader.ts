@@ -24,4 +24,8 @@ export class IndexReader {
     public static async AddLibrary(githubLink: string){
         return await this.bridge!.request<void>("AddLibrary", githubLink);
     }
+
+    public static async RemoveLibrary(name: string) {
+        return await this.bridge!.request<void>("RemoveLibrary", name);
+    }
 }

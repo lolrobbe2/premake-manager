@@ -138,4 +138,11 @@ export class RegistryBridge {
         await RegistryManager.Open();
         return RegistryManager.index;
     }
+    static async AddLibrary(data: any){
+        RegistryManager.IndexAddUriLibrary(data as string);
+    }
+
+    static async RemoveLibrary(data: any) {
+        console.error("remove: not yet implemented");
+    }
 }

@@ -9437,7 +9437,7 @@ var bt = e(((e) => {
 	handlers = new Map();
 	constructor(e, t) {
 		this.postMessage = t, e(async (e) => {
-			if (console.log(`bridge: ${e}`), e.incomming === !0) console.log("incomming"), this.handlers.get(e.command)?.forEach(async (t) => {
+			if (e.incomming === !0) this.handlers.get(e.command)?.forEach(async (t) => {
 				let n = e;
 				n.incomming = !1;
 				try {
@@ -9448,7 +9448,6 @@ var bt = e(((e) => {
 				this.postMessage(n);
 			});
 			else {
-				console.log("resolve");
 				let t = this.pendingRequests.get(e.nonce);
 				e.error === void 0 ? t?.resolve(e.payload) : t.reject(e.error), this.pendingRequests.delete(e.nonce);
 			}
@@ -9465,12 +9464,12 @@ var bt = e(((e) => {
 			this.pendingRequests.set(n, {
 				resolve: r,
 				reject: i
-			}), console.log("post"), this.postMessage({
+			}), this.postMessage({
 				command: e,
 				nonce: n,
 				data: t,
 				incomming: !0
-			}), console.log(`message: ${e}`), setTimeout(() => {
+			}), setTimeout(() => {
 				this.pendingRequests.has(n) && this.pendingRequests.delete(n);
 			}, 5e3);
 		});
@@ -9485,7 +9484,7 @@ var wt = class {
 	static Initialize() {
 		if (this.initalized === !0) return;
 		let e = Ct();
-		e === void 0 ? this.bridge = new St((e) => window.addEventListener("message", (t) => e(t.data)), window.postMessage.bind(window)) : (console.log("vscode usage"), this.bridge = new St((e) => window.addEventListener("message", (t) => e(t.data)), (t) => e.postMessage(t)));
+		e === void 0 ? this.bridge = new St((e) => window.addEventListener("message", (t) => e(t.data)), window.postMessage.bind(window)) : this.bridge = new St((e) => window.addEventListener("message", (t) => e(t.data)), (t) => e.postMessage(t));
 	}
 	static async GetIndex() {
 		return await this.bridge.request("GetIndex", void 0);

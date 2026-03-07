@@ -47,6 +47,8 @@ export class EditorPanel {
             if (this._listener !== undefined) { this._listener(e) } 
         });
         this._bridge.on("GetIndex",RegistryBridge.GetIndex);
+        this._bridge.on("AddLibrary", RegistryBridge.AddLibrary);
+
         // Set the base HTML immediately
         this._panel.webview.html = this._getFullHtml(extensionContext);
         this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
