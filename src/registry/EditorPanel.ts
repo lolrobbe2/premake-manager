@@ -48,6 +48,7 @@ export class EditorPanel {
         });
         this._bridge.on("GetIndex",RegistryBridge.GetIndex);
         this._bridge.on("AddLibrary", RegistryBridge.AddLibrary);
+        this._bridge.on("EditLibrary", RegistryBridge.EditLibrary);
 
         // Set the base HTML immediately
         this._panel.webview.html = this._getFullHtml(extensionContext);

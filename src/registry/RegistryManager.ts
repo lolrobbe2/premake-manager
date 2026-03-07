@@ -96,18 +96,18 @@ export class RegistryManager {
         TerminalInterface.indexAddUriLibrary(githubLink);
     }
 
-    public static IndexAddDependency(githublink: String, owner: String, repo: String, range: String){
+    public static IndexAddDependency(githublink: String, owner: String, repo: String, range: String) {
         TerminalInterface.indexAddDependency(githublink, owner, repo, range);
     }
-    
-    public static async GetDependencies(fullname: string) :Promise<LibraryDependencies | undefined> {
+
+    public static async GetDependencies(fullname: string): Promise<LibraryDependencies | undefined> {
         const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
         if (!workspaceFolder) {
             Prompt.Error("no workspace is currently open");
             return undefined;
         }
 
-        const fileUri = vscode.Uri.joinPath(workspaceFolder.uri,"libraries",fullname.toLowerCase(),'premakeDependencies.yml');
+        const fileUri = vscode.Uri.joinPath(workspaceFolder.uri, "libraries", fullname.toLowerCase(), 'premakeDependencies.yml');
 
         try {
             const fileData = await vscode.workspace.fs.readFile(fileUri);
@@ -131,18 +131,31 @@ export class RegistryManager {
     public static async GetDependenciesLib(library: IndexLibrary): Promise<LibraryDependencies | undefined> {
         return await this.GetDependencies(library.name);
     }
+    public static async EditLibrary(name: string) {
+        const rootPath = vscode.workspace.workspaceFolders![0].uri;
+        // This safely joins the path regardless of OS (Windows \ vs Linux /)
+        const fileUri = vscode.Uri.joinPath(rootPath, 'libraries', name, 'premake5.lua');
+        const doc = await vscode.workspace.openTextDocument(fileUri);
+        vscode.window.showTextDocument(doc, {
+            preview: false,
+            preserveFocus: false
+        });
+    }
 }
 
 export class RegistryBridge {
-    static async GetIndex(_: any){
+    static async GetIndex(_: any) {
         await RegistryManager.Open();
         return RegistryManager.index;
     }
-    static async AddLibrary(data: any){
+    static async AddLibrary(data: any) {
         RegistryManager.IndexAddUriLibrary(data as string);
     }
 
     static async RemoveLibrary(_: any) {
         console.error("remove: not yet implemented");
+    }
+    static async EditLibrary(data: any){
+        await RegistryManager.EditLibrary(data.data as string);
     }
 }

@@ -28,7 +28,7 @@ export function OwnerLibs({ ownerName, libs, isFiltering }: OwnerLibsProps) {
                     <vscode-table-body slot="body">
 
                         {libs.map((lib) => (
-                            <LibraryRow key={lib.name} lib={lib}></LibraryRow>
+                            <LibraryRow key={`${ownerName}-${lib.name}`} owner={ownerName} lib={lib}></LibraryRow>
                         ))}
                     </vscode-table-body>
 

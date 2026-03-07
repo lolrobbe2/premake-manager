@@ -1,3 +1,4 @@
+--- cspell:disable
 --@meta premakeFields.lua
 
 ---@alias Boolean
@@ -16,9 +17,6 @@ _G.allmodulespublic=allmodulespublic
 ---| "Default"
 ---| "On"
 ---| "Off"
----| "Off"
----| "On"
----| "Default"
 
 
 ---Specifies whether or not to allow for copy local of assemblies.
@@ -59,19 +57,6 @@ _G.androidapplibname=androidapplibname
 ---| "wasm64"
 ---| "e2k"
 ---| "mips64el"
----| "universal"
----| "loongarch64"
----| "wasm32"
----| "x86_64"
----| "ppc64"
----| "mips64el"
----| "ARM"
----| "AARCH64"
----| "RISCV64"
----| "e2k"
----| "wasm64"
----| "ppc"
----| "x86"
 
 
 ---Specifies the system architecture to be targeted by the configuration.
@@ -94,9 +79,6 @@ _G.assemblydebug=assemblydebug
 ---| "Off"
 ---| "Dynamic"
 ---| "Static"
----| "Off"
----| "Static"
----| "Dynamic"
 
 
 ---Enables Microsoft's Active Template Library in a project.
@@ -127,9 +109,6 @@ _G.bindirs=bindirs
 ---| "Default"
 ---| "On"
 ---| "Off"
----| "Off"
----| "On"
----| "Default"
 
 
 ---Specifies whether to use stack and buffer protections.
@@ -215,8 +194,6 @@ _G.buildoutputs=buildoutputs
 ---@alias buildstlmodulesAllowed
 ---| "On"
 ---| "Off"
----| "On"
----| "Off"
 
 
 ---Sets whether or not the compiler should build STL modules.
@@ -232,10 +209,6 @@ _G.buildstlmodules=buildstlmodules
 ---| "FastCall"
 ---| "StdCall"
 ---| "VectorCall"
----| "Cdecl"
----| "VectorCall"
----| "StdCall"
----| "FastCall"
 
 
 ---Sets the [function calling convention](https://en.wikipedia.org/wiki/X86_calling_conventions).
@@ -260,19 +233,6 @@ _G.callingconvention=callingconvention
 ---| "gnu11"
 ---| "gnu17"
 ---| "gnu23"
----| "gnu89"
----| "gnu23"
----| "gnu11"
----| "gnu17"
----| "C90"
----| "C11"
----| "gnu90"
----| "gnu99"
----| "C89"
----| "C17"
----| "C99"
----| "C23"
----| "Default"
 
 
 ---Specifies the C dialect to compile with.
@@ -288,10 +248,6 @@ _G.cdialect=cdialect
 ---| "ASCII"
 ---| "MBCS"
 ---| "Unicode"
----| "Unicode"
----| "MBCS"
----| "ASCII"
----| "Default"
 
 
 ---Set the character encoding.
@@ -333,12 +289,6 @@ _G.cleanextensions=cleanextensions
 ---| "Safe"
 ---| "Unsafe"
 ---| "NetCore"
----| "Off"
----| "Pure"
----| "On"
----| "Unsafe"
----| "NetCore"
----| "Safe"
 
 
 ---Enables Microsoft's Common Language Runtime for a project or configuration.
@@ -358,14 +308,6 @@ _G.clr=clr
 ---| "Module"
 ---| "ModulePartition"
 ---| "HeaderUnit"
----| "HeaderUnit"
----| "Module"
----| "Objective-C"
----| "ModulePartition"
----| "Objective-C++"
----| "C"
----| "C++"
----| "Default"
 
 
 ---Specifies how to treat a file for compilation.
@@ -449,30 +391,6 @@ _G.copylocal=copylocal
 ---| "gnu++20"
 ---| "gnu++2b"
 ---| "gnu++23"
----| "C++0x"
----| "C++17"
----| "C++98"
----| "C++1z"
----| "C++2a"
----| "gnu++1z"
----| "C++latest"
----| "gnu++2a"
----| "gnu++2b"
----| "gnu++98"
----| "C++11"
----| "gnu++20"
----| "gnu++23"
----| "gnu++17"
----| "gnu++14"
----| "C++1y"
----| "C++14"
----| "C++23"
----| "gnu++1y"
----| "gnu++11"
----| "C++20"
----| "C++2b"
----| "gnu++0x"
----| "Default"
 
 
 ---Specifies the C++ dialect to compile with.
@@ -543,9 +461,6 @@ _G.debugenvs=debugenvs
 ---| "Default"
 ---| "On"
 ---| "Off"
----| "Off"
----| "On"
----| "Default"
 
 
 ---Specifies whether to inherit the parent environment when using debug environment variables.
@@ -560,9 +475,6 @@ _G.debugenvsinherit=debugenvsinherit
 ---| "Default"
 ---| "On"
 ---| "Off"
----| "Off"
----| "On"
----| "Default"
 
 
 ---Specifies whether to merge debug environment variables with the system environment.
@@ -586,10 +498,6 @@ _G.debugextendedprotocol=debugextendedprotocol
 ---| "c7"
 ---| "Dwarf"
 ---| "SplitDwarf"
----| "SplitDwarf"
----| "c7"
----| "Dwarf"
----| "Default"
 
 
 ---Specifies the desired format of the debug information written to the output binaries.
@@ -608,13 +516,6 @@ _G.debugformat=debugformat
 ---| "VisualStudioRemote"
 ---| "VisualStudioWebBrowser"
 ---| "VisualStudioWebService"
----| "VisualStudioWebService"
----| "VisualStudioWebBrowser"
----| "VisualStudioRemote"
----| "VisualStudioLocal"
----| "GDB"
----| "LLDB"
----| "Default"
 
 
 ---Specifies the debugger to use.
@@ -630,10 +531,6 @@ _G.debugger=debugger
 ---| "NativeOnly"
 ---| "ManagedOnly"
 ---| "NativeWithManagedCore"
----| "NativeWithManagedCore"
----| "Mixed"
----| "NativeOnly"
----| "ManagedOnly"
 
 
 ---Specifies the debugger type.
@@ -740,13 +637,6 @@ _G.dotnetframework=dotnetframework
 ---| "Blazor"
 ---| "WindowsDesktop"
 ---| "MSTest"
----| "Blazor"
----| "MSTest"
----| "Razor"
----| "Worker"
----| "Web"
----| "WindowsDesktop"
----| "Default"
 
 
 ---Selects a .NET SDK
@@ -762,10 +652,6 @@ _G.dotnetsdk=dotnetsdk
 ---| "None"
 ---| "High"
 ---| "HighPerMonitor"
----| "High"
----| "HighPerMonitor"
----| "None"
----| "Default"
 
 
 ---Sets the DPI awareness settings.
@@ -780,9 +666,6 @@ _G.dpiawareness=dpiawareness
 ---| "Default"
 ---| "On"
 ---| "Off"
----| "Off"
----| "On"
----| "Default"
 
 
 ---Specifies if the binary has edit-and-continue debugging support.
@@ -821,9 +704,6 @@ _G.embedandsign=embedandsign
 ---| "Default"
 ---| "On"
 ---| "Off"
----| "Off"
----| "On"
----| "Default"
 
 
 ---Sets whether or not to check for 64 bit portability problems.
@@ -845,8 +725,6 @@ _G.enabledefaultcompileitems=enabledefaultcompileitems
 ---@alias enablemodulesAllowed
 ---| "On"
 ---| "Off"
----| "On"
----| "Off"
 
 
 ---Sets whether or not the compiler should enable C++20 modules.
@@ -861,9 +739,6 @@ _G.enablemodules=enablemodules
 ---| "Default"
 ---| "On"
 ---| "Off"
----| "Off"
----| "On"
----| "Default"
 
 
 ---Controls whether precompiled headers (PCH) are enabled for a configuration.
@@ -875,8 +750,6 @@ local function enablepch(value) end
 _G.enablepch=enablepch
 
 ---@alias enableunitybuildAllowed
----| "On"
----| "Off"
 ---| "On"
 ---| "Off"
 
@@ -912,12 +785,6 @@ _G.entrypoint=entrypoint
 ---| "SEH"
 ---| "CThrow"
 ---| "UnwindTables"
----| "Off"
----| "On"
----| "CThrow"
----| "SEH"
----| "UnwindTables"
----| "Default"
 
 
 ---Enable or disable exception handling.
@@ -937,8 +804,6 @@ local function excludefrombuild(value) end
 _G.excludefrombuild=excludefrombuild
 
 ---@alias externalanglebracketsAllowed
----| "On"
----| "Off"
 ---| "On"
 ---| "Off"
 
@@ -965,11 +830,6 @@ _G.externalincludedirs=externalincludedirs
 ---| "High"
 ---| "Extra"
 ---| "Everything"
----| "High"
----| "Extra"
----| "Everything"
----| "Off"
----| "Default"
 
 
 ---Controls the level of warnings that are shown by the compiler for headers that are considered external.
@@ -1041,40 +901,17 @@ _G.files=files
 ---| "NoImplicitLink"
 ---| "NoCopyLocal"
 ---| "NoRuntimeChecks"
----| "NoPCH"
----| "NoIncrementalLink"
----| "Maps"
----| "NoImplicitLink"
----| "NoManifest"
----| "DebugEnvsDontMerge"
----| "NoImportLib"
----| "UndefinedIdentifiers"
----| "ShadowedVariables"
----| "NoCopyLocal"
----| "MultiProcessorCompile"
----| "RelativeLinks"
----| "WPF"
----| "NoRuntimeChecks"
----| "ExcludeFromBuild"
----| "No64BitChecks"
----| "OmitDefaultLibrary"
----| "NoBufferSecurityCheck"
----| "NoMinimalRebuild"
----| "DebugEnvsInherit"
 
 
 ---Specifies build flags to modify the compiling or linking process.
 ---
 ---[docs](https://premake.github.io/docs/flags/)
 ---
----@param value flagsAllowed
+---@param value flagsAllowed[]
 local function flags(value) end
 _G.flags=flags
 
 ---@alias floatabiAllowed
----| "Soft"
----| "SoftFP"
----| "Hard"
 ---| "Soft"
 ---| "SoftFP"
 ---| "Hard"
@@ -1092,9 +929,6 @@ _G.floatabi=floatabi
 ---| "Default"
 ---| "Fast"
 ---| "Strict"
----| "Fast"
----| "Strict"
----| "Default"
 
 
 ---Specifies the style of floating point math which should be used.
@@ -1154,9 +988,6 @@ local function gccprefix(value) end
 _G.gccprefix=gccprefix
 
 ---@alias gitintegrationAllowed
----| "Off"
----| "Always"
----| "OnNewFiles"
 ---| "Off"
 ---| "Always"
 ---| "OnNewFiles"

@@ -5,16 +5,28 @@ import { IndexReader } from './IndexReader';
 import { type IndexLibrary } from "./IndexTypes";
 import "./LibraryRow.css";
 interface LibraryRowProps {
+    owner: string;
     lib: IndexLibrary;
 }
 
-export function LibraryRow({ lib }: LibraryRowProps) {
+export function LibraryRow({ owner, lib }: LibraryRowProps) {
     const handleRemove = async () => {
-        await IndexReader.RemoveLibrary(lib.name);
+        await IndexReader.RemoveLibrary(`${owner}/${lib.name}`);
+    };
+
+    const handleNameClick = (e: React.MouseEvent) => {
+        if (e.ctrlKey || e.metaKey) {
+            e.preventDefault();
+            IndexReader.EditLibrary(`${owner}/${lib.name}`);
+        }
     };
     return (
         <vscode-table-row>
-            <vscode-table-cell>
+            <vscode-table-cell
+                onClick={handleNameClick}
+                style={{ cursor: 'pointer', userSelect: 'none' }}
+                title="Ctrl + Click to edit"
+            >
                 {lib.name}
             </vscode-table-cell>
 

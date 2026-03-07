@@ -10,3 +10,6 @@ resources/media/details
 resources/media/editor
 resources/media/libraries
 resources/media/modules
+
+containers.json
+premake_fields.json
