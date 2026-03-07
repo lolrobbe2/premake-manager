@@ -1,7 +1,7 @@
+import basicSsl from '@vitejs/plugin-basic-ssl'; // Ensure this is installed
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import { defineConfig } from 'vite';
-import basicSsl from '@vitejs/plugin-basic-ssl'; // Ensure this is installed
 
 export default defineConfig({
   plugins: [
@@ -25,7 +25,7 @@ export default defineConfig({
   build: {
     outDir: path.resolve(__dirname, '../../../../resources/media/libraries'),
     emptyOutDir: false,
-    minify: 'esbuild',
+    minify: 'oxc',
     lib: {
       entry: path.resolve(__dirname, 'src/main.tsx'),
       formats: ['es'],
@@ -34,15 +34,11 @@ export default defineConfig({
     rollupOptions: {
       external: [],
       output: {
-        inlineDynamicImports: true,
+        codeSplitting: false,
       },
     },
     target: 'esnext',
     cssMinify: true,
     sourcemap: false,
   },
-  esbuild: {
-    drop: ['console', 'debugger'],
-    legalComments: 'none',
-  }
 });

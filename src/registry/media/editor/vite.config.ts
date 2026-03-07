@@ -17,6 +17,7 @@ export default defineConfig({
     },
   },
   build: {
+    minify: 'oxc',
     // 1. Target the specific resources folder
     // This goes up from 'src/registry/media/details' to the project root, 
     // then down into 'resources/media/details'

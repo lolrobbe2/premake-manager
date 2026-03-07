@@ -28,4 +28,9 @@ export class IndexReader {
     public static async RemoveLibrary(name: string) {
         return await this.bridge!.request<void>("RemoveLibrary", name);
     }
+
+    public static async EditLibrary(name: string){
+        return await this.bridge!.request<void>("EditLibrary", name);
+
+    }
 }

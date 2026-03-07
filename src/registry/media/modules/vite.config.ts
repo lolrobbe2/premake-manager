@@ -25,7 +25,7 @@ export default defineConfig({
   build: {
     outDir: path.resolve(__dirname, '../../../../resources/media/modules'),
     emptyOutDir: false,
-    minify: 'esbuild',
+    minify: 'oxc',
     lib: {
       entry: path.resolve(__dirname, 'src/main.tsx'),
       formats: ['es'],
@@ -34,15 +34,11 @@ export default defineConfig({
     rollupOptions: {
       external: [],
       output: {
-        inlineDynamicImports: true,
+        codeSplitting: false,      
       },
     },
     target: 'esnext',
     cssMinify: true,
     sourcemap: false,
   },
-  esbuild: {
-    drop: ['console', 'debugger'],
-    legalComments: 'none',
-  }
 });

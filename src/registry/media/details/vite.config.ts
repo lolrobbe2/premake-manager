@@ -12,7 +12,7 @@ export default defineConfig({
 
     // 2. Keep existing assets safe
     emptyOutDir: false,
-
+    minify: 'oxc',
     // 3. Library mode for a clean single-file output
     lib: {
       entry: path.resolve(__dirname, 'src/main.tsx'),
