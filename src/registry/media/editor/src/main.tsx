@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 import { IndexDebugReader } from './IndexDebugReader.ts'
+
 if (import.meta.env.DEV) {
   IndexDebugReader.Initialize();
 }

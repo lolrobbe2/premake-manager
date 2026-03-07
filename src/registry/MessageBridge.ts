@@ -25,7 +25,7 @@ export class MessageBridge {
     private handlers = new Map<string, Set<Handler>>();
     constructor(addEventListener: AddEventListenerFn, postMessage: PostMessageFn) {
         this.postMessage = postMessage
-        addEventListener(async (data: BridgeResponse<any>) => {
+        addEventListener(async (data: BridgeResponse<any>)  => {
 
             if (data.incomming === true) {
                 //incomming message => call handler

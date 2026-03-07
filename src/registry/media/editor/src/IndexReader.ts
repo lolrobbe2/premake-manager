@@ -3,15 +3,17 @@ import { MessageBridge } from "./MessageBridge";
 import { getVsCodeApi } from "./vscode";
 
 export class IndexReader {
-
+    private static initalized: boolean = false;
     private static bridge: MessageBridge | undefined;
     public static Initialize() : void{
+        if(this.initalized === true)
+            return;
         const vscode = getVsCodeApi();
         if(vscode !== undefined) {
-            this.bridge = new MessageBridge(window.addEventListener, vscode.postMessage);
+            this.bridge = new MessageBridge((handler) => window.addEventListener('message', (event) => handler(event.data)), (data) => vscode.postMessage(data));
 
         } else {
-            this.bridge = new MessageBridge(window.addEventListener,window.postMessage);
+            this.bridge = new MessageBridge((handler) => window.addEventListener('message', (event) => handler(event.data)) ,window.postMessage.bind(window));
         }
     }
 

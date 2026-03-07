@@ -40,7 +40,7 @@ export interface IndexView {
  * This class handles editing of a opened common registry
  */
 export class RegistryManager {
-    private static index: IndexView;
+    public static index: IndexView;
     public static async Open(): Promise<void> {
         const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
         if (!workspaceFolder) {
@@ -130,5 +130,12 @@ export class RegistryManager {
     }
     public static async GetDependenciesLib(library: IndexLibrary): Promise<LibraryDependencies | undefined> {
         return await this.GetDependencies(library.name);
+    }
+}
+
+export class RegistryBridge {
+    static async GetIndex(_: any){
+        await RegistryManager.Open();
+        return RegistryManager.index;
     }
 }

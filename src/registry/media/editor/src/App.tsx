@@ -17,9 +17,9 @@ function App() {
   const [refreshTick, setRefreshTick] = useState(0);
 
   const refresh = () => setRefreshTick(prev => prev + 1);
+  IndexReader.Initialize();
 
   useEffect(() => {
-    IndexReader.Initialize();
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'F4') {
         e.preventDefault(); // Stop the webview from blanking out

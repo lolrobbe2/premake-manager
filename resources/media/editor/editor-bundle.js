@@ -9432,24 +9432,25 @@ var bt = e(((e) => {
 		})
 	})]
 }), St = class {
+	postMessage;
 	pendingRequests = new Map();
 	handlers = new Map();
 	constructor(e, t) {
-		e("message", (e) => {
-			let n = e.data;
-			if (n.incomming === !0) this.handlers.get(n.command)?.forEach((e) => {
-				let r = n;
-				r.incomming = !1;
+		this.postMessage = t, e(async (e) => {
+			if (console.log(`bridge: ${e}`), e.incomming === !0) console.log("incomming"), this.handlers.get(e.command)?.forEach(async (t) => {
+				let n = e;
+				n.incomming = !1;
 				try {
-					r.payload = e(n);
+					n.payload = await t(e);
 				} catch (e) {
-					r.payload = void 0, r.error = e;
+					n.payload = void 0, n.error = e;
 				}
-				t(r);
+				this.postMessage(n);
 			});
 			else {
-				let e = this.pendingRequests.get(n.nonce);
-				n.error === void 0 ? e?.resolve(n.payload) : e.reject(n.error), this.pendingRequests.delete(n.nonce);
+				console.log("resolve");
+				let t = this.pendingRequests.get(e.nonce);
+				e.error === void 0 ? t?.resolve(e.payload) : t.reject(e.error), this.pendingRequests.delete(e.nonce);
 			}
 		});
 	}
@@ -9464,12 +9465,12 @@ var bt = e(((e) => {
 			this.pendingRequests.set(n, {
 				resolve: r,
 				reject: i
-			}), postMessage({
+			}), console.log("post"), this.postMessage({
 				command: e,
 				nonce: n,
 				data: t,
 				incomming: !0
-			}), setTimeout(() => {
+			}), console.log(`message: ${e}`), setTimeout(() => {
 				this.pendingRequests.has(n) && this.pendingRequests.delete(n);
 			}, 5e3);
 		});
@@ -9479,10 +9480,12 @@ function Ct() {
 	return window._vscodeApi || (typeof acquireVsCodeApi < "u" ? window._vscodeApi = acquireVsCodeApi() : window._vscodeApi = void 0), window._vscodeApi;
 }
 var wt = class {
+	static initalized = !1;
 	static bridge;
 	static Initialize() {
+		if (this.initalized === !0) return;
 		let e = Ct();
-		e === void 0 ? this.bridge = new St(window.addEventListener, window.postMessage) : this.bridge = new St(window.addEventListener, e.postMessage);
+		e === void 0 ? this.bridge = new St((e) => window.addEventListener("message", (t) => e(t.data)), window.postMessage.bind(window)) : (console.log("vscode usage"), this.bridge = new St((e) => window.addEventListener("message", (t) => e(t.data)), (t) => e.postMessage(t)));
 	}
 	static async GetIndex() {
 		return await this.bridge.request("GetIndex", void 0);
@@ -10942,8 +10945,7 @@ function mn({ isOpen: e, onClose: t, onAdd: n }) {
 }
 function hn() {
 	let [e, t] = (0, l.useState)(""), [n, r] = (0, l.useState)(!1), [i, a] = (0, l.useState)(0), o = () => a((e) => e + 1);
-	(0, l.useEffect)(() => {
-		wt.Initialize();
+	wt.Initialize(), (0, l.useEffect)(() => {
 		let e = (e) => {
 			e.key === "F4" && (e.preventDefault(), o());
 		};

@@ -49,9 +49,9 @@ export class IndexDebugReader {
     public static Initialize() : void{
         const vscode = getVsCodeApi();
         if(vscode !== undefined) {
-            this.bridge = new MessageBridge(window.addEventListener, vscode.postMessage);
+            this.bridge = new MessageBridge((handler) => window.addEventListener('message', (event) => handler(event.data)), vscode.postMessage.bind(vscode));
         } else {
-            this.bridge = new MessageBridge(window.addEventListener,window.postMessage);
+            this.bridge = new MessageBridge((handler) => window.addEventListener('message', (event) => handler(event.data)), window.postMessage.bind(window));
         }
 
         this.bridge.on("GetIndex",this.OnGetIndex.bind(this));

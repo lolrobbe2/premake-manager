@@ -56,14 +56,10 @@ export class ModuleProvider implements vscode.WebviewViewProvider {
 
      private _getFullHtml(extensionContext: vscode.ExtensionContext): string {
             const webview = this._view!.webview;
-         // 1. Get the path to the codicon.css inside the vscode-codicons package
             const codiconsUri = webview.asWebviewUri(
                 vscode.Uri.joinPath(extensionContext.extensionUri,'node_modules/@vscode/codicons/dist/codicon.css')
             );
 
-         // 2. Add this to your HTML template
-         // <link href="${codiconsUri}" rel="stylesheet" />
-            // Use your PathUtils to find the JS and CSS bundles
             const scriptUri = webview.asWebviewUri(
                 PathUtils.getMediaResource(extensionContext, ['modules', 'modules-bundle.js'])!
             );
