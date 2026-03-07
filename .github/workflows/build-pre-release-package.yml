@@ -16,17 +16,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Pulls your code from the repository into the runner
       - name: Checkout code
         uses: actions/checkout@v6
 
-      # 2. Setup your environment (Example: Node.js)
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '22'
 
-      # 3. Install dependencies
+      - name: Set Dynamic Version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          npm version ${VERSION}-build.$(date +%Y%m%d%H%M) --no-git-tag-version
+
       - name: Cache node_modules
         uses: actions/cache@v4
         id: node-cache
