@@ -1,0 +1,46 @@
+/* These only apply if the body has the .is-debug class */
+body.is-debug {
+  --vscode-editor-background: #1e1e1e;
+  --vscode-editor-foreground: #cccccc;
+  --vscode-sideBar-background: #252526;
+  --vscode-panel-border: #8080805a;
+  --vscode-textLink-foreground: #3794ff;
+  --vscode-descriptionForeground: #8b949e;
+  --vscode-button-background: #007acc;
+  --vscode-button-foreground: #ffffff;
+  --vscode-badge-background: #4d4d4d;
+  --vscode-badge-foreground: #ffffff;
+
+  /* Optional: Add a subtle indicator so you know you're in debug mode */
+  border-top: 2px solid orange;
+}
+
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 100vw;
+  min-height: 100vh;
+  background-color: var(--vscode-editor-background);
+  padding: 0 0;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}

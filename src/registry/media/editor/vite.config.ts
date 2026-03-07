@@ -4,11 +4,9 @@ import path from 'path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  plugins: [
-    react(),
-    basicSsl(), // Re-activates HTTPS for local dev
-  ],
+  plugins: [react(), basicSsl()],
   server: {
+    port: 3000,
     proxy: {
       // Adjust the key (e.g., '/api') to match your backend route
       '/api': {
@@ -18,27 +16,24 @@ export default defineConfig({
       },
     },
   },
-  define: {
-    'process.env.NODE_ENV': JSON.stringify('production'),
-    'process.env': { NODE_ENV: 'production' }
-  },
   build: {
-    outDir: path.resolve(__dirname, '../../../../resources/media/libraries'),
-    emptyOutDir: false,
     minify: 'oxc',
+    // 1. Target the specific resources folder
+    // This goes up from 'src/registry/media/details' to the project root, 
+    // then down into 'resources/media/details'
+    outDir: path.resolve(__dirname, '../../../../resources/media/editor'),
+
+    // 2. Keep existing assets safe
+    emptyOutDir: false,
+
+    // 3. Library mode for a clean single-file output
     lib: {
       entry: path.resolve(__dirname, 'src/main.tsx'),
       formats: ['es'],
-      fileName: 'libraries-bundle',
+      fileName: 'editor-bundle', // Name of the final file
     },
-    rollupOptions: {
-      external: [],
-      output: {
-        codeSplitting: false,
-      },
-    },
-    target: 'esnext',
-    cssMinify: true,
-    sourcemap: false,
   },
+  define: {
+    'process.env.NODE_ENV': '"production"',
+  }
 });

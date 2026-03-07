@@ -43,12 +43,38 @@
         "group": "libraries-build"
       }
     },
-       {
+    {
       "label": "npm: dev:libraries",
       "type": "shell",
       "command": "npm run dev",
       "options": {
         "cwd": "${workspaceFolder}/src/registry/media/libraries"
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "typescript",
+        "fileLocation": "relative",
+        "pattern": {
+          "regexp": ".*"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*",
+          "endsPattern": "Ready in|Local:"
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "libraries-build"
+      }
+    },
+    {
+      "label": "npm: dev:editor",
+      "type": "shell",
+      "command": "npm run dev",
+      "options": {
+        "cwd": "${workspaceFolder}/src/registry/media/editor"
       },
       "isBackground": true,
       "problemMatcher": {

@@ -1,3 +1,4 @@
+--- cspell:disable
 ---Specifies a file name suffix for the import library base file name.
 ---
 ---[docs](https://premake.github.io/docs/implibsuffix/)
@@ -10,9 +11,6 @@ _G.implibsuffix=implibsuffix
 ---| "Default"
 ---| "On"
 ---| "Off"
----| "Off"
----| "On"
----| "Default"
 
 
 ---Sets whether or not to implicitly link dependent libraries.
@@ -43,9 +41,6 @@ _G.includedirsafter=includedirsafter
 ---| "Default"
 ---| "On"
 ---| "Off"
----| "Off"
----| "On"
----| "Default"
 
 
 ---Controls whether incremental linking is enabled for a configuration.
@@ -67,8 +62,6 @@ _G.inheritdependencies=inheritdependencies
 ---@alias inlinesvisibilityAllowed
 ---| "Default"
 ---| "Hidden"
----| "Hidden"
----| "Default"
 
 
 ---Specifies the inline symbol visibility.
@@ -84,10 +77,6 @@ _G.inlinesvisibility=inlinesvisibility
 ---| "Disabled"
 ---| "Explicit"
 ---| "Auto"
----| "Disabled"
----| "Auto"
----| "Explicit"
----| "Default"
 
 
 ---Tells the compiler when it should inline functions.
@@ -110,9 +99,6 @@ _G.intrinsics=intrinsics
 ---| "iPhone/iPod touch"
 ---| "iPad"
 ---| "Universal"
----| "iPhone/iPod touch"
----| "Universal"
----| "iPad"
 
 
 ---Specifies the family of iOS device to be targeted.
@@ -135,30 +121,17 @@ _G.iosfamily=iosfamily
 ---| "FMA"
 ---| "FMA4"
 ---| "RDRND"
----| "LZCNT"
----| "F16C"
----| "POPCNT"
----| "FMA4"
----| "AES"
----| "PCLMUL"
----| "BMI"
----| "RDRND"
----| "MOVBE"
----| "BMI2"
----| "FMA"
 
 
 ---Specifies a list of supported instruction set architecture extensions.
 ---
 ---[docs](https://premake.github.io/docs/isaextensions/)
 ---
----@param value isaextensionsAllowed
+---@param value isaextensionsAllowed[]
 local function isaextensions(value) end
 _G.isaextensions=isaextensions
 
 ---@alias justmycodeAllowed
----| "On"
----| "Off"
 ---| "On"
 ---| "Off"
 
@@ -181,15 +154,6 @@ _G.justmycode=justmycode
 ---| "Utility"
 ---| "SharedItems"
 ---| "Packaging"
----| "StaticLib"
----| "Utility"
----| "SharedItems"
----| "ConsoleApp"
----| "Packaging"
----| "WindowedApp"
----| "None"
----| "SharedLib"
----| "Makefile"
 
 
 ---Sets the kind of binary object being created by the project or configuration, such as a console or windowed application, or a shared or static library.
@@ -204,10 +168,6 @@ _G.kind=kind
 ---| "C"
 ---| "C++"
 ---| "C#"
----| "F#"
----| "C#"
----| "C"
----| "C++"
 ---| "F#"
 
 
@@ -246,8 +206,6 @@ _G.linkbuildoutputs=linkbuildoutputs
 ---@alias linkerAllowed
 ---| "Default"
 ---| "LLD"
----| "LLD"
----| "Default"
 
 
 ---Specifies the linker.
@@ -267,8 +225,6 @@ local function linkerfatalwarnings(value) end
 _G.linkerfatalwarnings=linkerfatalwarnings
 
 ---@alias linkgroupsAllowed
----| "Off"
----| "On"
 ---| "Off"
 ---| "On"
 
@@ -300,8 +256,6 @@ _G.links=links
 ---@alias linksectiondataAllowed
 ---| "On"
 ---| "Off"
----| "On"
----| "Off"
 
 
 ---Emit each data item in a separate section.
@@ -313,8 +267,6 @@ local function linksectiondata(value) end
 _G.linksectiondata=linksectiondata
 
 ---@alias linksectionfunctionAllowed
----| "On"
----| "Off"
 ---| "On"
 ---| "Off"
 
@@ -332,10 +284,6 @@ _G.linksectionfunction=linksectionfunction
 ---| "On"
 ---| "Fast"
 ---| "Off"
----| "Off"
----| "Fast"
----| "On"
----| "Default"
 
 
 ---Specifies whether or not the toolset should perform link time optimization.
@@ -390,9 +338,6 @@ _G.makesettings=makesettings
 ---| "Default"
 ---| "On"
 ---| "Off"
----| "Off"
----| "On"
----| "Default"
 
 
 ---Controls whether a Windows manifest file should be generated for the project.
@@ -407,9 +352,6 @@ _G.manifest=manifest
 ---| "Default"
 ---| "On"
 ---| "Off"
----| "Off"
----| "On"
----| "Default"
 
 
 ---Specifies whether or not to generate a mapfile.
@@ -434,11 +376,6 @@ _G.mapfilepath=mapfilepath
 ---| "On"
 ---| "Static"
 ---| "Dynamic"
----| "Off"
----| "On"
----| "Dynamic"
----| "Static"
----| "Default"
 
 
 ---Sets the version of the MFC libraries to link against.
@@ -453,9 +390,6 @@ _G.mfc=mfc
 ---| "Default"
 ---| "On"
 ---| "Off"
----| "Off"
----| "On"
----| "Default"
 
 
 ---Sets the minimal rebuild option for Visual Studio projects.
@@ -470,9 +404,6 @@ _G.minimalrebuild=minimalrebuild
 ---| "Default"
 ---| "On"
 ---| "Off"
----| "Off"
----| "On"
----| "Default"
 
 
 ---Controls whether multiple processors are used for compilation.
@@ -495,9 +426,6 @@ _G.namespace=namespace
 ---| "Default"
 ---| "On"
 ---| "Off"
----| "Off"
----| "On"
----| "Default"
 
 
 ---Enables or disables native wchar (wide character) support by the compiler.
@@ -512,9 +440,6 @@ _G.nativewchar=nativewchar
 ---| "Default"
 ---| "On"
 ---| "Off"
----| "Off"
----| "On"
----| "Default"
 
 
 ---Specifies whether to omit default libraries when linking.
@@ -553,9 +478,6 @@ _G.objdir=objdir
 ---| "Default"
 ---| "On"
 ---| "Off"
----| "Off"
----| "On"
----| "Default"
 
 
 ---Controls whether the frame pointer is omitted during compilation.
@@ -567,8 +489,6 @@ local function omitframepointer(value) end
 _G.omitframepointer=omitframepointer
 
 ---@alias openmpAllowed
----| "On"
----| "Off"
 ---| "On"
 ---| "Off"
 
@@ -588,12 +508,6 @@ _G.openmp=openmp
 ---| "Size"
 ---| "Speed"
 ---| "Full"
----| "Off"
----| "Speed"
----| "On"
----| "Full"
----| "Size"
----| "Debug"
 
 
 ---The **optimize** function specifies the level and type of optimization used while building the target configuration.
@@ -621,8 +535,6 @@ local function pchsource(value) end
 _G.pchsource=pchsource
 
 ---@alias picAllowed
----| "Off"
----| "On"
 ---| "Off"
 ---| "On"
 
@@ -679,9 +591,6 @@ _G.prebuildmessage=prebuildmessage
 ---| "Default"
 ---| "x86"
 ---| "x86_64"
----| "x86_64"
----| "x86"
----| "Default"
 
 
 ---Specifies the preferred architecture to use for the Visual Studio toolchain.
@@ -799,8 +708,6 @@ _G.resoptions=resoptions
 ---@alias resourcegeneratorAllowed
 ---| "internal"
 ---| "public"
----| "public"
----| "internal"
 
 
 ---Specifies the resource generator to use.
@@ -815,9 +722,6 @@ _G.resourcegenerator=resourcegenerator
 ---| "Default"
 ---| "On"
 ---| "Off"
----| "Off"
----| "On"
----| "Default"
 
 
 ---Enable or disable [run-time type information](https://en.wikipedia.org/wiki/Run-time_type_information).
@@ -855,8 +759,6 @@ _G.runpathdirs=runpathdirs
 ---@alias runtimeAllowed
 ---| "Debug"
 ---| "Release"
----| "Release"
----| "Debug"
 
 
 ---Choose the type of runtime library to use.
@@ -873,11 +775,6 @@ _G.runtime=runtime
 ---| "StackFrames"
 ---| "UninitializedVariables"
 ---| "FastChecks"
----| "Off"
----| "FastChecks"
----| "UninitializedVariables"
----| "StackFrames"
----| "Default"
 
 
 ---Controls whether runtime error checking is enabled for Visual Studio C/C++ projects.
@@ -893,17 +790,13 @@ _G.runtimechecks=runtimechecks
 ---| "Fuzzer"
 ---| "Thread"
 ---| "UndefinedBehavior"
----| "Address"
----| "UndefinedBehavior"
----| "Fuzzer"
----| "Thread"
 
 
 ---Enables various `fsanitize` options for compilers.
 ---
 ---[docs](https://premake.github.io/docs/sanitize/)
 ---
----@param value sanitizeAllowed
+---@param value sanitizeAllowed[]
 local function sanitize(value) end
 _G.sanitize=sanitize
 
@@ -918,9 +811,6 @@ _G.scanformoduledependencies=scanformoduledependencies
 ---@alias shaderassemblerAllowed
 ---| "NoListing"
 ---| "AssemblyCode"
----| "AssemblyCodeAndHex"
----| "AssemblyCode"
----| "NoListing"
 ---| "AssemblyCodeAndHex"
 
 
@@ -990,23 +880,6 @@ _G.shaderincludedirs=shaderincludedirs
 ---| "6.4"
 ---| "6.5"
 ---| "6.6"
----| "6.2"
----| "6.4"
----| "4.0_level_9_1"
----| "6.1"
----| "4.1"
----| "6.0"
----| "5.0"
----| "2.0"
----| "4.0"
----| "3.0"
----| "6.6"
----| "rootsig_1.1"
----| "6.3"
----| "4.0_level_9_3"
----| "rootsig_1.0"
----| "6.5"
----| "5.1"
 
 
 ---Specifies the shader model.
@@ -1046,18 +919,6 @@ _G.shaderoptions=shaderoptions
 ---| "Amplification"
 ---| "Texture"
 ---| "RootSignature"
----| "Pixel"
----| "Hull"
----| "RootSignature"
----| "Geometry"
----| "Texture"
----| "Vertex"
----| "Mesh"
----| "Effect"
----| "Amplification"
----| "Library"
----| "Domain"
----| "Compute"
 
 
 ---Specifies the type of shader.
@@ -1080,9 +941,6 @@ _G.shadervariablename=shadervariablename
 ---| "OSXBundle"
 ---| "OSXFramework"
 ---| "XCTest"
----| "OSXFramework"
----| "XCTest"
----| "OSXBundle"
 
 
 ---Specifies the shared library type for Apple targets.
@@ -1105,9 +963,6 @@ _G.startproject=startproject
 ---| "Default"
 ---| "On"
 ---| "Off"
----| "Off"
----| "On"
----| "Default"
 
 
 ---Specifies if the static runtime should be used.
@@ -1124,11 +979,6 @@ _G.staticruntime=staticruntime
 ---| "stlport"
 ---| "gnu"
 ---| "libc++"
----| "none"
----| "libc++"
----| "gabi++"
----| "gnu"
----| "stlport"
 
 
 ---Specifies which C++ Standard Library to use.
@@ -1144,10 +994,6 @@ _G.stl=stl
 ---| "Level1"
 ---| "Level2"
 ---| "Level3"
----| "Off"
----| "Level1"
----| "Level3"
----| "Level2"
 
 
 ---Sets the level of allowed pointer aliasing.
@@ -1172,11 +1018,6 @@ _G.stringpooling=stringpooling
 ---| "4"
 ---| "8"
 ---| "16"
----| "4"
----| "2"
----| "16"
----| "8"
----| "1"
 
 
 ---Specifies 1, 2, 4, 8, 16-byte boundary for struct member alignment.
@@ -1191,9 +1032,6 @@ _G.structmemberalign=structmemberalign
 ---| "4.0"
 ---| "4.2"
 ---| "5.0"
----| "4.2"
----| "5.0"
----| "4.0"
 
 
 ---Specifies the version of Swift to compile with.
@@ -1210,11 +1048,6 @@ _G.swiftversion=swiftversion
 ---| "Off"
 ---| "FastLink"
 ---| "Full"
----| "Off"
----| "On"
----| "FastLink"
----| "Full"
----| "Default"
 
 
 ---Turn on/off debug symbol table generation.
@@ -1256,20 +1089,6 @@ _G.syslibdirs=syslibdirs
 ---| "wii"
 ---| "windows"
 ---| "android"
----| "ios"
----| "aix"
----| "emscripten"
----| "android"
----| "solaris"
----| "tvos"
----| "linux"
----| "bsd"
----| "windows"
----| "wii"
----| "hurd"
----| "uwp"
----| "macosx"
----| "haiku"
 
 
 ---Specifies the target operating system.

@@ -360,11 +360,13 @@
     "setup-details": "cd src/registry/media/details && npm install --ignore-scripts",
     "setup-modules": "cd src/registry/media/modules && npm install --ignore-scripts",
     "setup-libraries": "cd src/registry/media/libraries && npm install --ignore-scripts",
+    "setup-editor": "cd src/registry/media/editor&& npm install --ignore-scripts",
     "setup-views": "npm run setup-details && npm run setup-modules && npm run setup-libraries",
     "build-details": "npm run build --prefix src/registry/media/details",
     "build-modules": "npm run build --prefix src/registry/media/modules",
     "build-libraries": "npm run build --prefix src/registry/media/libraries",
-    "build-views": "npm run build-details && npm run build-modules && npm run build-libraries",
+    "build-editor": "npm run build --prefix src/registry/media/editor",
+    "build-views": "npm run build-details && npm run build-modules && npm run build-libraries && npm run build-editor",
     "postinstall": "npm run setup-views"
   },
   "dependencies": {

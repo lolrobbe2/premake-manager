@@ -1,4 +1,4 @@
----cspell:disable
+--- cspell:disable
 ---Specifies generic filter tags.
 ---
 ---[docs](https://premake.github.io/docs/tags/)
@@ -67,9 +67,6 @@ _G.targetsuffix=targetsuffix
 ---| "thumb"
 ---| "arm"
 ---| "disabled"
----| "disabled"
----| "arm"
----| "thumb"
 
 
 ---Specifies whether the code generation uses ARM or Thumb instruction sets.
@@ -92,17 +89,6 @@ _G.thumbmode=thumbmode
 ---| "3.6"
 ---| "3.8"
 ---| "5.0"
----| "3.6"
----| "4.6"
----| "3.4"
----| "4.8"
----| "3.8"
----| "wsl2"
----| "remote"
----| "3.5"
----| "4.9"
----| "5.0"
----| "wsl"
 
 
 ---Specifies the version of the toolchain to use.
@@ -157,9 +143,6 @@ _G.usefullpaths=usefullpaths
 ---| "Default"
 ---| "On"
 ---| "Off"
----| "Off"
----| "On"
----| "Default"
 
 
 ---Sets whether or not to generate an import library for a Windows DLL.
@@ -174,9 +157,6 @@ _G.useimportlib=useimportlib
 ---| "Default"
 ---| "On"
 ---| "Off"
----| "Off"
----| "On"
----| "Default"
 
 
 ---Controls whether the linker uses relative or absolute paths for library references.
@@ -199,9 +179,6 @@ _G.uses=uses
 ---| "Default"
 ---| "On"
 ---| "Off"
----| "Off"
----| "On"
----| "Default"
 
 
 ---Specifies if short enums should be used.
@@ -213,8 +190,6 @@ local function useshortenums(value) end
 _G.useshortenums=useshortenums
 
 ---@alias usestandardpreprocessorAllowed
----| "On"
----| "Off"
 ---| "On"
 ---| "Off"
 
@@ -257,19 +232,6 @@ _G.uuid=uuid
 ---| "ALTIVEC"
 ---| "NEON"
 ---| "MXU"
----| "SSE"
----| "IA32"
----| "NEON"
----| "SSE2"
----| "MXU"
----| "SSE4.1"
----| "AVX"
----| "ALTIVEC"
----| "AVX2"
----| "SSE4.2"
----| "SSE3"
----| "SSSE3"
----| "Default"
 
 
 ---Specifies the level of vector processing extensions to enable while compiling the target configuration.
@@ -285,10 +247,6 @@ _G.vectorextensions=vectorextensions
 ---| "Hidden"
 ---| "Internal"
 ---| "Protected"
----| "Hidden"
----| "Internal"
----| "Protected"
----| "Default"
 
 
 ---Sets the default visibility for exported symbols in a shared object library.
@@ -321,11 +279,6 @@ _G.vsprops=vsprops
 ---| "High"
 ---| "Extra"
 ---| "Everything"
----| "High"
----| "Extra"
----| "Everything"
----| "Off"
----| "Default"
 
 
 ---Controls the level of warnings that are shown by the compiler.
@@ -340,9 +293,6 @@ _G.warnings=warnings
 ---| "Default"
 ---| "On"
 ---| "Off"
----| "Off"
----| "On"
----| "Default"
 
 
 ---Enable Windows Presentation Foundation (WPF) support for .NET projects.
