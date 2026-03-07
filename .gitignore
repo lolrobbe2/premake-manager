@@ -6,3 +6,7 @@ node_modules
 package-lock.json
 typings/LGD.FileParser.log
 docs/__pycache__/
+resources/media/details
+resources/media/editor
+resources/media/libraries
+resources/media/modules
