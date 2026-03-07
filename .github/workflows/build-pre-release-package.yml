@@ -26,8 +26,13 @@ jobs:
 
       - name: Set Dynamic Version
         run: |
-          VERSION=$(node -p "require('./package.json').version")
-          npm version ${VERSION}-build.$(date +%Y%m%d%H%M) --no-git-tag-version
+          BASE_VERSION=$(node -p "require('./package.json').version.split('-')[0]")
+          NEW_VERSION="${BASE_VERSION}-0.${{ github.run_number }}"
+      
+          npm version "$NEW_VERSION" --no-git-tag-version
+      
+          echo "Version set to:"
+          node -p "require('./package.json').version"
 
       - name: Cache node_modules
         uses: actions/cache@v4
