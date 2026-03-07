@@ -27,7 +27,7 @@ jobs:
       - name: Set Dynamic Version
         run: |
           BASE_VERSION=$(node -p "require('./package.json').version.split('-')[0]")
-          NEW_VERSION="${BASE_VERSION}-0.${{ github.run_number }}"
+          NEW_VERSION="${BASE_VERSION}-${{ github.run_number }}"
       
           npm version "$NEW_VERSION" --no-git-tag-version
       
