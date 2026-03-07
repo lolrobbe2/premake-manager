@@ -81,4 +81,4 @@ jobs:
           registryUrl: https://marketplace.visualstudio.com
           extensionFile: ${{ env.VSIX_PATH }}  # Point it to your existing file
           preRelease: ${{ env.IS_PRE_RELEASE }}
-          skipDuplicate: true
+          skipDuplicate: false
