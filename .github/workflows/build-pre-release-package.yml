@@ -1,5 +1,6 @@
 name: Build and publish prerelease
-
+permissions:
+  contents: write
 # This section defines what triggers the workflow
 on:
   push:
@@ -26,13 +27,34 @@ jobs:
 
       - name: Set Dynamic Version
         run: |
-          BASE_VERSION=$(node -p "require('./package.json').version.split('-')[0]")
-          NEW_VERSION="${BASE_VERSION}-${{ github.run_number }}"
-      
+          # Calculate the version
+          NEW_VERSION=$(node -e "
+            const pkg = require('./package.json');
+            let [major, minor, patch] = pkg.version.split('-')[0].split('.').map(Number);
+            
+            if ('${{ env.IS_PRE_RELEASE }}' === 'false') {
+              console.log(\`\${major}.\${minor + 1}.0\`);
+            } else {
+              console.log(\`\${major}.\${minor}.\${patch + 1}\`);
+            }
+          ")
+          
+          # Set the version in package.json
           npm version "$NEW_VERSION" --no-git-tag-version
-      
-          echo "Version set to:"
-          node -p "require('./package.json').version"
+          
+          # Save to ENV for later steps
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+          echo "Version set to: $NEW_VERSION"
+
+      - name: Commit version bump (Stable Only)
+        if: env.IS_PRE_RELEASE == 'false'
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add package.json
+          # [skip ci] prevents this commit from triggering the workflow again
+          git commit -m "release: bump version to ${{ env.NEW_VERSION }} [skip ci]"
+          git push origin main
 
       - name: Cache node_modules
         uses: actions/cache@v4
