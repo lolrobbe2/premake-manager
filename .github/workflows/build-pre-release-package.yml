@@ -6,6 +6,8 @@ on:
   push:
     branches:
       - main  # Only runs when code is pushed to the main branch
+    paths-ignore:
+      - 'website/**' #ignore the website folder otherwise we will update the market version needlesly
   workflow_dispatch:
     inputs:
       reason:

@@ -2,6 +2,7 @@ import { PathUtils } from "utils/path-utils";
 import vscode from "vscode";
 import { DetailPanel } from "./DetailsPanel";
 import { RegistryRepo } from "./RepoResolver";
+import { TerminalInterface } from "cli/manager/terminalInterface";
 
 
 interface WebViewMessage {
@@ -43,6 +44,8 @@ export class LibraryProvider implements vscode.WebviewViewProvider {
                         break;
                     case "closeLibraryDetails":
                         DetailPanel.close();
+                    case "installLibrary":
+                        TerminalInterface.libraryAdd(`${mess.repo.userName}/${mess.repo.repoName}`);
                     default:
                         break;
                 }
