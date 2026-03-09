@@ -1,3 +1,4 @@
+import { TerminalInterface } from "cli/manager/terminalInterface";
 import { PathUtils } from "utils/path-utils";
 import vscode from "vscode";
 import { DetailPanel } from "./DetailsPanel";
@@ -43,12 +44,11 @@ export class ModuleProvider implements vscode.WebviewViewProvider {
                         break;
                     case "closeModuleDetails":
                         DetailPanel.close();
+                    case "installModule":
+                        TerminalInterface.moduleAdd(`${mess.repo.userName}/${mess.repo.repoName}`);
                     default:
                         break;
                 }
-               
-
-
             },
             null
         );
