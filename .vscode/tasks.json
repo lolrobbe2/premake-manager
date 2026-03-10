@@ -94,6 +94,22 @@
         "panel": "new",
         "group": "libraries-build"
       }
+    },
+    {
+      "label": "npm: dev:docs",
+      "type": "shell",
+      "command": "docsify serve website",
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "Listening at" // This tells VS Code the task is "ready"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Serving",
+          "endsPattern": "Listening at"
+        }
+      }
     }
   ]
 }

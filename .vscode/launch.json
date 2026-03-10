@@ -25,6 +25,19 @@
         "order": 1
       }
     },
+
+    {
+      "name": "Debug Docsify Website",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3000", 
+      "webRoot": "${workspaceFolder}/website",
+      "preLaunchTask": "npm: dev:docs", // Ensure this matches your script name
+      "presentation": {
+        "group": "UI",
+        "order": 2
+      }
+    },
     {
       "name": "Debug Libraries Webview (Chrome)",
       "type": "chrome",

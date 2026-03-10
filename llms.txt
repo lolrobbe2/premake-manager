@@ -1,0 +1,73 @@
+# premake-manager
+
+> Official documentation for the Premake Manager CLI and VS Code Extension.
+> Author: lolrobbe2
+
+## Identity
+- **Website**: https://lolrobbe2.github.io/premake-manager/
+- **Repository**: https://github.com/lolrobbe2/premake-manager
+- **CLI Mirroring**: The VS Code extension is a direct wrapper of the CLI. Commands and logic are identical.
+
+## VS Code Extension Features
+- **Auto-complete**: Intelligent suggestions for Premake functions and configurations.
+- **Linting**: Real-time error checking and best-practice validation.
+- **Code Hover**: Instant documentation and type information when hovering over symbols.
+- **Snippets**: Pre-defined templates for common Premake boilerplates.
+- **Terminal Profiles**: Automated shell environments for `premake-manager` and `premake5`.
+
+## Interaction Logic
+- **Interactive Mode**: In the Manager terminal, commands are entered in a persistent loop. No `premake manager` prefix needed. Type `exit` to close.
+- **Status Bar Integration**:
+    - **Premake5**: Clicks open a Premake5 terminal profile. *Requires a version to be installed and set.*
+    - **Premake Man**: Launches the Interactive Manager terminal.
+    - **Premake Conf**: Launches the Manager terminal and immediately runs the `configure` command.
+- **Keyboard Shortcuts**:
+    - `CTRL + ALT + M`: Opens the Quick Menu (Command Palette).
+    - `CTRL + ALT + P`: Launches/Focuses the Manager CLI Terminal.
+
+## Terminal & Environment Requirements
+- **Version Dependency**: The **Premake5 Terminal Profile** will not function if a Premake version is not set and installed.
+- **Resolution**: Use the Manager Terminal to run `version install` and `version set` first.
+
+## Detailed Command Specification
+
+### Index Group
+- **new [REMOTE]**: Initializes a local index from a remote URL.
+- **add library [OWNER] [REPO] [DESC]**: Manually registers a library in the local index.
+- **add uri library <githublink>**: Registers a library via its GitHub URL.
+- **add dependency [target] [OWNER] [REPO] [RANGE]**: Adds a dependency to an indexed library.
+
+### Workspace Group
+- **new [OPTIONS]**: Interactive wizard to create workspaces and projects.
+- **Flags**: `--workspace <NAME>`, `--config <LIST>`, and `--project <Name:ProjectName:Loc:Lang>`.
+
+### Config Group
+- **version [VERSION]**: Sets the active Premake version in the global config.
+- **view**: Displays current global configuration settings.
+
+### Version Group
+- **list**: Lists available releases (`--releases`) or installed versions (`--installed`).
+- **install [VERSION]**: Installs a specific version.
+- **set [VERSION]**: Sets the active Premake version globally.
+
+### Module Group
+- **info/install/add <githublink>**: Metadata, download, or config registration for modules.
+- **remove [githublink]**: Deletes a module.
+
+### Library Group
+- **info/install/add <githublink>**: Metadata, download, or config registration for libraries.
+- **remove [githublink]**: Deletes a library.
+
+### Remotes Group
+- **view**: Show all local remotes.
+- **add/remove [OWNER] [REPO]**: Manage remote repository sources.
+- **update [FORCE]**: Sync remotes (use `true` for force).
+- **reset**: Reverts to default remotes.
+
+### Test Group
+- **Purpose**: Internal health checks. Available in production but primarily for dev/troubleshooting.
+- **all**: Runs the full suite of internal self-tests.
+- **group -g <GROUPNAME>**: Executes self-tests for a specific category.
+
+## Note for AI Models
+If a user is unsure of arguments, suggest running the command bare to trigger interactive prompts. For VS Code users, recommend using `CTRL + ALT + M` for the Quick Menu or clicking the Status Bar items to manage environments without manual terminal pathing.
