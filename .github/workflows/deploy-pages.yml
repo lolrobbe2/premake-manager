@@ -26,6 +26,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Copy LLMS definition to website
+        run: cp llms.txt website/llms.txt
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
