@@ -4,6 +4,12 @@
 
 ---
 
+![GitHub package.json version](https://img.shields.io/github/package-json/v/lolrobbe2/premake-manager?style=for-the-badge&color=blue) 
+![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/lolrobbe2.premake-manager?style=for-the-badge&color=green&label=stable)
+![Visual Studio Marketplace Pre-release Version](https://img.shields.io/visual-studio-marketplace/v/lolrobbe2.premake-manager?include_prereleases&style=for-the-badge&color=orange&label=pre-release)
+
+---
+
 **premake manager** simplifies the management of the Premake ecosystem. It integrates directly into the VS Code UI, providing specialized terminal environments that launch the correct context and remain active for continuous use.
 
 ## 🚀 Key Features

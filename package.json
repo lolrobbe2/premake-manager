@@ -31,6 +31,24 @@
     "type": "git",
     "url": "https://github.com/lolrobbe2/premake-manager.git"
   },
+  "homepage": "https://lolrobbe2.github.io/premake-manager/",
+  "badges": [
+    {
+      "url": "https://img.shields.io/github/package-json/v/lolrobbe2/premake-manager?style=flat-square&color=blue",
+      "href": "https://github.com/lolrobbe2/premake-manager",
+      "description": "GitHub Version"
+    },
+    {
+      "url": "https://img.shields.io/visual-studio-marketplace/v/lolrobbe2.premake-manager?style=flat-square&color=green&label=stable",
+      "href": "https://marketplace.visualstudio.com/items?itemName=lolrobbe2.premake-manager",
+      "description": "Marketplace Stable"
+    },
+    {
+      "url": "https://img.shields.io/visual-studio-marketplace/v/lolrobbe2.premake-manager?include_prereleases&style=flat-square&color=orange&label=pre-release",
+      "href": "https://marketplace.visualstudio.com/items?itemName=lolrobbe2.premake-manager&ssr=false#version-history",
+      "description": "Marketplace Pre-release"
+    }
+  ],
   "bugs": {
     "url": "https://github.com/lolrobbe2/premake-manager/issues"
   },
@@ -261,6 +279,13 @@
         "category": "premake manager",
         "command": "premake5.remotes-reset",
         "title": "remotes reset",
+        "icon": "resources/media/premake-logo-128.png",
+        "when": "false"
+      },
+      {
+        "category": "premake manager",
+        "command": "premake5.open-documentation",
+        "title": "open documentation",
         "icon": "resources/media/premake-logo-128.png",
         "when": "false"
       },
