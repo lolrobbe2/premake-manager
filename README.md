@@ -1,46 +1,89 @@
-# premake-manager
-this is an unofficial extension to manage [premake](https://premake.github.io) projects
+# premake manager
 
-![GitHub package.json version](https://img.shields.io/github/package-json/v/lolrobbe2/premake-manager?style=for-the-badge&color=blue) ![GitHub Release](https://img.shields.io/github/v/release/lolrobbe2/premake-manager?include_prereleases&sort=date&style=for-the-badge&color=green)
+> A modern CLI and VS Code extension to orchestrate Premake versions, modules, and libraries via automated Terminal Profiles and an **Interactive Command Loop**.
 
+---
 
-## Features
+![GitHub package.json version](https://img.shields.io/github/package-json/v/lolrobbe2/premake-manager?style=for-the-badge&color=blue) 
+![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/lolrobbe2.premake-manager?style=for-the-badge&color=green&label=stable)
+![Visual Studio Marketplace Pre-release Version](https://img.shields.io/visual-studio-marketplace/v/lolrobbe2.premake-manager?include_prereleases&style=for-the-badge&color=orange&label=pre-release)
 
-1) install/manage multiple versions of premake at the same time.
-2) easily run premake actions
-3) premake language support
-4) handy snippets for easy setup
+---
 
-## Requirements
+**premake manager** simplifies the management of the Premake ecosystem. It integrates directly into the VS Code UI, providing specialized terminal environments that launch the correct context and remain active for continuous use.
 
-Lua language extension for linting
+## 📖 Official Documentation
+For detailed guides, API references, and advanced usage, visit our documentation site:
+👉 **[https://lolrobbe2.github.io/premake-manager/](https://lolrobbe2.github.io/premake-manager/)**
 
-## installing test version
-type >VSIX in the top bar and press enter and select the package.
+## 🚀 Key Features
 
-## Extension Settings
+* **Interactive Command Loop**: The Manager terminal stays open and ready. Once inside, you can enter commands directly without the `premake manager` prefix.
+* **Automated Terminal Profiles**: No manual path setup required. Launch pre-configured shells for both Premake execution and Manager administration.
+* **Quick-Access Shortcuts**: Use `CTRL+ALT+M` for the Quick Menu or `CTRL+ALT+P` to jump straight into the Manager CLI terminal.
+* **Module & Library Ecosystem**: Effortlessly discover, install, and update Premake modules and C/C++ libraries.
+* **Workspace Orchestration**: Generate complex workspace and project structures via the `workspace new` wizard.
 
-## github access
-github is used to make it so you are not rate limited!
+---
 
-### 0.1.3 - beta
+## ⚡ VS Code Integration
 
-added first class support for modules and libraries!
+### Keyboard Shortcuts
+| Shortcut         | Action                                                      |
+| :--------------- | :---------------------------------------------------------- |
+| `CTRL + ALT + M` | Opens the **Premake Manager Quick Menu** (Command Palette). |
+| `CTRL + ALT + P` | Launches/Focuses the **Premake Manager CLI Terminal**.      |
 
-- Adding a module is now as simple as calling **module add**
-- Adding a library is now as simple as calling **library add**
-- 
-### TL;DR
+### Status Bar Actions
+The Status Bar buttons act as smart launchers for your development environment:
 
-the registry is live and can be found [here](https://premake-registry-ywxg.onrender.com/)
-feel free to register your own modules and libraries
+![status bar](/website/status-bar.png)
 
-### what is next?
+* **Premake5**: Launches a dedicated **Premake5 Terminal Profile**. Use this for running your `premake5` commands with the correct version automatically in your PATH.
+* **Premake Man**: Launches the **Premake Manager Interactive Terminal** (`CTRL+ALT+P`). Enter commands like `library add` directly without re-typing the prefix.
+* **Premake Conf**: Launches the Interactive Terminal and immediately executes `config view` to display your current environment state.
 
-1) cleaning of the registry and making it fully functional.
-2) updating Premaker for module support
-3) vscode integration with the registry.
+---
 
-**Enjoy!**
+## 🛠 Usage in Terminal
 
-(feedback and ideas are always welcome!!!)
+By using the integrated Terminal Profiles, you stay in the flow without jumping between different shell instances.
+
+### Interactive Mode
+When you launch the Manager Terminal, you enter a persistent session. You do **not** need to type `premake manager` before every command.
+
+```bash
+# Inside the Interactive Premake Manager Terminal:
+version list --releases
+workspace new
+library info <githublink>
+
+# To close the session and return to your standard shell:
+exit
+```
+
+```bash
+# In the Premake5 Terminal:
+premake5 gmake2
+```
+
+---
+
+## Command Groups
+
+The interface is organized into the following eight functional groups:
+
+| Group           | Description                                                   |
+| :-------------- | :------------------------------------------------------------ |
+| **`config`**    | Manage `premakeConfig` settings and environment variables.    |
+| **`version`**   | `Manage` and `switch` between different Premake versions.     |
+| **`workspace`** | Create, configure, and manage Premake workspaces.             |
+| **`module`**    | Handle the `installation` and `lifecycle` of Premake modules. |
+| **`library`**   | Manage `external Premake libraries` and `dependencies`.       |
+| **`index`**     | All commands for managing the common discovery index.         |
+| **`remotes`**   | Manage locally configured remote repositories and sources.    |
+| **`test`**      | Run the Premake Manager self-test suite to verify integrity.  |
+
+---
+
+> [!NOTE] Because the extension mirrors the CLI, any command available in your terminal is accessible through the VS Code command palette under the same group naming convention.
