@@ -2,6 +2,10 @@
 <html lang="en">
 
 <head>
+
+  <link rel="help" type="text/markdown" href="https://raw.githubusercontent.com/lolrobbe2/premake-manager/main/llms.txt">
+  <meta name="robots" content="index, follow, snippet">
+
   <meta charset="UTF-8">
   <title>Premake Manager | CLI & VS Code Documentation</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -17,6 +21,18 @@
     title="docsify-darklight-theme" type="text/css" />
 
   <style>
+    .llm-badge {
+      display: block;
+      margin: 10px 15px;
+      padding: 5px;
+      border: 1px solid #42b983;
+      border-radius: 4px;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #42b983;
+      text-decoration: none;
+    }
+    body.dark .llm-badge { border-color: #ea6f5a; color: #ea6f5a; }
     /* Version Selector Styling */
     #v-select {
       background-color: #f8f8f8;
@@ -63,7 +79,9 @@
       name: 'premake manager',
       basePath: computedPath,
       loadSidebar: true,
-      alias: { '/.*/_sidebar.md': '_sidebar.md' },
+      alias: { '/.*/_sidebar.md': '_sidebar.md',
+        
+      },
       repo: 'https://github.com/lolrobbe2/premake-manager',
       // Search configuration to reduce raw markdown artifacts
       search: {
@@ -88,6 +106,20 @@
 
       plugins: [
         function (hook, vm) {
+          hook.beforeEach(function (content, next) {
+            // Check if we are on the llms.txt route
+            if (vm.route.path === '/llms.txt') {
+              fetch('https://raw.githubusercontent.com/lolrobbe2/premake-manager/main/llms.txt')
+                .then(res => res.text())
+                .then(text => {
+                  // Wrap the raw text in a code block so it renders in the UI
+                  next('# LLM Reference\n\n```text\n' + text + '\n```');
+                });
+            } else {
+              next(content);
+            }
+          });
+
           hook.ready(function () {
             const titleContainer = document.querySelector('.app-name');
             if (titleContainer) {
