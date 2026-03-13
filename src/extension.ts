@@ -42,7 +42,7 @@ export async function activate(
   TerminalInterface.initialize(context);
   LocalStorage.initialize(context);
   KeyStore.initialize(context);
-
+  VersionManager.initialize();
   // 2. Fire all independent tasks in parallel
   await Promise.all([
     measureTask("Status Bar", () => registerStatusBar(context)),

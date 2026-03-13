@@ -365,6 +365,11 @@
             "Download the latest artifact from the main branch (CI build)"
           ],
           "description": "Choose where to fetch the CLI binary from."
+        },
+        "premakeManager.cli-source-branch": {
+          "type": "string",
+          "default": "main",
+          "description": "Choose wich branch the artifact will be downloaded from."
         }
       }
     },

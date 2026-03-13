@@ -1,9 +1,8 @@
-import * as vscode from "vscode";
 import { Octokit, RestEndpointMethodTypes } from "@octokit/rest";
-import { Prompt } from "./prompt-utils";
-import { LocalStorage, PathUtils } from "./path-utils";
-import path from "path/posix";
 import AdmZip from "adm-zip";
+import * as vscode from "vscode";
+import { LocalStorage, PathUtils } from "./path-utils";
+import { Prompt } from "./prompt-utils";
 import { KeyStore } from "./vscode-utils";
 
 export class GithubUtils {
@@ -97,11 +96,16 @@ export class GithubUtils {
     const runs = await this.actions?.listWorkflowRunsForRepo({
       owner: this.owner,
       repo: this.repoName,
-      branch,
+      branch: branch,
       status: "success",
       per_page: 1,
     });
     const latestRunId = runs?.data.workflow_runs[0]?.id;
+    if(latestRunId === undefined) {
+      /** artifacts are not persistent */
+      Prompt.Error(`no artifacts for branch: ${latestRunId}!`);
+      return undefined;
+    }
     const artifacts = (
       await this.actions?.listWorkflowRunArtifacts({
         owner: this.owner,
@@ -168,6 +172,7 @@ export class GithubUtils {
       );
       await vscode.workspace.fs.delete(targetUri);
       KeyStore.update("artifact-cli", artifact?.workflow_run?.head_sha);
+      KeyStore.update("artifact-branch", branch);
       p.report({ message: "Installation complete" });
     });
   }

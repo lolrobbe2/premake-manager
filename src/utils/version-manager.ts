@@ -1,24 +1,31 @@
+import * as vscode from "vscode";
 import { GithubUtils } from "./github-utils";
 import { LocalStorage, PathUtils } from "./path-utils";
-import { Prompt } from "./prompt-utils";
 import { KeyStore } from "./vscode-utils";
-import * as vscode from "vscode";
-import * as path from "path";
 
 export class VersionManager {
-  static async Check(): Promise<boolean> {
+  static initialize() : void {
     vscode.workspace.onDidChangeConfiguration(async (e) => {
       if (e.affectsConfiguration("premakeManager.cli-source")) {
         if ((await this.Check()) !== true) {
           await this.Install();
         }
       }
+      if (e.affectsConfiguration("premakeManager.cli-source-branch")) {
+        if ((await this.Check()) !== true) {
+          await this.Install();
+        }
+      }
     });
+  }
+  static async Check(): Promise<boolean> {
     const config = vscode.workspace.getConfiguration("premakeManager");
     const source = config.get<string>("cli-source", "latest");
+    const branch = config.get<string>("cli-source-branch", "latest");
+
     return source === "latest"
       ? await this.CheckLatest()
-      : await this.CheckArtifact();
+      : await this.CheckArtifact(branch);
   }
   static async CheckLatest(): Promise<boolean> {
     const targetUri = LocalStorage.getBinUri([
@@ -38,9 +45,11 @@ export class VersionManager {
       GithubUtils.artifactExecutable,
     ]);
     const artifact = await GithubUtils.fetchArtifact(branch);
+    if(artifact === undefined)
+      return false;
     return (
-      artifact?.workflow_run?.head_sha === KeyStore.get("artifact-cli") &&
-      PathUtils.exists(targetUri)
+      artifact?.workflow_run?.head_sha === KeyStore.get("artifact-cli") && KeyStore.get("artifact-branch") === branch &&
+      await PathUtils.exists(targetUri)
     );
   }
 
@@ -50,7 +59,8 @@ export class VersionManager {
     if (source === "latest") {
       await GithubUtils.installLatest();
     } else {
-      await GithubUtils.installArtifact();
+      const branch: string = config.get<string>("cli-source-branch", "main");
+      await GithubUtils.installArtifact(branch);
     }
   }
   static GetExecutablePath() {
