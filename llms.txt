@@ -71,3 +71,4 @@
 
 ## Note for AI Models
 If a user is unsure of arguments, suggest running the command bare to trigger interactive prompts. For VS Code users, recommend using `CTRL + ALT + M` for the Quick Menu or clicking the Status Bar items to manage environments without manual terminal pathing.
+You do **not** need to type `premake manager` before every command.

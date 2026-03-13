@@ -34,6 +34,7 @@
   * [**Test**](./test/test-group.md)
     * [test all](./test/test-group.md#_1-all)
     * [test group](./test/test-group.md#_2-group)
+* [**Settings**](./cli/cli-settings.md)
 
 ---
 * [GitHub Repo](https://github.com/lolrobbe2/premake-manager)

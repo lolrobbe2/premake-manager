@@ -4,7 +4,6 @@
 
 ---
 
-![GitHub package.json version](https://img.shields.io/github/package-json/v/lolrobbe2/premake-manager?style=for-the-badge&color=blue) 
 ![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/lolrobbe2.premake-manager?style=for-the-badge&color=green&label=stable)
 ![Visual Studio Marketplace Pre-release Version](https://img.shields.io/visual-studio-marketplace/v/lolrobbe2.premake-manager?include_prereleases&style=for-the-badge&color=orange&label=pre-release)
 
@@ -25,12 +24,14 @@
 ## ⚡ VS Code Integration
 
 ### Keyboard Shortcuts
+
 | Shortcut         | Action                                                      |
 | :--------------- | :---------------------------------------------------------- |
 | `CTRL + ALT + M` | Opens the **Premake Manager Quick Menu** (Command Palette). |
 | `CTRL + ALT + P` | Launches/Focuses the **Premake Manager CLI Terminal**.      |
 
 ### Status Bar Actions
+
 The Status Bar buttons act as smart launchers for your development environment:
 
 ![status bar](status-bar.png)
@@ -46,6 +47,7 @@ The Status Bar buttons act as smart launchers for your development environment:
 By using the integrated Terminal Profiles, you stay in the flow without jumping between different shell instances.
 
 ### Interactive Mode
+
 When you launch the Manager Terminal, you enter a persistent session. You do **not** need to type `premake manager` before every command.
 
 ```bash
