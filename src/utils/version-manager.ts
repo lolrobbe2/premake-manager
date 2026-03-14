@@ -1,10 +1,11 @@
 import * as vscode from "vscode";
 import { GithubUtils } from "./github-utils";
 import { LocalStorage, PathUtils } from "./path-utils";
+import { Prompt } from "./prompt-utils";
 import { KeyStore } from "./vscode-utils";
 
 export class VersionManager {
-  static initialize() : void {
+  static initialize(): void {
     vscode.workspace.onDidChangeConfiguration(async (e) => {
       if (e.affectsConfiguration("premakeManager.cli-source")) {
         if ((await this.Check()) !== true) {
@@ -45,7 +46,7 @@ export class VersionManager {
       GithubUtils.artifactExecutable,
     ]);
     const artifact = await GithubUtils.fetchArtifact(branch);
-    if(artifact === undefined)
+    if (artifact === undefined)
       return false;
     return (
       artifact?.workflow_run?.head_sha === KeyStore.get("artifact-cli") && KeyStore.get("artifact-branch") === branch &&
@@ -63,19 +64,29 @@ export class VersionManager {
       await GithubUtils.installArtifact(branch);
     }
   }
-  static GetExecutablePath() {
+  static GetExecutablePath() : vscode.Uri {
     const config = vscode.workspace.getConfiguration("premakeManager");
     const source = config.get<string>("cli-source", "latest");
-    if (source === "latest") {
-      return LocalStorage.getBinUri([
-        "latest",
-        `premake-manager${GithubUtils.suffix}`,
-      ]);
-    } else {
-      return LocalStorage.getBinUri([
-        "artifact",
-        GithubUtils.artifactExecutable,
-      ]);
+    switch (source) {
+      case "latest":
+        return LocalStorage.getBinUri([
+          "latest",
+          `premake-manager${GithubUtils.suffix}`,
+        ]);
+      case "artifact":
+        return LocalStorage.getBinUri([
+          "artifact",
+          GithubUtils.artifactExecutable,
+        ]);
+      case "path":
+        const path = config.get<string>("cli-path");
+        if (path === undefined) {
+          Prompt.Error("NO path has been set in user settings!");
+          return vscode.Uri.file("");
+        }
+        return vscode.Uri.file(path.replaceAll("\"",""));
+      default:
+        return vscode.Uri.file("");
     }
   }
 }
