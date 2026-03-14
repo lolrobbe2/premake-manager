@@ -358,11 +358,13 @@
           "default": "latest",
           "enum": [
             "latest",
-            "artifact"
+            "artifact",
+            "path"
           ],
           "enumDescriptions": [
             "Download the official latest release",
-            "Download the latest artifact from the main branch (CI build)"
+            "Download the latest artifact from the main branch (CI build)",
+            "Load the executable from the provided path"
           ],
           "description": "Choose where to fetch the CLI binary from."
         },
@@ -370,6 +372,10 @@
           "type": "string",
           "default": "main",
           "description": "Choose wich branch the artifact will be downloaded from."
+        },
+        "premakeManager.cli-path": {
+          "type":"string",
+          "description": "The absolute path to the executable. (name must be premak-manager-cli)"
         }
       }
     },
