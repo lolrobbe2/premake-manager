@@ -23,9 +23,9 @@ export class TerminalInterface {
     /**
      * Opens the interactive terminal (with --interactive flag).
      */
-    public static openInteractive(): void {
+    public static async openInteractive(): Promise<void> {
         this.ensureInitialized();
-        this.cliTerminal!.openTerminal(true);
+        await this.cliTerminal!.openTerminal(true);
     }
 
     /**

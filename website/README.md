@@ -85,3 +85,4 @@ The interface is organized into the following eight functional groups:
 ---
 
 > [!NOTE] Because the extension mirrors the CLI, any command available in your terminal is accessible through the VS Code command palette under the same group naming convention.
+

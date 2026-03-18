@@ -374,7 +374,7 @@
           "description": "Choose wich branch the artifact will be downloaded from."
         },
         "premakeManager.cli-path": {
-          "type":"string",
+          "type": "string",
           "description": "The absolute path to the executable. (name must be premak-manager-cli)"
         }
       }
@@ -383,7 +383,7 @@
   },
   "scripts": {
     "clean": "rimraf out && rimraf tsconfig.extension.tsbuildinfo",
-    "compile": "npm run clean && npm run build-views && node build.js",
+    "compile": "npm run clean && node build.js",
     "vscode:prepublish": "npm run compile",
     "watch": "npm run compile && tsc -watch -p tsconfig.extension.json",
     "pretest": "npm run compile && npm run lint",
@@ -432,6 +432,7 @@
     "@vscode/vsce": "^3.2.1",
     "esbuild": "^0.27.3",
     "eslint": "^9.13.0",
+    "glob": "^13.0.6",
     "rimraf": "^5.0.10",
     "typescript": "^5.9.3"
   }
