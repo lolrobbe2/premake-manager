@@ -1,6 +1,5 @@
 import * as path from 'path';
 import { PathUtils } from 'utils/path-utils';
-import { Prompt } from 'utils/prompt-utils';
 import * as vscode from 'vscode';
 
 export class PremakeCliTerminal {
@@ -41,11 +40,15 @@ export class PremakeCliTerminal {
         });
     }
 
+    public closeTerminal(){
+        this.terminal?.hide();
+    }
+
     /**
      * Sends a command string to the terminal (creates it if needed).
      * @param command The command string to execute in the terminal
      */
-    public executeCommand(command: string): void {
+    public executeCommand(command: string): vscode.Terminal | undefined {
         if (!this.terminal) {
             this.openTerminal();
             setTimeout(() => {
@@ -55,6 +58,7 @@ export class PremakeCliTerminal {
             this.terminal.show();
             this.terminal.sendText(command, true);
         }
+        return this.terminal;
     }
 
     /**
