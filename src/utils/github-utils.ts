@@ -10,10 +10,7 @@ export class GithubUtils {
   static client: Octokit | undefined;
 
   public static async Authenticate(): Promise<void> {
-    this.session = await vscode.authentication.getSession("github", ["repo"], {
-      createIfNone: true,
-    });
-
+    this.session = await this.getSession();
     if (this.session === undefined) {
       Prompt.Error("[Github-Utils] unable to aquire session token");
       return;
@@ -22,6 +19,17 @@ export class GithubUtils {
       auth: GithubUtils.session?.accessToken,
       userAgent: "vscode.premake-manager",
     });
+  }
+
+  public static async getSession(): Promise<vscode.AuthenticationSession> {
+    return await vscode.authentication.getSession('github', ['repo'], { createIfNone: true, });
+  }
+  static async getToken(): Promise<string | undefined> {
+    GithubUtils.session =await this.getSession();
+    // Re-initialize your Octokit client with the new token
+    GithubUtils.client = new Octokit({ auth: GithubUtils.session.accessToken });
+
+    return GithubUtils.session?.accessToken
   }
   static get owner() {
     return "lolrobbe2";
@@ -101,7 +109,7 @@ export class GithubUtils {
       per_page: 1,
     });
     const latestRunId = runs?.data.workflow_runs[0]?.id;
-    if(latestRunId === undefined) {
+    if (latestRunId === undefined) {
       /** artifacts are not persistent */
       Prompt.Error(`no artifacts for branch: ${latestRunId}!`);
       return undefined;

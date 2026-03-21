@@ -10,7 +10,7 @@ import { getVsCodeApi } from './vscode';
 function App() {
   const [repos, setRepos] = useState<RegistryRepo[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filterType, setFilterType] = useState<RepoSearchType>(RepoSearchType.Recent);
+  const [filterType, setFilterType] = useState<RepoSearchType>(RepoSearchType.RepoName);
   const [loading, setLoading] = useState(false);
   const vscode = getVsCodeApi();
 

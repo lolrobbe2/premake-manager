@@ -6,6 +6,7 @@
 
 ![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/lolrobbe2.premake-manager?style=for-the-badge&color=green&label=stable)
 ![Visual Studio Marketplace Pre-release Version](https://img.shields.io/visual-studio-marketplace/v/lolrobbe2.premake-manager?include_prereleases&style=for-the-badge&color=orange&label=pre-release)
+![Installs](https://img.shields.io/visual-studio-marketplace/i/lolrobbe2.premake-manager?style=flat-square&color=blue)
 
 ---
 
@@ -85,3 +86,4 @@ The interface is organized into the following eight functional groups:
 ---
 
 > [!NOTE] Because the extension mirrors the CLI, any command available in your terminal is accessible through the VS Code command palette under the same group naming convention.
+

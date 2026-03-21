@@ -1,4 +1,5 @@
 import * as path from 'path';
+import { GithubUtils } from 'utils/github-utils';
 import { PathUtils } from 'utils/path-utils';
 import { Prompt } from 'utils/prompt-utils';
 import { VersionManager } from 'utils/version-manager';
@@ -17,7 +18,7 @@ export class ManagerCliTerminal {
      * Opens the CLI terminal. Adds `--interactive` flag if requested.
      * @param interactive Whether to launch the CLI with `--interactive`
      */
-    public openTerminal(interactive: boolean = false): void {
+    public async openTerminal(interactive: boolean = false): Promise<void> {
         if (this.terminal) {
             this.terminal.show();
             return;
@@ -33,6 +34,10 @@ export class ManagerCliTerminal {
         const shellArgs: string[] = [];
         if (interactive) {
             shellArgs.push('--interactive');
+        }
+        const token = await GithubUtils.getToken();
+        if(token !== undefined){
+            shellArgs.push(`--session=${token}`);
         }
 
         this.terminal = vscode.window.createTerminal({
