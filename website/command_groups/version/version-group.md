@@ -23,6 +23,8 @@ This command installs a specific premake version.
 | --------- | ----------------------------------------------------- | -------- |
 | [VERSION] | version to to set in the config and PATH env variable |    ✖️    |
 
+> [!NOTE] this command also sets the path variable, this means you can also use premake5 directly from the terminal!
+
 ## 3 set
 
 this command sets the used premake version (IE the `PATH` or `symlink`)

@@ -1,6 +1,6 @@
 # [premake manager](/)
 
-* [Command Groups](/#command-groups)
+* [**Command Groups**](/#command-groups)
   * [**Config**](./command_groups/config/config-group.md)
     * [config version](./command_groups/config/config-group.md#version)
     * [config view](./command_groups/config/config-group.md#view)
@@ -35,6 +35,11 @@
     * [test all](./command_groups/test/test-group.md#_1-all)
     * [test group](./command_groups/test/test-group.md#_2-group)
 * [**Settings**](./cli/cli-settings.md)
+* **vscode**
+  * [status bar](./vscode_integration/status_bar/status-bar.md)
+    * [premake5](./vscode_integration/status_bar/status-bar.md#_1-premake5-terminal)
+    * [premake manager](./vscode_integration/status_bar/status-bar.md#_2-premake-manager-terminal)
+    * [configure]()
 
 ---
 * [GitHub Repo](https://github.com/lolrobbe2/premake-manager)
