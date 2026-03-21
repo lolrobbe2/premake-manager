@@ -39,7 +39,8 @@
   * [status bar](./vscode_integration/status_bar/status-bar.md)
     * [premake5](./vscode_integration/status_bar/status-bar.md#_1-premake5-terminal)
     * [premake manager](./vscode_integration/status_bar/status-bar.md#_2-premake-manager-terminal)
-    * [configure]()
+    * [configure](./vscode_integration/status_bar/status-bar.md#_3-premake-manager-configure)
+  * [activity bar](./vscode_integration/activity_bar/activity-bar.md)
 
 ---
 * [GitHub Repo](https://github.com/lolrobbe2/premake-manager)
