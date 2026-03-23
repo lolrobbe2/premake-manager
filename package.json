@@ -2,7 +2,7 @@
   "name": "premake-manager",
   "displayName": "premake manager",
   "description": "a extension to manage premake projects",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "type": "commonjs",
   "publisher": "lolrobbe2",
   "engines": {
@@ -90,7 +90,6 @@
         "path": "./snippets/premake5.project.code-snippets"
       }
     ],
-    "taskDefinitions": [],
     "commands": [
       {
         "category": "Premake5",
@@ -379,7 +378,60 @@
         }
       }
     },
-    "menus": {}
+    "menus": {},
+    "taskDefinitions": [
+      {
+        "type": "premake5",
+        "required": [
+          "action"
+        ],
+        
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "codelite",
+              "compilecommands",
+              "gmake",
+              "ninja",
+              "vs2026",
+              "vs2022",
+              "vs2019",
+              "vs2017",
+              "vs2015",
+              "vs2013",
+              "vs2012",
+              "vs2010",
+              "vs2008",
+              "vs2005",
+              "xcode4"
+            ],
+            "description": "The Premake action to execute (e.g., generate project files for a specific IDE)."
+          },
+          "file": {
+            "type": "string",
+            "description": "The path to the premake5.lua file. Defaults to the workspace root if not specified."
+          },
+          "options": {
+            "type": "array",
+            "description": "Additional command line options to pass to Premake.",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      {
+        "type": "premakeManager",
+        "required": ["command"],
+        "properties": {
+          "command": {
+            "type":"string",
+            "description": "the command to have premakeManager run"
+          }
+        }
+      }
+    ]
   },
   "scripts": {
     "clean": "rimraf out && rimraf tsconfig.extension.tsbuildinfo",

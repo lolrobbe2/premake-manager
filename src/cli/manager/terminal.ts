@@ -35,10 +35,6 @@ export class ManagerCliTerminal {
         if (interactive) {
             shellArgs.push('--interactive');
         }
-        const token = await GithubUtils.getToken();
-        if(token !== undefined){
-            shellArgs.push(`--session=${token}`);
-        }
 
         this.terminal = vscode.window.createTerminal({
             name: 'Premake5 Manager CLI',
@@ -47,7 +43,10 @@ export class ManagerCliTerminal {
             iconPath: vscode.Uri.file(
                 path.join(this.context.extensionPath, 'resources', 'media', 'premake-logo.png')
             ),
-            cwd: PathUtils.getWorkspaceRoot()
+            cwd: PathUtils.getWorkspaceRoot(),
+            env: {
+                "GITHUB_TOKEN": GithubUtils.session?.accessToken
+            }
         });
 
         this.terminal.show();

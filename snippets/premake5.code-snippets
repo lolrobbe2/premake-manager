@@ -2,22 +2,40 @@
     "premake.task": {
         "prefix": "premake5Task",
         "body": [
-            "`{",
+            "{",
             "    \"version\": \"2.0.0\",",
             "    \"tasks\": [",
             "        {",
             "            \"label\": \"Run premake5\",",
             "            \"type\": \"premake5\",",
-            "            \"args\": [\"${1:your-arguments-here}\"],",
+            "            \"action\": \"${1:vs2026}\",",
             "            \"group\": {",
             "                \"kind\": \"build\",",
             "                \"isDefault\": true",
             "            },",
-            "            \"detail\": \"Custom task to run premake5\"",
+            "            \"detail\": \"Custom task to run premake5 ${1:vs2026}\"",
             "        }",
             "    ]",
-            "}`"
+            "}"
         ],
-        "description": "A task to run premake5 with custom arguments"
+        "description": "A task to run premake5 with custom arguments",
+        "scope": "json,jsonc"
+    },
+    "premakeManager.task": {
+        "prefix": "premakeManagerTask",
+        "body": [
+            "{",
+            "   \"label\": \"Run premake manager\",",
+            "   \"type\": \"premakeManager\",",
+            "   \"command\": \"${1:command}\",",
+            "       \"group\": { ",
+            "           \"kind\": \"build\",",
+            "           \"isDefault\": true",
+            "       },",
+            "   \"detail\": \"Custom task to run list installed releases\"",
+            "}"
+        ],
+        "description": "A task snippet for premake manager tasks",
+        "scope": "json,jsonc"
     }
 }

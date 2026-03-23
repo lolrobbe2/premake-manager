@@ -25,4 +25,4 @@ this `status bar action` launches the interactive premake manager terminal.
 
 ![premake configure](premake-manager-configure.png)
 
-this `statuse bar action` configures the workspace: IE install and set the version set in the `premakeConfig.yml`, and installing **modules**, **libraries**.
+this `status bar action` configures the workspace: IE install and set the version set in the `premakeConfig.yml`, and installing **modules**, **libraries**.

@@ -8,10 +8,12 @@ import { EnvironmentRefresher, KeyStore } from "utils/vscode-utils";
 import * as vscode from "vscode";
 import * as commands from "./commands/mod";
 
+import { PremakeTerminalInterface } from "cli/premake/terminalinterface";
 import fs from "fs";
 import path from "path";
 import { LibraryProvider } from "registry/LibraryProvider";
 import { ModuleProvider } from "registry/ModuleProvider";
+import { PremakeManagerTaskProvider, PremakeTaskProvider } from "tasks/TaskProvider";
 import { LocalStorage, PathUtils } from "utils/path-utils";
 import { VersionManager } from "utils/version-manager";
 
@@ -64,6 +66,10 @@ export async function activate(
         await VersionManager.Install();
       }
     }),
+    measureTask("taskProvider", async () => {
+      PremakeTerminalInterface.initialize(context);
+      registerTaskProvider(context);
+    })
   ]);
 
   console.timeEnd("Premake5: Total Activation");
@@ -172,6 +178,12 @@ function registerStatusBar(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(statusBarItem);
   context.subscriptions.push(statusBarItemCliTerminal);
+}
+
+function registerTaskProvider(context: vscode.ExtensionContext){
+  const premakeProvider = vscode.tasks.registerTaskProvider("premake5",new PremakeTaskProvider(context));
+  const managerProvider = vscode.tasks.registerTaskProvider("premakeManager", new PremakeManagerTaskProvider(context));
+
 }
 
 // This method is called when your extension is deivated
