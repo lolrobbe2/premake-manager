@@ -18,6 +18,24 @@
             "    ]",
             "}"
         ],
-        "description": "A task to run premake5 with custom arguments"
+        "description": "A task to run premake5 with custom arguments",
+        "scope": "json,jsonc"
+    },
+    "premakeManager.task": {
+        "prefix": "premakeManagerTask",
+        "body": [
+            "{",
+            "   \"label\": \"Run premake manager\",",
+            "   \"type\": \"premakeManager\",",
+            "   \"command\": \"${1:command}\",",
+            "       \"group\": { ",
+            "           \"kind\": \"build\",",
+            "           \"isDefault\": true",
+            "       },",
+            "   \"detail\": \"Custom task to run list installed releases\"",
+            "}"
+        ],
+        "description": "A task snippet for premake manager tasks",
+        "scope": "json,jsonc"
     }
 }

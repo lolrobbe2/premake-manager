@@ -118,22 +118,16 @@ export class PremakeManagerTaskProvider implements vscode.TaskProvider {
             });
             
             const definition = task.definition as PremakeManagerTaskDefinition;
-            const isWindows = process.platform === "win32";
-
-            const shellPath = isWindows ? "cmd.exe" : "bash";
 
             if(GithubUtils.session)
                 cleanEnv["GITHUB_TOKEN"] = GithubUtils.session!.accessToken;
 
             const options: vscode.ShellExecutionOptions = {
-                executable: shellPath,
-                shellArgs: isWindows ? ['/d', '/c'] : ['-l', '-c'],
                 env: cleanEnv
             };
 
-            const cliExecutable = ManagerCliTerminal.getCliExecutablePath(this.context);
 
-            const execution = new vscode.ShellExecution(`${cliExecutable} ${definition.command}`, options);
+            const execution = new vscode.ShellExecution(ManagerCliTerminal.getCliExecutablePath(this.context)!,definition.command.split(' '),options);
             return new PremakeManagerTask(definition, task.scope, task.name, execution);
 
         }

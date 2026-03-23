@@ -23,6 +23,7 @@ export class PremakeTask extends vscode.Task {
         );
         this.detail = name;
         this.group = vscode.TaskGroup.Build;
-
+        this.presentationOptions.focus = true;
+        this.presentationOptions.echo = false;
     }
 }
