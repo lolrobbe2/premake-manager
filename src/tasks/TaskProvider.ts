@@ -1,5 +1,8 @@
+import { ManagerCliTerminal } from "cli/manager/terminal";
+import { GithubUtils } from "utils/github-utils";
 import { EnvironmentRefresher } from "utils/vscode-utils";
 import * as vscode from "vscode";
+import { PremakeManagerTask, PremakeManagerTaskDefinition } from "./PremakeManagerTask";
 import { PremakeTask, PremakeTaskDefinition } from "./PremakeTask";
 
 
@@ -24,7 +27,6 @@ export class PremakeTaskProvider implements vscode.TaskProvider {
                 tasks.push(this.createPremakeTask(action, premakeFile.fsPath));
             }
         }
-
         return tasks;
     }
     public async resolveTask(task: vscode.Task, token: vscode.CancellationToken): Promise<vscode.Task | undefined> {
@@ -64,7 +66,7 @@ export class PremakeTaskProvider implements vscode.TaskProvider {
         }
         return undefined;
     }
-    constructor() {
+    constructor(private context: vscode.ExtensionContext) {
         this.actions.forEach(action => {
             this.tasks.push(this.createPremakeTask(action));
         });
@@ -90,3 +92,60 @@ export class PremakeTaskProvider implements vscode.TaskProvider {
     //#endregion
 }
 
+export class PremakeManagerTaskProvider implements vscode.TaskProvider {
+    constructor(private context: vscode.ExtensionContext){
+        
+    }
+    
+    public async provideTasks(token: vscode.CancellationToken): Promise<vscode.Task[]> {
+        const tasks: vscode.Task[] = [];
+        tasks.push(this.createPremakeManagerTask("empty task"));
+        return tasks
+    }
+
+    public async resolveTask(task: vscode.Task, token: vscode.CancellationToken): Promise<vscode.Task | undefined> {
+        const definition = task.definition as PremakeManagerTaskDefinition;
+
+        if (definition.type === "premakeManager") {
+            await EnvironmentRefresher.refreshWindowsPath();
+            const cleanEnv: { [key: string]: string } = {};
+
+            Object.keys(process.env).forEach(key => {
+                const value = process.env[key];
+                if (value !== undefined) {
+                    cleanEnv[key] = value;
+                }
+            });
+            
+            const definition = task.definition as PremakeManagerTaskDefinition;
+            const isWindows = process.platform === "win32";
+
+            const shellPath = isWindows ? "cmd.exe" : "bash";
+
+            if(GithubUtils.session)
+                cleanEnv["GITHUB_TOKEN"] = GithubUtils.session!.accessToken;
+
+            const options: vscode.ShellExecutionOptions = {
+                executable: shellPath,
+                shellArgs: isWindows ? ['/d', '/c'] : ['-l', '-c'],
+                env: cleanEnv
+            };
+
+            const cliExecutable = ManagerCliTerminal.getCliExecutablePath(this.context);
+
+            const execution = new vscode.ShellExecution(`${cliExecutable} ${definition.command}`, options);
+            return new PremakeManagerTask(definition, task.scope, task.name, execution);
+
+        }
+        return undefined;
+    }
+
+    private createPremakeManagerTask(command: string) {
+        const definition: PremakeManagerTaskDefinition = {
+            type: "premakeManager",
+            command: command
+        };
+
+        return new PremakeManagerTask(definition, vscode.TaskScope.Workspace, "Run premakeManager commands", undefined);
+    }
+}

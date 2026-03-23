@@ -420,6 +420,16 @@
             }
           }
         }
+      },
+      {
+        "type": "premakeManager",
+        "required": ["command"],
+        "properties": {
+          "command": {
+            "type":"string",
+            "description": "the command to have premakeManager run"
+          }
+        }
       }
     ]
   },

@@ -13,7 +13,7 @@ import fs from "fs";
 import path from "path";
 import { LibraryProvider } from "registry/LibraryProvider";
 import { ModuleProvider } from "registry/ModuleProvider";
-import { PremakeTaskProvider } from "tasks/TaskProvider";
+import { PremakeManagerTaskProvider, PremakeTaskProvider } from "tasks/TaskProvider";
 import { LocalStorage, PathUtils } from "utils/path-utils";
 import { VersionManager } from "utils/version-manager";
 
@@ -181,7 +181,9 @@ function registerStatusBar(context: vscode.ExtensionContext) {
 }
 
 function registerTaskProvider(context: vscode.ExtensionContext){
-  const provider = vscode.tasks.registerTaskProvider("premake5",new PremakeTaskProvider());
+  const premakeProvider = vscode.tasks.registerTaskProvider("premake5",new PremakeTaskProvider(context));
+  const managerProvider = vscode.tasks.registerTaskProvider("premakeManager", new PremakeManagerTaskProvider(context));
+
 }
 
 // This method is called when your extension is deivated
