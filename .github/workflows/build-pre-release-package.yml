@@ -53,7 +53,7 @@ jobs:
           echo "Version set to: $NEW_VERSION"
 
       - name: Commit version bump (Stable Only)
-        if: env.IS_PRE_RELEASE == 'false'
+        if: startsWith(github.ref, 'refs/tags/v') == 'true'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
