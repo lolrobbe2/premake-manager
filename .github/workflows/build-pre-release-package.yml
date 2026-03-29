@@ -25,7 +25,20 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
-
+        
+      - name: Determine Release Type
+        id: release_type
+        run: |
+          # Check if the ref starts with the version tag prefix OR manual input is true
+          if [[ "${{ startsWith(github.ref, 'refs/tags/v') }}" == "true" ]] || [[ "${{ github.event.inputs.is_stable }}" == "true" ]]; then
+            echo "Publishing STABLE release"
+            echo "RELEASE_FLAG=" >> $GITHUB_ENV
+            echo "IS_PRE_RELEASE=false" >> $GITHUB_ENV
+          else
+            echo "Publishing PRE-RELEASE"
+            echo "RELEASE_FLAG=--pre-release" >> $GITHUB_ENV
+            echo "IS_PRE_RELEASE=true" >> $GITHUB_ENV
+          fi
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
@@ -76,20 +89,6 @@ jobs:
       - name: Install dependencies
         if: steps.node-cache.outputs.cache-hit != 'true'
         run: npm install  # This triggers 'postinstall' which runs 'setup-views'
-
-      - name: Determine Release Type
-        id: release_type
-        run: |
-          # Check if the ref starts with the version tag prefix OR manual input is true
-          if [[ "${{ startsWith(github.ref, 'refs/tags/v') }}" == "true" ]] || [[ "${{ github.event.inputs.is_stable }}" == "true" ]]; then
-            echo "Publishing STABLE release"
-            echo "RELEASE_FLAG=" >> $GITHUB_ENV
-            echo "IS_PRE_RELEASE=false" >> $GITHUB_ENV
-          else
-            echo "Publishing PRE-RELEASE"
-            echo "RELEASE_FLAG=--pre-release" >> $GITHUB_ENV
-            echo "IS_PRE_RELEASE=true" >> $GITHUB_ENV
-          fi
       - name: Package extension
         run: |
           npx @vscode/vsce package ${{ env.RELEASE_FLAG }}
