@@ -71,7 +71,7 @@
 
   <script>
     const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    const versions = { 'Main (GitHub)': 'main' };
+    const versions = { 'Main (GitHub)': 'main','v0.2.0 (common index)': 'v0.2.0' };
 
     let versionList = { ...versions };
     if (isLocalHost) versionList = Object.assign({ 'Local Development': 'local' }, versions);
