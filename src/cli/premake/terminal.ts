@@ -15,9 +15,11 @@ export class PremakeCliTerminal {
      * Opens the CLI terminal. Adds `--interactive` flag if requested.
      * @param interactive Whether to launch the CLI with `--interactive`
      */
-    public openTerminal(): void {
+    public openTerminal(hidden:boolean = false): void {
         if (this.terminal) {
-            this.terminal.show();
+            if(!hidden){
+                this.terminal.show();
+            }
             return;
         }
 
@@ -29,8 +31,9 @@ export class PremakeCliTerminal {
             cwd: PathUtils.getWorkspaceRoot()
         });
 
-        this.terminal.show();
-
+        if(!hidden){
+            this.terminal.show();
+        }
         vscode.window.onDidCloseTerminal(closedTerminal => {
             if (closedTerminal === this.terminal) {
                 this.terminal.dispose();
@@ -48,9 +51,9 @@ export class PremakeCliTerminal {
      * Sends a command string to the terminal (creates it if needed).
      * @param command The command string to execute in the terminal
      */
-    public executeCommand(command: string): vscode.Terminal | undefined {
+    public executeCommand(command: string, hidden: boolean = false): vscode.Terminal | undefined {
         if (!this.terminal) {
-            this.openTerminal();
+            this.openTerminal(hidden);
             setTimeout(() => {
                 this.terminal!.sendText(command, true);
             }, 100);
