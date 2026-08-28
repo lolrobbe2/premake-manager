@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 export interface PremakeTaskDefinition extends vscode.TaskDefinition {
     type: 'premake5';
-    action: 'codelite' | 'compilecommands' | 'gmake' | 'ninja' | 'vs2026' | 'vs2022' | 'vs2019' | 'vs2017' | 'vs2015' | 'vs2013' | 'vs2012' | 'vs2010' | 'vs2010' | 'vs2008' | 'vs2005' | 'xcode4' | string;
+    action: 'codelite' | 'compilecommands' | 'gmake' | 'ninja' | 'vs2026' | 'vs2022' | 'vs2019' | 'vs2017' | 'vs2015' | 'vs2013' | 'vs2012' | 'vs2010' | 'vs2008' | 'vs2005' | 'xcode4' | string;
     file?: string;
     options?: string[];
 }
