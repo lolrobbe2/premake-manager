@@ -41,9 +41,12 @@ export interface PremakeWorkspace {
   projects: string[];
 }
 export class WorkspaceUtils {
+  //#region PROPS
   private static _extensionContext: vscode.ExtensionContext;
   public static readonly workspaces = new Map<string, PremakeWorkspace>();
   public static readonly projects = new Map<string, PremakeProject>();
+  //#endregion
+
   public static Initialize(extensionContext: vscode.ExtensionContext) {
     this._extensionContext = extensionContext;
 
@@ -54,6 +57,17 @@ export class WorkspaceUtils {
       this.RegisterSources();
     }
     this._extensionContext.subscriptions.push(disposable);
+  }
+
+
+  public static GetPremakeWorkspaces(): PremakeWorkspace[] {
+    return Array.from(this.workspaces.values());
+  }
+
+  public static GetPremakeProjectsFromWorkspace(workspace: PremakeWorkspace): PremakeProject[] {
+    return workspace.projects
+      .map(projectName => this.projects.get(projectName))
+      .filter((project): project is PremakeProject => project !== undefined);
   }
   private static async OnWorkspaceOpened(
     event: vscode.WorkspaceFoldersChangeEvent,
@@ -75,6 +89,7 @@ export class WorkspaceUtils {
     }
   }
 
+//#region export
   private static ExportWorkspace(filePath: string | undefined): void {
     const path: string = PathUtils.getResource(this._extensionContext, [
       "export",
@@ -123,4 +138,5 @@ export class WorkspaceUtils {
       }
     }
   }
+  //#endregion export
 }
