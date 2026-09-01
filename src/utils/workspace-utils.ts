@@ -83,6 +83,7 @@ export class WorkspaceUtils {
         const sources = new SourceRegistrar(this._extensionContext);
         await sources.registerSources(["."]);
         await this.ExportWorkspace(premakeFile);
+        //per workspace loading needs to be implemented
         await this.LoadExportedWorkspaces();
         await this.LoadExportedProjects();
       }
