@@ -45,7 +45,7 @@ export class PremakeTerminalInterface {
         return this.cliTerminal?.executeCommand(`premake5 ${args.reduce((arg) => ` ${arg}`)}`);
     }
     public static executeHidden(command: string){
-        return this.cliTerminal?.executeCommand(`premake5 ${command}`);
+        return this.cliTerminal?.executeCommand(`premake5 ${command}`,true);
     }
     public static close() {
         this.cliTerminal?.closeTerminal();
