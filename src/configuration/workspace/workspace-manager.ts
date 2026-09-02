@@ -30,13 +30,15 @@ function findPremakeFile(dir: string): string | null {
 export class WorkspaceManager implements vscode.Disposable {
     //#region PROPS
     private _extensionContext: vscode.ExtensionContext;
+    private readonly _vscodeWorkspace: vscode.WorkspaceFolder;
+
     public readonly workspaces = new Map<string, PremakeWorkspace>();
     public readonly projects = new Map<string, PremakeProject>();
     //#endregion
 
-    constructor(extensionContext: vscode.ExtensionContext) {
+    constructor(extensionContext: vscode.ExtensionContext, workspace: vscode.WorkspaceFolder) {
         this._extensionContext = extensionContext;
-
+        this._vscodeWorkspace = workspace
         // Track workspace folder events
         this._extensionContext.subscriptions.push(this);
     }
@@ -63,9 +65,8 @@ export class WorkspaceManager implements vscode.Disposable {
 
     // registers the luaCATS files
     public async RegisterSources(): Promise<void> {
-        const workspaceRoot = PathUtils.getWorkspaceRoot();
-        if (workspaceRoot) {
-            const premakeFile = findPremakeFile(workspaceRoot);
+        if (this._vscodeWorkspace.uri.fsPath) {
+            const premakeFile = findPremakeFile(this._vscodeWorkspace.uri.fsPath);
             if (premakeFile) {
                 const sources = new SourceRegistrar(this._extensionContext);
                 await sources.registerSources(["."]);
