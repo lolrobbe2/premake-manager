@@ -71,7 +71,6 @@ export class WorkspaceManager implements vscode.Disposable {
                 const sources = new SourceRegistrar(this._extensionContext);
                 await sources.registerSources(["."]);
                 await this.ExportWorkspace(premakeFile);
-                // per workspace loading needs to be implemented
                 await this.LoadExportedWorkspaces();
                 await this.LoadExportedProjects();
             }
@@ -85,12 +84,13 @@ export class WorkspaceManager implements vscode.Disposable {
             "export.lua",
         ])!;
         PremakeTerminalInterface.executeHidden(
-            `--systemscript=${path} --file=${filePath} export --exportdir=${LocalStorage.getTempUri([]).fsPath}/`,
+            `--systemscript=${path} --file=${filePath} export --exportdir=${LocalStorage.getTempUri([this._vscodeWorkspace.name]).fsPath}/`,
         );
     }
 
     private async LoadExportedWorkspaces(): Promise<void> {
         const workspacesDir: vscode.Uri = LocalStorage.getTempUri([
+            this._vscodeWorkspace.name,
             "export",
             "workspaces",
         ]);
