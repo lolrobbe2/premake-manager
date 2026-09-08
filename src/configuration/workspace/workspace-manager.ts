@@ -41,6 +41,7 @@ export class WorkspaceManager implements vscode.Disposable {
         this._vscodeWorkspace = workspace
         // Track workspace folder events
         this._extensionContext.subscriptions.push(this);
+        this._extensionContext.subscriptions.push();
     }
 
     /**

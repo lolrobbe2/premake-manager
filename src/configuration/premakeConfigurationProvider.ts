@@ -8,8 +8,7 @@ export class PremakeConfigurationProvider implements vscode.DebugConfigurationPr
             return [];
         }
         const workspaceManager = WorkspaceUtils.workspaces.get(folder);
-
-        let debugConfigurations : vscode.DebugConfiguration[] = [];
+            let debugConfigurations : vscode.DebugConfiguration[] = [];
         for(const workspace of workspaceManager?.GetPremakeWorkspaces() ?? [])
         {
             const projects = workspaceManager?.GetPremakeProjectsFromWorkspace(workspace) ?? [];
@@ -30,7 +29,7 @@ export class PremakeConfigurationProvider implements vscode.DebugConfigurationPr
             }
         }
 
-        return [];
+        return debugConfigurations;
     }
 
 
