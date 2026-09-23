@@ -31,6 +31,8 @@ export class PremakeConfigurationProvider implements vscode.DebugConfigurationPr
 
         return debugConfigurations;
     }
-
-
+    resolveDebugConfiguration?(folder: vscode.WorkspaceFolder | undefined, debugConfiguration: vscode.DebugConfiguration, token?: vscode.CancellationToken): vscode.ProviderResult<vscode.DebugConfiguration>
+    {
+        return debugConfiguration;
+    }
 }
