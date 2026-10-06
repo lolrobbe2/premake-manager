@@ -92,9 +92,10 @@ export.elements.project = function(prj)
 		project.project,
 		project.kind,
 		project.language,
+		project.targetdir,
 		project.files,
 		project.links,
-		project.projectTail
+		project.projectTail,
 	}
 end
 
@@ -126,7 +127,9 @@ end
 function project.language(prj)
 	project.prop(prj, "language")
 end
-
+function project.targetdir(prj)
+	p.w('"targetdir":["%s"],', table.concat(project.gettargetdirs(prj), '","'))
+end
 function project.links(prj)
 	local projectDependencies =  p.project.getdependencies(prj,'linkOnly')
 	local projectLinkNames = {}
@@ -192,7 +195,13 @@ function project.getconfigs(prj)
 	return cfgs
 end
 
-
+function project.gettargetdirs(prj)
+	local dirs = {}
+	for cfg in p.project.eachconfig(prj) do
+		table.insert(dirs, cfg.targetdir)
+	end
+	return dirs
+end
 --#endregion
 newoption {
 	trigger = "exportdir",
