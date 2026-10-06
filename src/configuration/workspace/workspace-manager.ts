@@ -85,7 +85,7 @@ export class WorkspaceManager implements vscode.Disposable {
             "export.lua",
         ])!;
         PremakeTerminalInterface.executeHidden(
-            `--systemscript=${path} --file=${filePath} export --exportdir=${LocalStorage.getTempUri([this._vscodeWorkspace.name]).fsPath}/`,
+            `--systemscript=\"${path}\" --file=\"${filePath}\" export --exportdir=\"${LocalStorage.getTempUri([this._vscodeWorkspace.name]).fsPath}/\"`,
         );
     }
 
@@ -105,13 +105,17 @@ export class WorkspaceManager implements vscode.Disposable {
 
                 const fileData = await vscode.workspace.fs.readFile(fileUri);
                 const jsonString = Buffer.from(fileData).toString("utf8");
-                this.workspaces.set(key, JSON.parse(jsonString));
+                let workspace : PremakeWorkspace = JSON.parse(jsonString);
+                if(workspace.debugger === 'nil')
+                    workspace.debugger = undefined;
+                this.workspaces.set(key, workspace);
             }
         }
     }
 
     private async LoadExportedProjects(): Promise<void> {
         const projectsDir: vscode.Uri = LocalStorage.getTempUri([
+            this._vscodeWorkspace.name,
             "export",
             "projects",
         ]);

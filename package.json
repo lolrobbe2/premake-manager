@@ -60,6 +60,17 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "debuggers": [
+      {
+        "type": "premake5",
+        "label": "Premake5",
+        "languages": [
+          "cpp",
+          "c"
+        ],
+        "initialConfigurations": []
+      }
+    ],
     "terminal": {
       "profiles": [
         {
@@ -385,7 +396,6 @@
         "required": [
           "action"
         ],
-        
         "properties": {
           "action": {
             "type": "string",
@@ -423,10 +433,12 @@
       },
       {
         "type": "premakeManager",
-        "required": ["command"],
+        "required": [
+          "command"
+        ],
         "properties": {
           "command": {
-            "type":"string",
+            "type": "string",
             "description": "the command to have premakeManager run"
           }
         }

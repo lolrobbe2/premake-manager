@@ -10,6 +10,6 @@ export interface PremakeWorkspace {
     configurations: string[];
     location: string;
     architecture: string;
-    debugger: string;
+    debugger: string | undefined;
     projects: string[];
 }
