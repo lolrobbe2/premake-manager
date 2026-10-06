@@ -359,36 +359,49 @@
         }
       ]
     },
-    "configuration": {
-      "title": "Premake Manager",
-      "order": 0,
-      "properties": {
-        "premakeManager.cli-source": {
-          "type": "string",
-          "default": "latest",
-          "enum": [
-            "latest",
-            "artifact",
-            "path"
-          ],
-          "enumDescriptions": [
-            "Download the official latest release",
-            "Download the latest artifact from the main branch (CI build)",
-            "Load the executable from the provided path"
-          ],
-          "description": "Choose where to fetch the CLI binary from."
-        },
-        "premakeManager.cli-source-branch": {
-          "type": "string",
-          "default": "main",
-          "description": "Choose wich branch the artifact will be downloaded from."
-        },
-        "premakeManager.cli-path": {
-          "type": "string",
-          "description": "The absolute path to the executable. (name must be premak-manager-cli)"
+    "configuration": [
+      {
+        "title": "Premake Manager",
+        "order": 0,
+        "properties": {
+          "premakeManager.cli-source": {
+            "type": "string",
+            "default": "latest",
+            "enum": [
+              "latest",
+              "artifact",
+              "path"
+            ],
+            "enumDescriptions": [
+              "Download the official latest release",
+              "Download the latest artifact from the main branch (CI build)",
+              "Load the executable from the provided path"
+            ],
+            "description": "Choose where to fetch the CLI binary from."
+          },
+          "premakeManager.cli-source-branch": {
+            "type": "string",
+            "default": "main",
+            "description": "Choose wich branch the artifact will be downloaded from."
+          },
+          "premakeManager.cli-path": {
+            "type": "string",
+            "description": "The absolute path to the executable. (name must be premak-manager-cli)"
+          }
+        }
+      },
+      {
+        "title": "Premake",
+        "order": 1,
+        "properties": {
+          "premake.action": {
+            "type": "string",
+            "default": "gmake",
+            "description": "Specify the Premake action/generator target (e.g. vs2022, gmake2)."
+          }
         }
       }
-    },
+    ],
     "menus": {},
     "taskDefinitions": [
       {

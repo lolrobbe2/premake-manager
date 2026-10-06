@@ -24,7 +24,7 @@ export class PremakeConfigurationProvider
             name: configName,
             type: (workspace.debugger ?? "cppdbg").toLowerCase(),
             request: "launch",
-            program: "${workspaceFolder}/bin/" + `${configType}/`+ project.name + exeExtension, // Adjust build path as needed
+            program: project.targetdir[configType] + '/' + project.name + exeExtension, // Adjust build path as needed
             cwd: "${workspaceFolder}",
             // Grouping metadata in VS Code
             presentation: {

@@ -128,7 +128,7 @@ function project.language(prj)
 	project.prop(prj, "language")
 end
 function project.targetdir(prj)
-	p.w('"targetdir":["%s"],', table.concat(project.gettargetdirs(prj), '","'))
+	p.w('"targetdir": {%s},', table.concat(project.gettargetdirs(prj), ','))
 end
 function project.links(prj)
 	local projectDependencies =  p.project.getdependencies(prj,'linkOnly')
@@ -198,7 +198,7 @@ end
 function project.gettargetdirs(prj)
 	local dirs = {}
 	for cfg in p.project.eachconfig(prj) do
-		table.insert(dirs, cfg.targetdir)
+		table.insert(dirs, '"' .. cfg.buildcfg ..'" : "' .. cfg.targetdir .. '"')
 	end
 	return dirs
 end

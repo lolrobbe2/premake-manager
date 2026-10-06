@@ -2,6 +2,7 @@ export interface PremakeProject {
     name: string;
     kind: string;
     language: string;
+    targetdir: Record<string, string>;
     files: string[];
     links: string[];
 }
@@ -11,6 +12,5 @@ export interface PremakeWorkspace {
     location: string;
     architecture: string;
     debugger: string | undefined;
-    targetdir: string[]
     projects: string[];
 }
