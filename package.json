@@ -454,6 +454,22 @@
             "description": "the command to have premakeManager run"
           }
         }
+      },
+      {
+        "type": "premakeBuild",
+        "required": [
+          "tool"
+        ],
+        "properties": {
+          "tool": {
+            "type": "string",
+            "enum": [
+              "make",
+              "ninja",
+              "msbuild"
+            ]
+          }
+        }
       }
     ]
   },

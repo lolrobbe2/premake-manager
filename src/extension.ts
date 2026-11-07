@@ -12,11 +12,15 @@ import { PremakeTerminalInterface } from "cli/premake/terminalinterface";
 
 import { LibraryProvider } from "registry/LibraryProvider";
 import { ModuleProvider } from "registry/ModuleProvider";
-import { PremakeManagerTaskProvider, PremakeTaskProvider } from "tasks/TaskProvider";
+import {
+  PremakeManagerTaskProvider,
+  PremakeTaskProvider,
+} from "tasks/TaskProvider";
 import { LocalStorage, PathUtils } from "utils/path-utils";
 import { VersionManager } from "utils/version-manager";
 import { WorkspaceUtils } from "utils/workspace-utils";
-
+import { detectBuildTools } from "configuration/tools/detected-tool";
+import { PremakeActionTaskProvider } from "tasks/ActionProvider";
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -44,7 +48,7 @@ export async function activate(
     measureTask("taskProvider", async () => {
       PremakeTerminalInterface.initialize(context);
       registerTaskProvider(context);
-    })
+    }),
   ]);
   WorkspaceUtils.Initialize(context);
   console.timeEnd("Premake5: Total Activation");
@@ -155,10 +159,19 @@ function registerStatusBar(context: vscode.ExtensionContext) {
   context.subscriptions.push(statusBarItemCliTerminal);
 }
 
-function registerTaskProvider(context: vscode.ExtensionContext){
-  const premakeProvider = vscode.tasks.registerTaskProvider("premake5",new PremakeTaskProvider(context));
-  const managerProvider = vscode.tasks.registerTaskProvider("premakeManager", new PremakeManagerTaskProvider(context));
-
+function registerTaskProvider(context: vscode.ExtensionContext) {
+  const premakeProvider = vscode.tasks.registerTaskProvider(
+    "premake5",
+    new PremakeTaskProvider(context),
+  );
+  const managerProvider = vscode.tasks.registerTaskProvider(
+    "premakeManager",
+    new PremakeManagerTaskProvider(context),
+  );
+  const actionProvider = vscode.tasks.registerTaskProvider(
+    "premakeBuild",
+    new PremakeActionTaskProvider(),
+  );
 }
 
 // This method is called when your extension is deivated
