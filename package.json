@@ -6,7 +6,7 @@
   "type": "commonjs",
   "publisher": "lolrobbe2",
   "engines": {
-    "vscode": "^1.92.1"
+    "vscode": "^1.134.0"
   },
   "categories": [
     "Other",
