@@ -74,3 +74,36 @@ feel free to register your own modules and libraries
 1) cleaning of the registry code and making it fully functional (almost done, API needs paging).
 2) updating Premaker for module, library support
 3) vscode visual integration with the registry.
+
+### v0.2.0 common index support, tasks, documentation!
+
+#### What's Changed
+* fix: docs/generate bugs by @lolrobbe2 in https://github.com/lolrobbe2/premake-manager/pull/40
+* Feat: registry (API+UI) by @lolrobbe2 in https://github.com/lolrobbe2/premake-manager/pull/41
+* feat: add auto install and reduce packaged build (37* improvement) by @lolrobbe2 in https://github.com/lolrobbe2/premake-manager/pull/43
+* fix: add codicon by @lolrobbe2 in https://github.com/lolrobbe2/premake-manager/pull/44
+* feat: add prerelease pipeline by @lolrobbe2 in https://github.com/lolrobbe2/premake-manager/pull/46
+* fix: broken ci by @lolrobbe2 in https://github.com/lolrobbe2/premake-manager/pull/48
+* feat: added all the index and remotes commands by @lolrobbe2 in https://github.com/lolrobbe2/premake-manager/pull/50
+* feat: added local common index reader by @lolrobbe2 in https://github.com/lolrobbe2/premake-manager/pull/54
+* feat: add visual studio code registry editor panel. by @lolrobbe2 in https://github.com/lolrobbe2/premake-manager/pull/55
+* fix: added setup-editor call by @lolrobbe2 in https://github.com/lolrobbe2/premake-manager/pull/57
+* fix: skipDuplicate removed for pre-release by @lolrobbe2 in https://github.com/lolrobbe2/premake-manager/pull/58
+* fix: vsce bug by @lolrobbe2 in https://github.com/lolrobbe2/premake-manager/pull/59
+* fix: ci 3 by @lolrobbe2 in https://github.com/lolrobbe2/premake-manager/pull/60
+* fix:hookup terminal interface to providers by @lolrobbe2 in https://github.com/lolrobbe2/premake-manager/pull/62
+* feat: added documentation website by @lolrobbe2 in https://github.com/lolrobbe2/premake-manager/pull/64
+* feat: added documentation viewer, readme, hompage by @lolrobbe2 in https://github.com/lolrobbe2/premake-manager/pull/66
+* fix: trap by @lolrobbe2 in https://github.com/lolrobbe2/premake-manager/pull/68
+* feat: added source branch to artifact option and updated by @lolrobbe2 in https://github.com/lolrobbe2/premake-manager/pull/71
+* Feat: add cli path settings by @lolrobbe2 in https://github.com/lolrobbe2/premake-manager/pull/73
+* Feat:  add cli path settings by @lolrobbe2 in https://github.com/lolrobbe2/premake-manager/pull/75
+* feat: add support for tasks by @lolrobbe2 in https://github.com/lolrobbe2/premake-manager/pull/77
+* docs: add new version by @lolrobbe2 in https://github.com/lolrobbe2/premake-manager/pull/79
+
+### v0.3.0
+
+- Added automatic detection of installed build tools (GNU Make, Ninja and MSBuild).
+- Added dynamically generated build tasks for every Premake workspace, project and configuration.
+- Integrated generated tasks into the VS Code Task system and Build task group.
+- Updated language files to latest
