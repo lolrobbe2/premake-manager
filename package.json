@@ -495,7 +495,8 @@
     "build-libraries": "npm run build --prefix src/registry/media/libraries",
     "build-editor": "npm run build --prefix src/registry/media/editor",
     "build-views": "npm run build-details && npm run build-modules && npm run build-libraries && npm run build-editor",
-    "postinstall": "npm run setup-views"
+    "postinstall": "npm run setup-views",
+    "docs": "docsify serve website"
   },
   "dependencies": {
     "@octokit/rest": "^22.0.1",

@@ -1,4 +1,36 @@
 --- cspell:disable
+---Specifies the import library output directory.
+---
+---[docs](https://premake.github.io/docs/implibdir/)
+---
+---@param value string
+local function implibdir(value) end
+_G.implibdir=implibdir
+
+---Specifies the import library file extension.
+---
+---[docs](https://premake.github.io/docs/implibextension/)
+---
+---@param value string
+local function implibextension(value) end
+_G.implibextension=implibextension
+
+---Specifies the import library base file name.
+---
+---[docs](https://premake.github.io/docs/implibname/)
+---
+---@param value string
+local function implibname(value) end
+_G.implibname=implibname
+
+---Specifies the import library file name prefix.
+---
+---[docs](https://premake.github.io/docs/implibprefix/)
+---
+---@param value string
+local function implibprefix(value) end
+_G.implibprefix=implibprefix
+
 ---Specifies a file name suffix for the import library base file name.
 ---
 ---[docs](https://premake.github.io/docs/implibsuffix/)
@@ -50,6 +82,14 @@ _G.includedirsafter=includedirsafter
 ---@param value incrementallinkAllowed
 local function incrementallink(value) end
 _G.incrementallink=incrementallink
+
+---Sets the application bundle information file for any Apple platform application.
+---
+---[docs](https://premake.github.io/docs/infoplist/)
+---
+---@param value string
+local function infoplist(value) end
+_G.infoplist=infoplist
 
 ---inheritdependencies
 ---
@@ -1041,68 +1081,3 @@ _G.structmemberalign=structmemberalign
 ---@param value swiftversionAllowed
 local function swiftversion(value) end
 _G.swiftversion=swiftversion
-
----@alias symbolsAllowed
----| "Default"
----| "On"
----| "Off"
----| "FastLink"
----| "Full"
-
-
----Turn on/off debug symbol table generation.
----
----[docs](https://premake.github.io/docs/symbols/)
----
----@param value symbolsAllowed
-local function symbols(value) end
-_G.symbols=symbols
-
----Specify the target location of the debug symbols.
----
----[docs](https://premake.github.io/docs/symbolspath/)
----
----@param value string
-local function symbolspath(value) end
-_G.symbolspath=symbolspath
-
----Specifies the system library search paths.
----
----[docs](https://premake.github.io/docs/syslibdirs/)
----
----@param value string[]
-local function syslibdirs(value) end
-_G.syslibdirs=syslibdirs
-
----@alias systemAllowed
----| "aix"
----| "bsd"
----| "emscripten"
----| "haiku"
----| "hurd"
----| "ios"
----| "linux"
----| "macosx"
----| "solaris"
----| "tvos"
----| "uwp"
----| "wii"
----| "windows"
----| "android"
-
-
----Specifies the target operating system.
----
----[docs](https://premake.github.io/docs/system/)
----
----@param value systemAllowed
-local function system(value) end
-_G.system=system
-
----Specifies the target operation system min and max versions.
----
----[docs](https://premake.github.io/docs/systemversion/)
----
----@param value string
-local function systemversion(value) end
-_G.systemversion=systemversion

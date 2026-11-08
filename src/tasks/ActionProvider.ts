@@ -166,7 +166,7 @@ export class PremakeActionTaskProvider implements vscode.TaskProvider {
       definition,
       folder, // This IS the folder scope
       taskName,
-      "Premake Manager",
+      "Premake5",
       execution,
     );
 

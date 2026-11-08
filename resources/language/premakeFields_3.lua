@@ -1,4 +1,69 @@
 --- cspell:disable
+---@alias symbolsAllowed
+---| "Default"
+---| "On"
+---| "Off"
+---| "FastLink"
+---| "Full"
+
+
+---Turn on/off debug symbol table generation.
+---
+---[docs](https://premake.github.io/docs/symbols/)
+---
+---@param value symbolsAllowed
+local function symbols(value) end
+_G.symbols=symbols
+
+---Specify the target location of the debug symbols.
+---
+---[docs](https://premake.github.io/docs/symbolspath/)
+---
+---@param value string
+local function symbolspath(value) end
+_G.symbolspath=symbolspath
+
+---Specifies the system library search paths.
+---
+---[docs](https://premake.github.io/docs/syslibdirs/)
+---
+---@param value string[]
+local function syslibdirs(value) end
+_G.syslibdirs=syslibdirs
+
+---@alias systemAllowed
+---| "aix"
+---| "bsd"
+---| "emscripten"
+---| "haiku"
+---| "hurd"
+---| "ios"
+---| "linux"
+---| "macosx"
+---| "solaris"
+---| "tvos"
+---| "uwp"
+---| "wii"
+---| "windows"
+---| "android"
+
+
+---Specifies the target operating system.
+---
+---[docs](https://premake.github.io/docs/system/)
+---
+---@param value systemAllowed
+local function system(value) end
+_G.system=system
+
+---Specifies the target operation system min and max versions.
+---
+---[docs](https://premake.github.io/docs/systemversion/)
+---
+---@param value string
+local function systemversion(value) end
+_G.systemversion=systemversion
+
 ---Specifies generic filter tags.
 ---
 ---[docs](https://premake.github.io/docs/tags/)
@@ -222,6 +287,7 @@ _G.uuid=uuid
 ---| "Default"
 ---| "AVX"
 ---| "AVX2"
+---| "AVX512"
 ---| "IA32"
 ---| "SSE"
 ---| "SSE2"
@@ -288,6 +354,14 @@ _G.vsprops=vsprops
 ---@param value warningsAllowed
 local function warnings(value) end
 _G.warnings=warnings
+
+---Command linker to include all objects of given libraries.
+---
+---[docs](https://premake.github.io/docs/wholearchive/)
+---
+---@param value string[]
+local function wholearchive(value) end
+_G.wholearchive=wholearchive
 
 ---@alias wpfAllowed
 ---| "Default"

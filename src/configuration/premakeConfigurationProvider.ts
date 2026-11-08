@@ -99,7 +99,7 @@ async function generateDebugConfigurations(
           cwd: "${workspaceFolder}",
 
           // Run the matching build task before debugging.
-          preLaunchTask: `Premake Manager: ${taskName}`,
+          preLaunchTask: `Premake5: ${taskName}`,
 
           presentation: {
             group: workspace.name,
@@ -120,13 +120,6 @@ export class PremakeDynamicConfigurationProvider
     token?: vscode.CancellationToken,
   ): vscode.ProviderResult<vscode.DebugConfiguration[]> {
     return generateDebugConfigurations(folder, token);
-  }
-
-  resolveDebugConfiguration(
-    folder: vscode.WorkspaceFolder | undefined,
-    debugConfiguration: vscode.DebugConfiguration,
-  ): vscode.ProviderResult<vscode.DebugConfiguration> {
-    return debugConfiguration;
   }
 }
 

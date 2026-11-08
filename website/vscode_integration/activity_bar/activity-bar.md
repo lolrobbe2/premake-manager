@@ -2,10 +2,11 @@
 
 ![activity bar](premake-activity-bar.png)
 
-- [modules](#1-modules-view)
-- [libraries](#2-libraries-view)
+- [ativity bar](#ativity-bar)
+  - [1 modules view](#1-modules-view)
+  - [2 libraries view](#2-libraries-view)
 
-> [!NOTE] the `modules` and `libraries` are porivded bye the **unnoficial** [registry](https://premake-registry-ywxg.onrender.com/)
+> [!NOTE] the `modules` and `libraries` are provided bye the **unnoficial** [registry](https://premake-registry-ywxg.onrender.com/)
 
 ## 1 modules view
 
