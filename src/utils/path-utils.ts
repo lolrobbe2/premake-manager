@@ -1,5 +1,6 @@
 import * as path from "path";
 import * as vscode from "vscode";
+import fs from "fs";
 import { createReadStream, createWriteStream } from "fs";
 import { pipeline } from "stream/promises";
 import { Prompt } from "./prompt-utils";
@@ -122,5 +123,15 @@ export class LocalStorage {
   }
   static getBinUri(subpaths: string[]): vscode.Uri {
     return this.getResourceUri(["bin", ...subpaths]);
+  }
+  static getTempUri(subpaths: string[]): vscode.Uri {
+    return this.getResourceUri(["tmp", ...subpaths]);
+  }
+  static clearTempDir() {
+    const tempUri = this.getTempUri([]);
+    fs.rmSync(tempUri.fsPath, {
+      recursive: true,
+      force: true,
+    });
   }
 }

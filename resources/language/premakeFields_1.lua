@@ -43,6 +43,14 @@ _G.androidapilevel=androidapilevel
 local function androidapplibname(value) end
 _G.androidapplibname=androidapplibname
 
+---Adds the ApplicationManifest property to .NET projects
+---
+---[docs](https://premake.github.io/docs/appmanifest/)
+---
+---@param value string
+local function appmanifest(value) end
+_G.appmanifest=appmanifest
+
 ---@alias architectureAllowed
 ---| "universal"
 ---| "x86"
@@ -380,6 +388,8 @@ _G.copylocal=copylocal
 ---| "C++20"
 ---| "C++2b"
 ---| "C++23"
+---| "C++2c"
+---| "C++26"
 ---| "gnu++98"
 ---| "gnu++0x"
 ---| "gnu++11"
@@ -391,6 +401,8 @@ _G.copylocal=copylocal
 ---| "gnu++20"
 ---| "gnu++2b"
 ---| "gnu++23"
+---| "gnu++2c"
+---| "gnu++26"
 
 
 ---Specifies the C++ dialect to compile with.
@@ -573,6 +585,14 @@ _G.debugsearchpaths=debugsearchpaths
 local function debugstartupcommands(value) end
 _G.debugstartupcommands=debugstartupcommands
 
+---Specifies the default build configuration for a workspace.
+---
+---[docs](https://premake.github.io/docs/defaultconfiguration/)
+---
+---@param value string
+local function defaultconfiguration(value) end
+_G.defaultconfiguration=defaultconfiguration
+
 ---Specifies the default build platform for a workspace.
 ---
 ---[docs](https://premake.github.io/docs/defaultplatform/)
@@ -621,7 +641,7 @@ _G.display=display
 local function documentationfile(value) end
 _G.documentationfile=documentationfile
 
----Selects a .NET framework version.
+---Selects a .NET framework version(s).
 ---
 ---[docs](https://premake.github.io/docs/dotnetframework/)
 ---
@@ -661,6 +681,20 @@ _G.dotnetsdk=dotnetsdk
 ---@param value dpiawarenessAllowed
 local function dpiawareness(value) end
 _G.dpiawareness=dpiawareness
+
+---@alias dynamicdebuggingAllowed
+---| "Default"
+---| "On"
+---| "Off"
+
+
+---Specifies if the binary has dynamic debugging support.
+---
+---[docs](https://premake.github.io/docs/dynamicdebugging/)
+---
+---@param value dynamicdebuggingAllowed
+local function dynamicdebugging(value) end
+_G.dynamicdebugging=dynamicdebugging
 
 ---@alias editandcontinueAllowed
 ---| "Default"
@@ -721,6 +755,20 @@ _G.enable64bitchecks=enable64bitchecks
 ---@param value Boolean
 local function enabledefaultcompileitems(value) end
 _G.enabledefaultcompileitems=enabledefaultcompileitems
+
+---@alias enableimplicitusingsAllowed
+---| "Default"
+---| "On"
+---| "Off"
+
+
+---Specifies if C# implicit usings should be enabled.
+---
+---[docs](https://premake.github.io/docs/enableimplicitusings/)
+---
+---@param value enableimplicitusingsAllowed
+local function enableimplicitusings(value) end
+_G.enableimplicitusings=enableimplicitusings
 
 ---@alias enablemodulesAllowed
 ---| "On"
@@ -880,37 +928,6 @@ _G.filename=filename
 local function files(value) end
 _G.files=files
 
----@alias flagsAllowed
----| "DebugEnvsDontMerge"
----| "DebugEnvsInherit"
----| "ExcludeFromBuild"
----| "Maps"
----| "MultiProcessorCompile"
----| "No64BitChecks"
----| "NoImportLib"
----| "NoIncrementalLink"
----| "NoManifest"
----| "NoMinimalRebuild"
----| "NoPCH"
----| "NoBufferSecurityCheck"
----| "OmitDefaultLibrary"
----| "RelativeLinks"
----| "ShadowedVariables"
----| "UndefinedIdentifiers"
----| "WPF"
----| "NoImplicitLink"
----| "NoCopyLocal"
----| "NoRuntimeChecks"
-
-
----Specifies build flags to modify the compiling or linking process.
----
----[docs](https://premake.github.io/docs/flags/)
----
----@param value flagsAllowed[]
-local function flags(value) end
-_G.flags=flags
-
 ---@alias floatabiAllowed
 ---| "Soft"
 ---| "SoftFP"
@@ -929,6 +946,7 @@ _G.floatabi=floatabi
 ---| "Default"
 ---| "Fast"
 ---| "Strict"
+---| "Precise"
 
 
 ---Specifies the style of floating point math which should be used.
@@ -987,6 +1005,21 @@ _G.functionlevellinking=functionlevellinking
 local function gccprefix(value) end
 _G.gccprefix=gccprefix
 
+---@alias generateassemblyAllowed
+---| "Default"
+---| "On"
+---| "Verbose"
+---| "Off"
+
+
+---Controls whether assembly output is generated for source files (in addition to normal compilation).
+---
+---[docs](https://premake.github.io/docs/generateassembly/)
+---
+---@param value generateassemblyAllowed
+local function generateassembly(value) end
+_G.generateassembly=generateassembly
+
 ---@alias gitintegrationAllowed
 ---| "Off"
 ---| "Always"
@@ -1016,35 +1049,3 @@ _G.icon=icon
 ---@param value string[]
 local function ignoredefaultlibraries(value) end
 _G.ignoredefaultlibraries=ignoredefaultlibraries
-
----Specifies the import library output directory.
----
----[docs](https://premake.github.io/docs/implibdir/)
----
----@param value string
-local function implibdir(value) end
-_G.implibdir=implibdir
-
----Specifies the import library file extension.
----
----[docs](https://premake.github.io/docs/implibextension/)
----
----@param value string
-local function implibextension(value) end
-_G.implibextension=implibextension
-
----Specifies the import library base file name.
----
----[docs](https://premake.github.io/docs/implibname/)
----
----@param value string
-local function implibname(value) end
-_G.implibname=implibname
-
----Specifies the import library file name prefix.
----
----[docs](https://premake.github.io/docs/implibprefix/)
----
----@param value string
-local function implibprefix(value) end
-_G.implibprefix=implibprefix

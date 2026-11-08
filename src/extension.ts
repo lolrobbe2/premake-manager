@@ -9,30 +9,19 @@ import * as vscode from "vscode";
 import * as commands from "./commands/mod";
 
 import { PremakeTerminalInterface } from "cli/premake/terminalinterface";
-import fs from "fs";
-import path from "path";
+
 import { LibraryProvider } from "registry/LibraryProvider";
 import { ModuleProvider } from "registry/ModuleProvider";
-import { PremakeManagerTaskProvider, PremakeTaskProvider } from "tasks/TaskProvider";
+import {
+  PremakeManagerTaskProvider,
+  PremakeTaskProvider,
+} from "tasks/TaskProvider";
 import { LocalStorage, PathUtils } from "utils/path-utils";
 import { VersionManager } from "utils/version-manager";
+import { WorkspaceUtils } from "utils/workspace-utils";
+import { detectBuildTools } from "configuration/tools/detected-tool";
+import { PremakeActionTaskProvider } from "tasks/ActionProvider";
 
-function findPremakeFile(dir: string) {
-  const entries = fs.readdirSync(dir, { withFileTypes: true });
-  for (const entry of entries) {
-    const fullPath = path.join(dir, entry.name);
-    if (entry.isFile() && entry.name === "premake5.lua") {
-      return fullPath; // found it
-    }
-    if (entry.isDirectory()) {
-      const found: any = findPremakeFile(fullPath);
-      if (found) {
-        return found;
-      }
-    }
-  }
-  return null;
-}
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export async function activate(
@@ -51,16 +40,6 @@ export async function activate(
     measureTask("Terminals", () => registerTerminals(context)),
     measureTask("Commands", () => commands.register()),
     measureTask("Providers", () => registerProviders(context)),
-    measureTask("Sources/FS", async () => {
-      const workspaceRoot = PathUtils.getWorkspaceRoot();
-      if (workspaceRoot) {
-        const premakeFile = findPremakeFile(workspaceRoot);
-        if (premakeFile) {
-          const sources = new SourceRegistrar(context);
-          await sources.registerSources(["."]);
-        }
-      }
-    }),
     measureTask("VersionManager", async () => {
       if ((await VersionManager.Check()) !== true) {
         await VersionManager.Install();
@@ -69,9 +48,9 @@ export async function activate(
     measureTask("taskProvider", async () => {
       PremakeTerminalInterface.initialize(context);
       registerTaskProvider(context);
-    })
+    }),
   ]);
-
+  WorkspaceUtils.Initialize(context);
   console.timeEnd("Premake5: Total Activation");
   return TerminalInterface;
 }
@@ -180,11 +159,22 @@ function registerStatusBar(context: vscode.ExtensionContext) {
   context.subscriptions.push(statusBarItemCliTerminal);
 }
 
-function registerTaskProvider(context: vscode.ExtensionContext){
-  const premakeProvider = vscode.tasks.registerTaskProvider("premake5",new PremakeTaskProvider(context));
-  const managerProvider = vscode.tasks.registerTaskProvider("premakeManager", new PremakeManagerTaskProvider(context));
-
+function registerTaskProvider(context: vscode.ExtensionContext) {
+  const premakeProvider = vscode.tasks.registerTaskProvider(
+    "premake5",
+    new PremakeTaskProvider(context),
+  );
+  const managerProvider = vscode.tasks.registerTaskProvider(
+    "premakeManager",
+    new PremakeManagerTaskProvider(context),
+  );
+  const actionProvider = vscode.tasks.registerTaskProvider(
+    "premakeBuild",
+    new PremakeActionTaskProvider(),
+  );
 }
 
 // This method is called when your extension is deivated
-export function deivate() {}
+export function deivate() {
+  LocalStorage.clearTempDir();
+}

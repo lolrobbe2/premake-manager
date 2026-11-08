@@ -44,6 +44,7 @@
   * [tasks](./vscode_integration/tasks/tasks.md)
     * [premake5](./vscode_integration/tasks/tasks.md#premake5)
     * [premake manager](./vscode_integration/tasks/tasks.md#premakemanager)
-
+    * [premakeBuild](./vscode_integration/tasks/tasks.md#premakebuild-automatically-generated)
+  * [configuration](./vscode_integration/configuration/confiurations.md)
 ---
 * [GitHub Repo](https://github.com/lolrobbe2/premake-manager)

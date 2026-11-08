@@ -6,8 +6,10 @@ import { PremakeManagerTask, PremakeManagerTaskDefinition } from "./PremakeManag
 import { PremakeTask, PremakeTaskDefinition } from "./PremakeTask";
 
 
+/// provides tasks for running premake5
 export class PremakeTaskProvider implements vscode.TaskProvider {
     private tasks: vscode.Task[] = [];
+    //supported default actions
     private readonly actions: string[] = [
         'compilecommands', 'gmake', 'ninja', 'vs2026', 'vs2022', 'vs2019',
         'vs2017', 'vs2015', 'vs2013', 'vs2012', 'vs2010', 'vs2008',
@@ -59,7 +61,7 @@ export class PremakeTaskProvider implements vscode.TaskProvider {
             if (definition.options) {
                 args.push(...definition.options);
             }
-            const execution = new vscode.ShellExecution(`premake5 ${args.reduce((arg) => ` ${arg}`)}`,options);
+            const execution = new vscode.ShellExecution(`premake5 ${args.join(" ")}`,options);
 
 
             return new PremakeTask(definition,task.scope,task.name,execution);
